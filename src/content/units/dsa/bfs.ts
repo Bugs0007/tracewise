@@ -2,6 +2,7 @@ import { Recorder } from '@/engine/recorder';
 import { graphPanel, layeredLayout, edgeKey, type EdgeSpec } from '@/engine/layout';
 import type { Tone, VizDef } from '@/engine/types';
 import type { Unit } from '@/content/types';
+import { adjacency } from '@/content/lib/graph';
 
 const code = `
 from collections import deque
@@ -23,25 +24,6 @@ def bfs(graph, start):
 interface In {
   edges: EdgeSpec[];
   start: string;
-}
-
-export function adjacency(edges: EdgeSpec[], directed = false): { ids: string[]; adj: Record<string, string[]> } {
-  const ids: string[] = [];
-  const adj: Record<string, string[]> = {};
-  const add = (id: string) => {
-    if (!(id in adj)) {
-      adj[id] = [];
-      ids.push(id);
-    }
-  };
-  for (const e of edges) {
-    add(e.from);
-    add(e.to);
-    adj[e.from].push(e.to);
-    if (!directed) adj[e.to].push(e.from);
-  }
-  for (const k of ids) adj[k] = [...new Set(adj[k])].sort();
-  return { ids: ids.sort(), adj };
 }
 
 const viz: VizDef<In> = {

@@ -2,6 +2,7 @@ import { Recorder } from '@/engine/recorder';
 import { linkedListPanel, type LLNodeView } from '@/engine/layout';
 import type { Tone, VizDef } from '@/engine/types';
 import type { Unit } from '@/content/types';
+import { LIST_HARNESS } from '@/content/lib/harness';
 
 const code = `
 def reverse_list(head):
@@ -13,33 +14,6 @@ def reverse_list(head):
         prev = curr              #@advPrev
         curr = nxt               #@advCurr
     return prev                  #@done
-`;
-
-/** Hidden helpers shared by every linked-list task: build from a Python list, convert back. */
-export const LIST_HARNESS = `
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-def _build(vals):
-    head = None
-    for v in reversed(vals):
-        head = ListNode(v, head)
-    return head
-
-def _to_list(node, limit=10000):
-    out = []
-    while node is not None and len(out) < limit:
-        out.append(node.val)
-        node = node.next
-    return out
-
-def run_list(fn, vals):
-    return _to_list(fn(_build(vals)))
-
-def run_list_value(fn, vals):
-    return fn(_build(vals))
 `;
 
 interface In {
