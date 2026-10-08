@@ -278,6 +278,8 @@ export function graphPanel(ids: string[], edges: EdgeSpec[], pos: Record<string,
       from: e.from,
       to: e.to,
       directed,
+      // bend antiparallel directed edges (A→B and B→A) so both stay visible
+      curve: directed && edges.some((o) => o.from === e.to && o.to === e.from) ? 18 : undefined,
       label: e.w !== undefined ? String(e.w) : undefined,
       tone: decor.edgeTones?.[edgeKey(e.from, e.to, directed)],
     })),

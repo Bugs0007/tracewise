@@ -3,7 +3,7 @@
 // thread terminates and recreates this worker when a run exceeds its timeout.
 import harnessSrc from './harness.py?raw';
 
-const pyFiles = import.meta.glob('../py/**/*.py', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const pyFiles = import.meta.glob(['../py/**/*.py', '!../py/tests/**'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 let pyodide: any = null;
 let ready: Promise<void> | null = null;

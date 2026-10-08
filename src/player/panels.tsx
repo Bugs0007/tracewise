@@ -110,7 +110,7 @@ function ArrayView({ p }: { p: ArrayPanel }) {
     <div>
       <Title t={p.title} />
       <div className={`arr${p.bars ? ' bars' : ''}`} role="list" aria-label={p.title ?? 'array'}>
-        {p.range && rangeBox && !p.bars && (
+        {p.range && rangeBox && (
           <div className="arr-range" style={{ left: rangeBox.left, width: rangeBox.width, borderColor: p.range.tone ? toneVar(p.range.tone) : undefined }}>
             {p.range.label && <span>{p.range.label}</span>}
           </div>

@@ -79,3 +79,16 @@ export function pathLabel(path: (number | string)[]): string {
 export function pyList(path: unknown[]): string {
   return `[${path.map((p) => (Array.isArray(p) ? pyList(p) : String(p))).join(', ')}]`;
 }
+
+export type Interval = [number, number];
+
+/** Validate the `json` input of an interval visualizer; throws a friendly Error. */
+export function parseIntervals(raw: unknown, maxCount = 8): Interval[] {
+  if (!Array.isArray(raw)) throw new Error('Intervals must be a list like [[1,3],[2,6]]');
+  if (raw.length > maxCount) throw new Error(`Use at most ${maxCount} intervals`);
+  return raw.map((iv) => {
+    if (!Array.isArray(iv) || iv.length !== 2 || !iv.every((x) => Number.isFinite(x))) throw new Error('Every interval must be a pair [start, end]');
+    if (iv[0] < 0 || iv[1] < iv[0]) throw new Error(`Interval [${iv[0]}, ${iv[1]}] must satisfy 0 <= start <= end`);
+    return [iv[0], iv[1]] as Interval;
+  });
+}
