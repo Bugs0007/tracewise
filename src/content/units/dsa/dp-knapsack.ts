@@ -155,7 +155,7 @@ const unit: Unit = {
     prompt: 'Weights [1, 3, 4, 5], values [1, 4, 5, 7], capacity 7. Each item can be used at most once. What is the best total value?',
     options: ['8', '9', '10', '12'],
     answer: 1,
-    explain: 'Items 2 and 3 (weights 3+4 = 7) are worth 4+5 = 9. Items 1+2+... such as 1,3 and 5 would need weight 9. Taking the best value-per-weight item first (item 1) is not enough.',
+    explain: 'Items 2 and 3 (weights 3 + 4 = 7) are worth 4 + 5 = 9. Item 4 (w=5, v=7) plus item 1 (w=1, v=1) reaches only 8, so the single most valuable item is not part of the best bag.',
   },
   viz,
   deeper: {

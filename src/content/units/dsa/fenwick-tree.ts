@@ -75,7 +75,7 @@ const viz: VizDef<In> = {
     };
     const binVars = (i: number) => ({ i, 'i (binary)': bits(i, W), 'i & -i': bits(i & -i, W) });
 
-    r.step('init', `BIT built from ${n} values with n update() calls. tree[i] covers the last (i & -i) items up to i`, view(new Set(), null), { n, 'tree': `[${tree.slice(1).join(', ')}]` });
+    r.step('init', `BIT built from ${n} values by n update() calls; tree[i] covers (i & -i) items`, view(new Set(), null), { n, 'tree': `[${tree.slice(1).join(', ')}]` });
 
     // update(index, delta)
     let i = index;

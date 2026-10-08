@@ -33,7 +33,7 @@ const viz: VizDef<In> = {
   run({ n }) {
     assertInt('n', n, 0, 12);
     const r = new Recorder(code);
-    const dp: (number | null)[] = Array(n + 1).fill(null);
+    const dp: number[] = Array(n + 1).fill(0);
     const filled = new Set<number>();
     const view = (cur?: number, deps: number[] = [], extra: Record<number, Tone> = {}) => {
       const tones: Record<number, Tone> = {};
@@ -44,7 +44,6 @@ const viz: VizDef<In> = {
       const arrows = cur === undefined ? [] : arrowsTo([0, cur], deps.map((d) => [0, d] as [number, number]));
       return dpRow(dp as DpCell[], { title: 'ways[i] = number of ways to reach step i', tones: tones as Record<string, Tone>, arrows, rowLabels: ['ways'] });
     };
-    dp.fill(0);
     r.step('init', `Make a table with ${n + 1} cells, one per step 0..${n}`, [view()], { n });
     dp[0] = 1;
     filled.add(0);
