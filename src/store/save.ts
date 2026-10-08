@@ -149,7 +149,9 @@ export function importSave(text: string): SaveData {
   } catch {
     throw new SaveError('That file is not valid JSON');
   }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new SaveError('That file is not a Tracewise export');
   const { app: _app, exportedAt: _e, ...rest } = parsed as any;
+  if (!('schema' in rest) && !('xp' in rest)) throw new SaveError('That file is not a Tracewise export');
   return migrate(rest);
 }
 
