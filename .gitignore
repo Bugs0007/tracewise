@@ -1,0 +1,12 @@
+node_modules
+dist
+public/pyodide
+playwright-report
+test-results
+.vite
+*.log
+.DS_Store
+coverage
+.env
+.env.*
+.claude

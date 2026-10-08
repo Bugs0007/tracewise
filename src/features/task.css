@@ -1,0 +1,193 @@
+.results .err,
+.results .stdout {
+  font: 12.5px/1.5 var(--font-mono);
+  white-space: pre-wrap;
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  max-height: 200px;
+  overflow: auto;
+}
+.results .tests {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.results .tests li {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+  animation: fade-up 240ms both;
+}
+.results .tests li:nth-child(2) {
+  animation-delay: 40ms;
+}
+.results .tests li:nth-child(3) {
+  animation-delay: 80ms;
+}
+.results .tests li:nth-child(4) {
+  animation-delay: 120ms;
+}
+.results .tests li:nth-child(n + 5) {
+  animation-delay: 160ms;
+}
+.results .mark {
+  font-weight: 800;
+  width: 16px;
+}
+.results li.ok .mark {
+  color: var(--good);
+}
+.results li.no .mark {
+  color: var(--bad);
+}
+.results .t-name {
+  font-weight: 600;
+  font-size: 13px;
+}
+.results .t-detail {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 2px;
+  word-break: break-word;
+}
+.results .bad {
+  color: var(--bad);
+}
+.spin {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.codeview.blanks {
+  max-height: none;
+  font-size: 14px;
+}
+.blank {
+  font: inherit;
+  color: var(--accent-2);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-2));
+  border: 1px dashed var(--accent);
+  border-radius: 5px;
+  padding: 0 4px;
+  margin: 0 1px;
+  min-width: 3ch;
+  height: 1.5em;
+  vertical-align: baseline;
+}
+.blank:focus {
+  outline: none;
+  border-style: solid;
+  box-shadow: var(--glow);
+}
+.blank.right {
+  border: 1px solid var(--good);
+  color: var(--good);
+  background: color-mix(in srgb, var(--good) 14%, var(--bg-2));
+}
+.blank.wrong {
+  border: 1px solid var(--bad);
+  color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 12%, var(--bg-2));
+  animation: shake 380ms both;
+}
+.steps-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 12px 0 18px;
+}
+.step-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text-2);
+  font: 600 14px var(--font-ui);
+  cursor: pointer;
+  transition: border-color 160ms, background 160ms;
+}
+.step-tab:hover {
+  border-color: var(--line-2);
+  color: var(--text);
+}
+.step-tab[aria-current='step'] {
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: var(--glow);
+}
+.step-tab .num {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--panel-3);
+  font-size: 12px;
+}
+.step-tab.done .num {
+  background: var(--good);
+  color: var(--t-ink);
+}
+.hook {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.45;
+  max-width: 820px;
+}
+.ladder {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.rung {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  font: 600 12.5px var(--font-ui);
+  color: var(--text-3);
+  cursor: pointer;
+}
+.rung:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.rung.cur {
+  border-color: var(--accent);
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+}
+.rung.passed {
+  color: var(--good);
+}
+.hints {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.hint {
+  animation: fade-up 260ms both;
+}
