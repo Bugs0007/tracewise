@@ -14,7 +14,7 @@ export function CodeView({ code, language, line, title = 'Code' }: { code: strin
   return (
     <div>
       <div className="pnl-title">{title}</div>
-      <div className="codeview" ref={ref} aria-label={`${title}, current line ${line ?? 'none'}`}>
+      <div className="codeview" ref={ref} tabIndex={0} role="region" aria-label={`${title}, current line ${line ?? 'none'}`}>
         {lines.map((l, i) => (
           <div key={i} className={`ln${line === i + 1 ? ' cur' : ''}`} aria-current={line === i + 1 ? 'step' : undefined}>
             <span className="no">{i + 1}</span>

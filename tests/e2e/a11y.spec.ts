@@ -23,6 +23,17 @@ for (const theme of ['dark', 'light'] as const) {
       ['unit type', '/unit/binary-search/type'],
       ['settings', '/settings'],
       ['gym', '/gym'],
+      ['practice', '/practice'],
+      ['review', '/review'],
+      ['interview', '/interview'],
+      ['capstone', '/capstone'],
+      ['capstone workspace', '/capstone/task-manager'],
+      ['certificate', '/certificate'],
+      ['lab index', '/lab'],
+      ['architecture lab', '/lab/architect'],
+      ['graph visualizer', '/lab/dijkstra'],
+      ['sequence visualizer', '/lab/be-oauth2'],
+      ['timeline visualizer', '/lab/js-debounce'],
     ] as const) {
       test(`${name} has no serious a11y violations`, async ({ page }) => {
         await page.goto(`./#${route}`);

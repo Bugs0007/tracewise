@@ -543,7 +543,7 @@ function ListView({ p }: { p: ListPanel }) {
       <Title t={p.title} />
       <div className="row" style={{ gap: 6, alignItems: p.orientation === 'vertical' ? 'flex-start' : 'center', flexWrap: 'nowrap' }}>
         {p.orientation === 'horizontal' && p.startLabel && <span className="lst-end">{p.startLabel}</span>}
-        <div className={`lst ${p.orientation}`} role="list" aria-label={p.title ?? 'list'}>
+        <div className={`lst ${p.orientation}`} role={p.items.length ? 'list' : undefined} aria-label={p.title ?? 'list'}>
           {p.items.length === 0 && <span className="lst-empty">{p.emptyText ?? 'empty'}</span>}
           {p.items.map((it, i) => (
             <div key={it.id ?? `${i}:${it.label}`} className="lst-item" data-tone={it.tone ?? 'default'} role="listitem">
@@ -570,7 +570,7 @@ function BucketsView({ p }: { p: BucketsPanel }) {
             <div className="bkt-idx" data-tone={p.tones?.[i] ?? 'default'}>
               {i}
             </div>
-            {chain.length === 0 && <span className="dim mono" style={{ fontSize: 12 }}>—</span>}
+            {chain.length === 0 && <span className="dim mono" style={{ fontSize: 13 }}>—</span>}
             {chain.map((it, j) => (
               <span key={it.id ?? `${j}:${it.label}`} className="row" style={{ gap: 6, flexWrap: 'nowrap' }}>
                 <span className="bkt-arrow">→</span>
@@ -770,7 +770,7 @@ function ChartView({ p }: { p: ChartPanel }) {
             ))}
         {p.marker !== undefined && <line x1={X(p.marker)} x2={X(p.marker)} y1={m.t} y2={H - m.b} style={{ stroke: 'var(--ink-muted)' }} strokeDasharray="4 4" />}
       </svg>
-      <div className="row" style={{ gap: 12, fontSize: 12 }}>
+      <div className="row" style={{ gap: 12, fontSize: 13 }}>
         {p.series.map((s, si) => (
           <span key={s.label} className="row" style={{ gap: 5 }}>
             <i style={{ width: 14, height: 4, background: seriesColor(si, s.tone), display: 'inline-block' }} />
@@ -788,7 +788,7 @@ function LogView({ p }: { p: LogPanel }) {
   return (
     <div>
       <Title t={p.title} />
-      <div className="logp" role="log" aria-label={p.title ?? 'output'}>
+      <div className="logp" role="log" aria-label={p.title ?? 'output'} tabIndex={0}>
         {p.lines.length === 0 && <span className="dim">(no output yet)</span>}
         {p.lines.map((l, i) => (
           <div key={i} data-tone={l.tone ?? 'default'}>

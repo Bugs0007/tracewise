@@ -19,7 +19,6 @@ export default function GymPage() {
     <div className="page">
       <div className="page-head">
         <div className="grow">
-          <div className="eyebrow">Muscle memory</div>
           <h1 style={{ margin: 0 }}>Syntax Gym</h1>
           <p className="muted" style={{ margin: '4px 0 0' }}>
             Retype real idioms until your fingers know them. Wrong keys don't advance — accuracy first, speed follows. Indentation after <kbd>Enter</kbd> is automatic.
@@ -176,19 +175,19 @@ function Typer({ snippet, onNext }: { snippet: GymSnippet; onNext: () => void })
       <div className="row" style={{ gap: 26 }}>
         <div>
           <div className="big-num">{wpm}</div>
-          <div className="dim" style={{ fontSize: 12 }}>
+          <div className="dim" style={{ fontSize: 13 }}>
             WPM
           </div>
         </div>
         <div>
           <div className="big-num">{acc}%</div>
-          <div className="dim" style={{ fontSize: 12 }}>
+          <div className="dim" style={{ fontSize: 13 }}>
             accuracy
           </div>
         </div>
         <div>
           <div className="big-num">{errors}</div>
-          <div className="dim" style={{ fontSize: 12 }}>
+          <div className="dim" style={{ fontSize: 13 }}>
             misses
           </div>
         </div>

@@ -46,7 +46,7 @@ export function Results({ result }: { result: RunResult | null }) {
         <Icon name={result.status === 'pass' ? 'check' : 'x'} size={18} />
         <strong>{head}</strong>
         <span className="spacer" />
-        <span className="dim mono" style={{ fontSize: 12 }}>
+        <span className="dim mono" style={{ fontSize: 13 }}>
           {Math.round(result.ms)} ms
         </span>
       </div>
@@ -143,7 +143,7 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
     <div className="col" style={{ gap: 12 }}>
       <div className="row">
         <PyBadge lang={task.language} />
-        <span className="dim" style={{ fontSize: 12 }}>
+        <span className="dim" style={{ fontSize: 13 }}>
           <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs · <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves the editor
         </span>
         <span className="spacer" />
@@ -253,7 +253,7 @@ export function BlanksRunner({ task, solution, onResult }: { task: TaskBase; sol
     <div className="col" style={{ gap: 12 }}>
       <div className="row">
         <PyBadge lang={task.language} />
-        <span className="dim" style={{ fontSize: 12 }}>
+        <span className="dim" style={{ fontSize: 13 }}>
           Type each missing piece. <kbd>Enter</kbd> jumps to the next blank.
         </span>
         <span className="spacer" />

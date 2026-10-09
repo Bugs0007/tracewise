@@ -57,9 +57,8 @@ export default function InterviewPage() {
 
   return (
     <div className="page" style={{ maxWidth: 860 }}>
-      <div className="eyebrow">No hints. Timed. Random.</div>
       <h1>Interview Mode</h1>
-      <p className="muted">A mock coding round: problems drawn at random from the modules you pick, a countdown, no hints and no peeking. You can run the visible tests. A score report at the end feeds weak spots into your review queue.</p>
+      <p className="muted">A mock coding round with no hints and a countdown. Problems drawn at random from the modules you pick, a countdown, no hints and no peeking. You can run the visible tests. A score report at the end feeds weak spots into your review queue.</p>
       <div className="card col" style={{ gap: 16 }}>
         <div>
           <div className="eyebrow" style={{ marginBottom: 6 }}>

@@ -230,7 +230,7 @@ export function Architect({ onPass }: { onPass?: (scenarioId: string) => void })
               data-testid={`node-${n.kind}`}
             >
               <rect x={-44} y={-20} width={88} height={40} rx={n.kind === 'db' || n.kind === 'replica' ? 14 : 8} style={{ strokeWidth: selected === n.id ? 3 : 1.5, stroke: selected === n.id ? 'var(--accent)' : undefined }} />
-              <text y={u !== undefined && n.kind !== 'client' ? -5 : 0} style={{ fontSize: 11 }}>
+              <text y={u !== undefined && n.kind !== 'client' ? -5 : 0} style={{ fontSize: 13 }}>
                 {KINDS[n.kind].label}
               </text>
               {u !== undefined && n.kind !== 'client' && (

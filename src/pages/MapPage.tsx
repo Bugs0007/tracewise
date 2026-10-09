@@ -3,8 +3,6 @@ import { AVAILABLE_UNITS } from '@/content/loader';
 import { href } from '@/router';
 import { useApp } from '@/store/store';
 import { STEP_ORDER } from '@/store/save';
-import { Icon } from '@/ui/Icon';
-import { ProgressRing } from '@/ui/common';
 import { moduleProgress } from './HomePage';
 import './pages.css';
 
@@ -16,52 +14,50 @@ export default function MapPage({ module }: { module?: string }) {
 
   return (
     <div className="page">
-      <div className="mod-tabs" role="tablist" aria-label="Modules">
+      <nav className="mod-tabs" aria-label="Modules">
         {MODULES.map((m) => (
-          <a key={m.id} role="tab" aria-selected={m.id === mod.id} href={href(`/map/${m.id}`)} style={{ ['--mc' as string]: m.accent }}>
-            <span className="mod-code">{m.code}</span>
-            <span className="hide-sm">{m.title.split(' (')[0]}</span>
+          <a key={m.id} href={href(`/map/${m.id}`)} aria-current={m.id === mod.id ? 'page' : undefined}>
+            {m.title.split(' (')[0]}
           </a>
         ))}
-      </div>
+      </nav>
       <div className="page-head">
         <div className="grow">
-          <div className="eyebrow">{mod.code} world map</div>
           <h1 style={{ margin: 0 }}>{mod.title}</h1>
           <p className="muted" style={{ margin: '4px 0 0' }}>
             {mod.blurb}
           </p>
         </div>
-        <div className="row">
-          <span className="chip good">{p.done} cleared</span>
-          <span className="chip">{p.available} playable</span>
-          <span className="chip">{p.total} total</span>
-        </div>
+        <p className="muted" style={{ margin: 0 }}>
+          <b style={{ color: 'var(--ink)' }}>{p.done}</b> of {p.total} cleared
+        </p>
       </div>
 
-      <div className="world" style={{ ['--mc' as string]: mod.accent }}>
-        {topics.map((t, ti) => (
-          <section key={t.topic} className="island fade-up" style={{ animationDelay: `${ti * 40}ms` }}>
-            <div className="island-head">
-              <span className="island-no">{ti + 1}</span>
-              <h3 style={{ margin: 0 }}>{t.topic}</h3>
-            </div>
-            <div className="path">
+      <div className="index">
+        {topics.map((t) => (
+          <section key={t.topic} className="index-topic">
+            <h2>{t.topic}</h2>
+            <ul>
               {t.concepts.map((c) => {
                 const u = units[c.id];
                 const steps = u ? STEP_ORDER.filter((s) => u.steps[s]).length : 0;
                 const avail = AVAILABLE_UNITS.has(c.id);
                 const state = u?.completedAt ? 'done' : steps ? 'started' : avail ? 'open' : 'soon';
                 return (
-                  <a key={c.id} className={`node ${state}`} href={href(`/unit/${c.id}`)} aria-label={`${c.title}: ${state === 'soon' ? 'coming soon' : `${steps} of 5 steps`}`} data-testid={`node-${c.id}`}>
-                    <ProgressRing value={steps / 5} size={54} stroke={4} color={state === 'done' ? 'var(--good)' : 'var(--mc)'}>
-                      <span className="node-icon">{state === 'done' ? <Icon name="crown" size={20} /> : state === 'soon' ? <Icon name="lock" size={16} /> : <Icon name="play" size={14} />}</span>
-                    </ProgressRing>
-                    <span className="node-label">{c.title}</span>
-                  </a>
+                  <li key={c.id}>
+                    <a className={`unit-link ${state}`} href={href(`/unit/${c.id}`)} data-testid={`node-${c.id}`}>
+                      <span className="steps" aria-hidden>
+                        {STEP_ORDER.map((s) => (
+                          <i key={s} className={u?.steps[s] ? 'on' : ''} />
+                        ))}
+                      </span>
+                      <span className="unit-title">{c.title}</span>
+                      <span className="unit-state">{state === 'done' ? 'Cleared' : state === 'started' ? `${steps} of 5` : state === 'soon' ? 'Soon' : ''}</span>
+                    </a>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </section>
         ))}
       </div>

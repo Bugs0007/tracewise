@@ -25,7 +25,7 @@ Screens reviewed: home, map, lesson (watch), graph/sequence/timeline panels, pho
 2. App shell + Home: done (hero polish continues in phase 4)
 3. Lesson page: done (stepper, dot-grid stage, tick timeline, caption, controls with key hints, predict, results, completion trace)
 4. Panel renderers: done (ink semantics via CSS tones, collision-free edge labels as pills, fitted/wrapped sequence and timeline labels, 1:1 minimum SVG scale with scroll on phones, colour key, multiply blending on timeline events)
-5. Remaining pages
+5. Remaining pages: done (Learn index, plain Lab/Practice lists, Capstone ledger, flat controls; a11y audit extended to 19 pages x 2 themes, all pass)
 6. Polish and QA, full e2e once, README screenshots, push
 
 ## Done

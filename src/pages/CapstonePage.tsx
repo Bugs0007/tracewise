@@ -18,32 +18,28 @@ export default function CapstonePage({ id }: { id?: string }) {
   if (project) return <Workspace key={project.id} project={project} />;
   return (
     <div className="page">
-      <div className="eyebrow">The final boss</div>
       <h1>Capstone: build a full-stack app by hand</h1>
-      <p className="muted" style={{ maxWidth: 760 }}>
-        A Python backend written against minidjango (models, endpoints, validation, auth) running in your browser, and a React frontend that talks to it through an in-browser mock network. Milestones are checked automatically. Hints are tiered; the full solution for a milestone only unlocks after you've used both hints and tried a few times. No AI help.
+      <p className="muted" style={{ maxWidth: '62ch' }}>
+        A Python backend written against minidjango (models, endpoints, validation, auth) runs in your browser, and a React frontend talks to it through an in-browser mock network. Milestones are checked automatically. Hints come in two tiers, and a milestone's full solution unlocks only after both hints and a few failed checks. There is no AI help.
       </p>
-      <div className="grid-cards" style={{ marginTop: 16 }}>
+      <div className="ledger" style={{ marginTop: 20 }}>
         {PROJECTS.map((p) => {
           const st = saved[p.id];
           const n = p.milestones.length;
           const done = st?.done ? n : (st?.milestone ?? 0);
           return (
-            <a key={p.id} className="card hover" href={href(`/capstone/${p.id}`)} style={{ color: 'var(--text)' }} data-testid={`capstone-${p.id}`}>
-              <div className="row">
-                <Icon name="trophy" size={20} />
-                <h3 style={{ margin: 0 }}>{p.title}</h3>
-                <span className="spacer" />
-                {st?.done && <span className="chip good">Complete</span>}
+            <a key={p.id} className="ledger-row" href={href(`/capstone/${p.id}`)} data-testid={`capstone-${p.id}`}>
+              <div className="ledger-name">
+                <h3>{p.title}</h3>
+                <p>{p.blurb}</p>
               </div>
-              <p className="muted" style={{ fontSize: 14 }}>
-                {p.blurb}
-              </p>
-              <div className="bar">
-                <span style={{ width: `${(done / n) * 100}%` }} />
+              <div className="ticks" aria-hidden>
+                {p.milestones.map((m, i) => (
+                  <i key={m.id} title={m.title} className={i < done ? 'done' : i === done ? 'next' : ''} />
+                ))}
               </div>
-              <div className="dim" style={{ fontSize: 12, marginTop: 6 }}>
-                {done} / {n} milestones
+              <div className="ledger-count">
+                <b>{done}</b> of {n}
               </div>
             </a>
           );
@@ -51,7 +47,7 @@ export default function CapstonePage({ id }: { id?: string }) {
       </div>
       <div className="row" style={{ marginTop: 22 }}>
         <a className="btn" href={href('/certificate')}>
-          <Icon name="certificate" size={16} /> Progress certificate
+          Progress certificate
         </a>
       </div>
     </div>
@@ -141,7 +137,7 @@ function Workspace({ project }: { project: CapstoneProject }) {
               <button key={ms.id} className={`step-tab${state === 'done' ? ' done' : ''}`} aria-current={i === viewing ? 'step' : undefined} disabled={state === 'locked'} onClick={() => setViewing(i)} style={{ justifyContent: 'flex-start', textAlign: 'left' }} data-testid={`milestone-${ms.id}`}>
                 <span className="num">{state === 'done' ? <Icon name="check" size={13} /> : state === 'locked' ? <Icon name="lock" size={12} /> : i + 1}</span>
                 <span>
-                  <span className="dim" style={{ fontSize: 11, display: 'block' }}>
+                  <span className="dim" style={{ fontSize: 13, display: 'block' }}>
                     {ms.part === 'backend' ? 'Backend' : 'Frontend'}
                   </span>
                   {ms.title}
@@ -167,10 +163,10 @@ function Workspace({ project }: { project: CapstoneProject }) {
           </div>
           <div className="row">
             <div className="seg" role="tablist">
-              <button role="tab" aria-pressed={tab === 'backend'} onClick={() => setTab('backend')}>
+              <button role="tab" aria-selected={tab === 'backend'} onClick={() => setTab('backend')}>
                 backend.py
               </button>
-              <button role="tab" aria-pressed={tab === 'frontend'} onClick={() => setTab('frontend')}>
+              <button role="tab" aria-selected={tab === 'frontend'} onClick={() => setTab('frontend')}>
                 App.jsx
               </button>
             </div>
@@ -266,7 +262,7 @@ function Preview({ backend, frontend }: { backend: string; frontend: string }) {
   return (
     <>
       <div className="row">
-        <div className="eyebrow">Live preview</div>
+        <h3 style={{ margin: 0 }}>Live preview</h3>
         <span className="spacer" />
         <button className="btn sm" onClick={() => setNonce((n) => n + 1)} data-testid="reload-preview">
           <Icon name="reset" size={13} /> Reload
@@ -284,8 +280,8 @@ function Preview({ backend, frontend }: { backend: string; frontend: string }) {
         </button>
       </div>
       <iframe key={nonce} ref={iframe} title="App preview" sandbox="allow-scripts" srcDoc={srcdoc} style={{ width: '100%', height: 360, border: '1px solid var(--line)', borderRadius: 12, background: '#fff' }} />
-      {error && <div className="callout bad mono" style={{ fontSize: 12 }}>{error}</div>}
-      <div className="eyebrow">Network</div>
+      {error && <div className="callout bad mono" style={{ fontSize: 13 }}>{error}</div>}
+      <h3 style={{ margin: 0 }}>Network</h3>
       <div className="logp" style={{ maxHeight: 160 }} aria-label="Requests made by the preview">
         {log.length === 0 && <span className="dim">No requests yet</span>}
         {log.map((l, i) => (

@@ -4,7 +4,6 @@ import { AVAILABLE_UNITS, loadUnit } from '@/content/loader';
 import type { Unit } from '@/content/types';
 import { href } from '@/router';
 import { Player } from '@/player/Player';
-import { Icon } from '@/ui/Icon';
 import { lazy, Suspense } from 'react';
 import './pages.css';
 
@@ -43,17 +42,16 @@ export default function LabPage({ id }: { id?: string }) {
     <div className="page">
       <div className="page-head">
         <div className="grow">
-          <div className="eyebrow">Free play</div>
           <h1 style={{ margin: 0 }}>Visualizer Lab</h1>
           <p className="muted" style={{ margin: '4px 0 0' }}>
             Every visualizer, outside the lesson flow. Change inputs, scrub the timeline, quiz yourself.
           </p>
         </div>
         <a className="btn" href={href('/lab/architect')} data-testid="architect-link">
-          <Icon name="server" size={16} /> Architecture lab
+          Architecture lab
         </a>
         <a className="btn primary" href={href('/lab/trace')} data-testid="trace-link">
-          <Icon name="terminal" size={16} /> Trace your own code
+          Trace your own code
         </a>
       </div>
       {MODULES.map((m) => {
@@ -61,17 +59,11 @@ export default function LabPage({ id }: { id?: string }) {
         if (!items.length) return null;
         return (
           <section key={m.id} style={{ marginBottom: 22 }}>
-            <h3>
-              <span className="mod-code" style={{ ['--mc' as string]: m.accent }}>
-                {m.code}
-              </span>{' '}
-              {m.title}
-            </h3>
+            <h3>{m.title}</h3>
             <div className="lab-list">
               {items.map((c) => (
-                <a key={c.id} className="card hover lab-item" href={href(`/lab/${c.id}`)}>
-                  <Icon name="eye" size={16} />
-                  <span>{c.title}</span>
+                <a key={c.id} className="lab-item" href={href(`/lab/${c.id}`)}>
+                  {c.title}
                 </a>
               ))}
             </div>

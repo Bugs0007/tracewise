@@ -55,7 +55,6 @@ export default function ReviewPage() {
     <div className="page" style={{ maxWidth: 900 }}>
       <div className="page-head">
         <div className="grow">
-          <div className="eyebrow">Spaced repetition</div>
           <h1 style={{ margin: 0 }}>Review queue</h1>
           <p className="muted" style={{ margin: '4px 0 0' }}>
             Things you struggled with come back on a schedule — tomorrow, then in 2, 4, 7, 15 and 30 days — until they stick.
@@ -89,7 +88,7 @@ function ReviewList({ items, title }: { items: ReviewItem[]; title: string }) {
             <span className="chip accent">{KIND_LABEL[r.kind]}</span>
             <a href={href(`/unit/${r.unitId}`)}>{CATALOG_BY_ID[r.unitId]?.title ?? r.unitId}</a>
             <span className="spacer" />
-            <span className="dim mono" style={{ fontSize: 12 }}>
+            <span className="dim mono" style={{ fontSize: 13 }}>
               box {r.box} · {r.due}
             </span>
           </div>

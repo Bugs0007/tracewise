@@ -81,10 +81,10 @@
 
   /* code */
   --code-bg: #f1f2ee;
-  --code-kw: #8b3fd1;
-  --code-str: #2c7a2c;
-  --code-num: #b54e12;
-  --code-com: #6b7284;
+  --code-kw: #7a2fc0;
+  --code-str: #1f6a1f;
+  --code-num: #9a4210;
+  --code-com: #575e72;
   --code-fn: #2f4bdb;
   --code-line: rgba(47, 75, 219, 0.1);
   --dot: rgba(27, 32, 48, 0.16);
@@ -485,7 +485,8 @@ label.field {
 .seg button + button {
   border-left: 1px solid var(--line);
 }
-.seg button[aria-pressed='true'] {
+.seg button[aria-pressed='true'],
+.seg button[aria-selected='true'] {
   background: var(--ink);
   color: var(--paper);
 }
