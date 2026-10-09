@@ -91,18 +91,11 @@ function TopBar() {
 }
 
 export function Logo({ size = 28 }: { size?: number }) {
+  // a short trace with a filled playhead dot at its end
   return (
     <svg className="brand-mark" width={size} height={size} viewBox="0 0 32 32" aria-hidden>
-      <defs>
-        <linearGradient id="lg-brand" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#7c8cff" />
-          <stop offset="1" stopColor="#5ee6d0" />
-        </linearGradient>
-      </defs>
-      <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg-brand)" />
-      <path d="M8 21 L13 12 L18 18 L24 9" fill="none" stroke="#0b0e17" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="13" cy="12" r="2.2" fill="#0b0e17" />
-      <circle cx="18" cy="18" r="2.2" fill="#0b0e17" />
+      <polyline points="3,24 10,13 16,19 25,7" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter" />
+      <circle cx="26" cy="6.5" r="4" fill="var(--cobalt)" />
     </svg>
   );
 }

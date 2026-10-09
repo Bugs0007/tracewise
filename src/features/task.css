@@ -94,7 +94,6 @@
 .blank:focus {
   outline: none;
   border-style: solid;
-  box-shadow: var(--glow);
 }
 .blank.right {
   border: 1px solid var(--good);
@@ -133,7 +132,6 @@
 .step-tab[aria-current='step'] {
   border-color: var(--accent);
   color: var(--text);
-  box-shadow: var(--glow);
 }
 .step-tab .num {
   width: 24px;

@@ -22,15 +22,15 @@ const highlight = HighlightStyle.define([
 ]);
 
 const theme = EditorView.theme({
-  '&': { background: 'var(--code-bg)', color: 'var(--text)', borderRadius: '12px', border: '1px solid var(--line)', fontSize: 'var(--editor-fs, 14px)' },
-  '&.cm-focused': { outline: 'none', borderColor: 'var(--accent)', boxShadow: 'var(--glow)' },
+  '&': { background: 'var(--code-bg)', color: 'var(--text)', borderRadius: '4px', border: '1px solid var(--line)', fontSize: 'var(--editor-fs, 14px)' },
+  '&.cm-focused': { outline: '2px solid var(--cobalt)', outlineOffset: '1px', borderColor: 'var(--cobalt)' },
   '.cm-content': { fontFamily: 'var(--font-mono)', caretColor: 'var(--accent-2)', padding: '10px 0' },
   '.cm-gutters': { background: 'transparent', border: 'none', color: 'var(--text-3)' },
   '.cm-activeLine': { background: 'color-mix(in srgb, var(--accent) 6%, transparent)' },
   '.cm-activeLineGutter': { background: 'transparent', color: 'var(--accent)' },
   '.cm-cursor': { borderLeftColor: 'var(--accent-2)', borderLeftWidth: '2px' },
-  '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { background: 'rgba(124,140,255,0.3) !important' },
-  '.cm-matchingBracket': { background: 'rgba(94,230,208,0.2)', outline: '1px solid rgba(94,230,208,0.5)' },
+  '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { background: 'color-mix(in srgb, var(--cobalt) 28%, transparent) !important' },
+  '.cm-matchingBracket': { background: 'color-mix(in srgb, var(--mint) 25%, transparent)', outline: '1px solid var(--mint)' },
   '.cm-error-line': { background: 'color-mix(in srgb, var(--bad) 18%, transparent)' },
   '.cm-scroller': { overflow: 'auto', lineHeight: '1.6' },
 });
