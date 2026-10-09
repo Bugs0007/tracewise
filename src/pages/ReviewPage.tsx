@@ -89,7 +89,7 @@ function ReviewList({ items, title }: { items: ReviewItem[]; title: string }) {
             <a href={href(`/unit/${r.unitId}`)}>{CATALOG_BY_ID[r.unitId]?.title ?? r.unitId}</a>
             <span className="spacer" />
             <span className="dim mono" style={{ fontSize: 13 }}>
-              box {r.box} · {r.due}
+              box {r.box}, due {r.due}
             </span>
           </div>
         ))}

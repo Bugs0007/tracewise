@@ -33,7 +33,11 @@
 @media (max-width: 1080px) {
   .player {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'inputs' 'main' 'side';
+    /* on small screens the stage comes first; the inputs sit beneath the controls */
+    grid-template-areas: 'main' 'inputs' 'side';
+  }
+  .stage {
+    min-height: 220px;
   }
 }
 .inputs-bar {

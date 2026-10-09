@@ -24,7 +24,7 @@ Runs entirely in your browser: no backend, no accounts, no tracking. Python runs
 |---|---|
 | ![Home](docs/screenshots/home-dark.png) | ![World map](docs/screenshots/map-dark.png) |
 | ![Dijkstra visualizer](docs/screenshots/watch-dark.png) | ![DP table with dependency arrows](docs/screenshots/watch-dp-dark.png) |
-| ![Typing ladder](docs/screenshots/type-dark.png) | ![Architecture lab](docs/screenshots/architect-dark.png) |
+| ![Debug drill](docs/screenshots/type-dark.png) | ![Architecture lab](docs/screenshots/architect-dark.png) |
 
 Light theme and mobile layouts are supported too (`docs/screenshots/*-light.png`, `mobile-*.png`). Regenerate with `npm run build && SHOTS=1 npx playwright test`.
 

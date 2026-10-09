@@ -483,6 +483,15 @@
   .capstone-grid {
     grid-template-columns: 1fr;
   }
+  .capstone-grid > aside {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .capstone-grid > aside .step-tab {
+    white-space: nowrap;
+    min-width: 200px;
+  }
 }
 
 /* the home hero shows ten values in a narrow stage: compact cells */

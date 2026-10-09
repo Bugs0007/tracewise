@@ -43,7 +43,7 @@ export default function CertificatePage() {
         <div className="stat-row" style={{ marginTop: 22, textAlign: 'left' }}>
           <div className="card flat">
             <div className="stat-num">{level}</div>
-            <div className="stat-label">level · {s.xp} XP</div>
+            <div className="stat-label">level, {s.xp} XP</div>
           </div>
           <div className="card flat">
             <div className="stat-num">{cleared}</div>

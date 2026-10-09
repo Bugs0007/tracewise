@@ -6,7 +6,7 @@ const shots: [string, string, string][] = [
   ['map', '/map/dsa', 'World map'],
   ['watch', '/unit/dijkstra/watch', 'Visualizer'],
   ['watch-dp', '/unit/dp-lcs/watch', 'DP table'],
-  ['type', '/unit/binary-search/type', 'Typing ladder'],
+  ['type', '/unit/binary-search/debug', 'Fix the bug'],
   ['architect', '/lab/architect', 'Architecture lab'],
 ];
 

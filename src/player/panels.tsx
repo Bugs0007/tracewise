@@ -379,7 +379,7 @@ function placeEdgeLabels(p: GraphPanel, pos: Record<string, Pt>, byId: Map<strin
     obstacles.push({ x: c.x - sz.w / 2 - 3, y: c.y - sz.h / 2 - 3, w: sz.w + 6, h: sz.h + 6 });
     if (n.badge) obstacles.push({ x: c.x - (n.badge.length * 7.4) / 2 - 2, y: c.y + sz.h / 2 + 1, w: n.badge.length * 7.4 + 4, h: 16 });
     if (n.tags?.length) {
-      const tw = n.tags.join(' · ').length * 7.4 + 4;
+      const tw = n.tags.join(', ').length * 7.4 + 4;
       obstacles.push({ x: c.x - tw / 2, y: c.y - sz.h / 2 - 18, w: tw, h: 16 });
     }
   }
@@ -524,7 +524,7 @@ function GraphView({ p }: { p: GraphPanel }) {
               )}
               {n.tags?.length ? (
                 <text className="tag" y={-s.h / 2 - 9}>
-                  {n.tags.join(' · ')}
+                  {n.tags.join(', ')}
                 </text>
               ) : null}
             </g>

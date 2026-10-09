@@ -144,7 +144,7 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
       <div className="row">
         <PyBadge lang={task.language} />
         <span className="dim" style={{ fontSize: 13 }}>
-          <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs · <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves the editor
+          <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs the tests. <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves the editor.
         </span>
         <span className="spacer" />
         {toolbar}

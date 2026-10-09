@@ -26,7 +26,7 @@ Screens reviewed: home, map, lesson (watch), graph/sequence/timeline panels, pho
 3. Lesson page: done (stepper, dot-grid stage, tick timeline, caption, controls with key hints, predict, results, completion trace)
 4. Panel renderers: done (ink semantics via CSS tones, collision-free edge labels as pills, fitted/wrapped sequence and timeline labels, 1:1 minimum SVG scale with scroll on phones, colour key, multiply blending on timeline events)
 5. Remaining pages: done (Learn index, plain Lab/Practice lists, Capstone ledger, flat controls; a11y audit extended to 19 pages x 2 themes, all pass)
-6. Polish and QA, full e2e once, README screenshots, push
+6. Polish and QA: done (390px overflow pass clean on every top-level page, light/dark pass, a11y contrast via axe, focus visible, full e2e 54/54, README screenshots regenerated)
 
 ## Done
 - Contributor attribution: git identity switched to the owner's GitHub noreply address for all new commits.
@@ -35,3 +35,6 @@ Screens reviewed: home, map, lesson (watch), graph/sequence/timeline panels, pho
 ## Decisions
 - Keep existing CSS class names the TSX already uses (`btn`, `chip`, `card`, `callout`, `bar`, `seg`, `toggle`, `opt`, `step-tab`, ...) and restyle them in place; new components get new classes.
 - Tone names in the engine stay (`active`, `compare`, `swap`, `visited`, `frontier`, `done`, `found`, `error`, `muted`, `path`, `new`); they are *mapped* onto the four inks in CSS: active→cobalt, compare→tomato, swap→tomato, frontier→mustard, done/found/path/new→mint, visited→ink 55% fill, default→outline, muted→outline 25%.
+
+- The lesson stepper shows five steps; the first is labelled "Hook and predict" (Hook merged into the predict step) so the stepper stays at five ticks matching the module ledger.
+- The `type-*` README screenshot now shows the debug step (the typing ladder needs a long interaction to capture).
