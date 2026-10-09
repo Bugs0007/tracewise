@@ -49,7 +49,8 @@ The content validator executes every lesson's solution, skeletons, starters, bug
 ## Deploy
 
 `npm run build` produces a fully static `dist/` with relative URLs and hash routing:
-- **GitHub Pages**: push to `main`; `.github/workflows/deploy.yml` publishes it.
+- **Vercel** (recommended): import the repo; `vercel.json` sets everything (build `npm run build`, output `dist`).
+- **GitHub Pages**: enable Pages with source "GitHub Actions", then run the "Deploy to GitHub Pages" workflow manually.
 - **Netlify / Vercel**: `netlify.toml` and `vercel.json` are included (build `npm run build`, output `dist`).
 - Any static file server works. After the first visit the service worker makes it available offline.
 
