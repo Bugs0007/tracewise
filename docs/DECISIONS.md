@@ -61,3 +61,18 @@ No web fonts are fetched (privacy, offline, speed). Code ligatures are disabled 
 
 ### D20 — Mini-Django and Next.js are labeled simulations
 Real Django/Next.js can't run in a browser. M2 uses a small pure-Python teaching library (`src/py/minidjango`) whose API mirrors Django's names; M3's Next.js units visualize the concepts and run exercises as plain React. Units that simulate set `simulationNote`, shown in the UI.
+
+### D21 — Content authored in parallel, validated centrally
+~270 units were written by independent authors working from `docs/AUTHORING_BRIEF.md`. The validator (every solution/skeleton/starter/buggy/fixed/boss executed for real, every visualizer run on every preset and compared with an independent reference) plus an all-units browser smoke test (`tests/e2e/all-units.spec.ts`) is what keeps quality uniform. Anything that fails either shows as ❌ in `docs/COVERAGE.md`.
+
+### D22 — Capstone: replay instead of a persistent Python process
+The mock network answers each `fetch()` by rebuilding the learner's backend in a fresh Pyodide namespace and replaying earlier successful writes. It's slower than a long-lived process, but it keeps timeouts killable, state deterministic and the backend editable while the preview is open.
+
+### D23 — Capstone gating
+A milestone's reference solution is revealed only after both hints are used and three failed checks. Each capstone milestone is validated in CI-style tests: the reference passes, and the previous milestone's code fails.
+
+### D24 — Accessibility is tested, not asserted
+Axe checks (WCAG 2 A/AA, serious+critical) run on key pages in both themes; muted text and accent colours were darkened for the light theme to pass. Code fonts have ligatures disabled so `>=` is never rendered as `≥`.
+
+### D25 — Architecture lab model
+A deliberately simple capacity model (component capacity, utilisation, p99 penalty above 70 %, loss-of-one-server check) rather than a full queueing simulation: it's explainable in one sentence per component, deterministic and unit-tested.

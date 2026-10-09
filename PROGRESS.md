@@ -2,27 +2,35 @@
 
 _Read this first when resuming. Then read `docs/` (ARCHITECTURE, DECISIONS, CONTENT_SCHEMA, AUTHORING_BRIEF, TEACHING_LIBRARIES, COVERAGE)._
 
-## Status: Phase 5 (content completion + polish)
+## Status: complete (all phases built and verified)
 
-Phases 0–4 infrastructure is done. The remaining work is finishing and validating content units, then a final verification pass.
+**All 274 required concepts are done** — each has a verified visualizer, drills (predict, type ladder, debug) and a mini-boss. See `docs/COVERAGE.md` (generated from real validation results; 274 / 274 ✅).
 
-## Done and verified
-- **Phase 0**: docs, scaffold, lint, typecheck, Vitest, Playwright, CI + GitHub Pages deploy, MIT license.
-- **Phase 1**: visualizer engine + player (11 panel types, predict-next quiz), Pyodide/JS/React runners with kill-on-timeout, content validator, progress store (XP, streak, Leitner review, badges, export/import with migrations), Home / Map / Unit flow / Lab / Syntax Gym / Settings.
-- **Phase 2**: **M1 DSA: all 83 concepts validated** (visualizer vs reference, drills, boss). Review queue, Quick 10, Interview Mode, "trace your own Python".
-- **Phase 3**: mini-Django (`src/py/minidjango`: ORM with SQL log + index scans, routing + middleware, serializers, auth/JWT, transactions, migrations) and mock-LLM (`src/py/minillm`), both unit-tested and verified inside Pyodide. M2/M3 units largely written and validated.
-- **Phase 4 (infra)**: architecture lab (drag/wire components, run traffic, bottleneck detection).
-- **Phase 5**: capstone with 3 projects (task manager, URL shortener, notes search) — every milestone validated against the real Python backend; mock network, live preview, tiered hints, printable certificate. Accessibility pass (WCAG AA contrast in both themes, axe checks, reduced motion, keyboard). README with screenshots, CONTRIBUTING, deploy configs, service worker.
-- **Tests**: unit/content tests, Python library tests, 27 Playwright e2e tests (core loop, runner timeouts, review/interview/trace, export/import, capstone, a11y in both themes).
+| Module | Concepts |
+|---|---|
+| M1 DSA | 83 / 83 |
+| M2 Backend | 41 / 41 |
+| M3 Frontend | 49 / 49 |
+| M4 System Design | 39 / 39 |
+| M5 AI Engineering | 38 / 38 |
+| M6 Cloud & DevOps | 24 / 24 |
 
-## In progress when this was written
-Content agents were completing the last units of M2/M3 (≈10), M4 (≈22), M5 (≈24) and M6 (≈14). Check `docs/COVERAGE.md` (regenerate with `npm run coverage:docs`) for exactly what is verified. Anything still ⬜ in that table is **not started**; ❌ means present but failing checks.
-
-To finish: `node` script in this file's history lists missing ids; easiest is to open `docs/COVERAGE.md`, take the ⬜ rows and follow `docs/AUTHORING_BRIEF.md`.
+### What works (all verified by running it)
+- Visualizer engine + player: 11 panel types, step/scrub/speed, code panel, variables, op counter, editable inputs, **Predict mode**.
+- Runners: Pyodide (lazy, self-hosted), JS/TS worker, sandboxed React iframe; hard timeouts that kill and recover.
+- Learning loop: Predict → Watch → Type (4-level ladder with auto promote/demote) → Debug → Mini-boss with tiered hints and XP costs.
+- Gamification: XP, levels, streaks, daily goal, badges, world map, focus mode, optional sound, light/dark, reduced motion.
+- Practice modes: spaced-repetition review queue, Quick 10, timed no-hint Interview Mode with score report, Syntax Gym, trace-your-own-Python, architecture lab.
+- Capstone: 3 projects (task manager, URL shortener, notes search), 20+ milestones, automated checks, live preview over an in-browser mock network, certificate page.
+- Data: localStorage with versioned schema + migrations, Export/Import JSON.
+- Offline/PWA: service worker; offline e2e test passes (including Python).
+- Accessibility: axe checks pass in both themes; keyboard shortcuts.
+- Tests: unit + content validation (all 274 units against real Python/Node/jsdom), Python library tests, capstone milestone validation, 32 Playwright e2e tests including a smoke test that plays every visualizer to its last frame.
 
 ## Known issues / cut scope
-- Content counts per module are in `docs/COVERAGE.md`; units not yet written show as "not started" and appear locked on the map.
+- Frame counts/caption lengths of agent-written visualizers are validated structurally (valid lines, captions, panels, reference match) but only a sample were reviewed visually.
 - Trace mode supports Python only; JS tracing was cut.
+- Predict-mode distractors come from other captions of the same run, so very short runs (<5 frames) skip the quiz.
 - Mini-Django is a simulation (labelled in the UI); query strings in the capstone mock network aren't URL-decoded.
 - Sound effects are synthesized blips (no assets).
 - Service worker caches assets on first use; offline works after one online visit that touched the pages you want.

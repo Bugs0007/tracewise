@@ -102,7 +102,7 @@ function LabViz({ id }: { id: string }) {
         </a>
       </div>
       <h1 style={{ margin: '8px 0 14px' }}>{meta.title}</h1>
-      <Player viz={unit.viz} initialInput={unit.vizInput} />
+      <Player key={unit.id} viz={unit.viz} initialInput={unit.vizInput} />
     </div>
   );
 }

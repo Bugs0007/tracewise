@@ -90,7 +90,7 @@ export default function UnitPage({ id, step }: { id?: string; step?: string }) {
           <strong>Simulation:</strong> <Md text={unit.simulationNote} />
         </div>
       )}
-      <div key={cur} className="fade-up">
+      <div key={unit.id + cur} className="fade-up">
         {cur === 'predict' && <PredictStep unit={unit} onNext={() => go('watch')} />}
         {cur === 'watch' && <WatchStep unit={unit} onNext={() => go('type')} />}
         {cur === 'type' && <TypeStep unit={unit} onNext={() => go('debug')} />}
@@ -198,7 +198,7 @@ function WatchStep({ unit, onNext }: { unit: Unit; onNext: () => void }) {
   const done = useApp((s) => !!unitProgress(s, unit.id).steps.watch);
   return (
     <div className="col" style={{ gap: 16 }}>
-      <Player viz={unit.viz} initialInput={unit.vizInput} onComplete={() => completeStep(unit.id, 'watch', XP.watch)} onQuizAnswer={(ok) => ok && awardXp(XP.quiz)} />
+      <Player key={unit.id} viz={unit.viz} initialInput={unit.vizInput} onComplete={() => completeStep(unit.id, 'watch', XP.watch)} onQuizAnswer={(ok) => ok && awardXp(XP.quiz)} />
       {unit.interactive === 'architect' && (
         <div className="card">
           <h3>Build it: architecture lab</h3>
