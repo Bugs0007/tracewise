@@ -311,3 +311,24 @@
     color: #000 !important;
   }
 }
+
+/* capstone */
+.capstone-grid {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) minmax(300px, 400px);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 1200px) {
+  .capstone-grid {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+  .capstone-grid > section:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 760px) {
+  .capstone-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -29,7 +29,7 @@ export interface UnitReport {
 
 export const ok = (r: UnitReport) => !r.viz.length && !r.drills.length && !r.boss.length && !r.other.length;
 
-interface Job {
+export interface Job {
   unit: string;
   area: 'drills' | 'boss';
   label: string;
@@ -106,7 +106,7 @@ function collectJobs(u: Unit, rep: UnitReport): Job[] {
   return jobs;
 }
 
-function judge(job: Job, raw: RawRun): string | null {
+export function judge(job: Job, raw: RawRun): string | null {
   const tests = job.task.tests ?? [];
   const passed = !raw.error && tests.length > 0 && tests.every((t, i) => raw.results[i]?.ok && matches(raw.results[i].value, t.expected, job.task.compare));
   if (job.expect === 'pass' && !passed) {
@@ -120,7 +120,7 @@ function judge(job: Job, raw: RawRun): string | null {
 }
 
 let pythonCmd: string | null = null;
-function python(): string {
+export function python(): string {
   if (pythonCmd) return pythonCmd;
   for (const c of ['python3', 'python']) {
     try {
@@ -131,7 +131,7 @@ function python(): string {
   throw new Error('Python 3.11+ is required to validate content');
 }
 
-async function runPythonJobs(jobs: Job[]): Promise<RawRun[]> {
+export async function runPythonJobs(jobs: Job[]): Promise<RawRun[]> {
   if (!jobs.length) return [];
   const dir = mkdtempSync(join(tmpdir(), 'tw-validate-'));
   try {
@@ -190,7 +190,7 @@ async function runReactJob(job: Job): Promise<string | null> {
           // scripts ran synchronously during construction, so the harness is already listening
           win.postMessage({ type: 'test', code: compiled.js, fnName: job.task.fnName, tests }, '*');
         }),
-        8000,
+        20000,
       );
     } catch {
       outcome = { ok: false, why: 'timeout' };

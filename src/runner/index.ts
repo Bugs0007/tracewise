@@ -4,6 +4,7 @@
 import type { TaskBase, TestCase } from '@/content/types';
 import { matches, show } from './compare';
 import type { RawRun } from './js-core';
+import type { FetchHandler } from './reactSandbox';
 
 export interface TestOutcome {
   name: string;
@@ -152,12 +153,12 @@ function buildOutcomes(task: TaskBase, raw: RawRun): TestOutcome[] {
   });
 }
 
-export async function runTask(task: TaskBase, code: string, opts: { timeoutMs?: number } = {}): Promise<RunResult> {
+export async function runTask(task: TaskBase, code: string, opts: { timeoutMs?: number; onFetch?: FetchHandler } = {}): Promise<RunResult> {
   const t0 = performance.now();
   const timeoutMs = opts.timeoutMs ?? 6000;
   if (task.language === 'jsx') {
     const { runReactTests } = await import('./reactSandbox');
-    return runReactTests(task, code, timeoutMs);
+    return runReactTests(task, code, Math.max(timeoutMs, 15000), opts.onFetch);
   }
   let raw: RawRun;
   try {
@@ -220,4 +221,38 @@ export async function tracePython(code: string, fnName: string, args: unknown[],
   } catch (e) {
     return { events: [], error: (e as Error).message === 'timeout' ? 'Stopped: ran too long' : (e as Error).message, errorLine: null, returned: null, truncated: false, stdout: '' };
   }
+}
+
+export interface MockRequest {
+  method: string;
+  url: string;
+  headers?: Record<string, string>;
+  body?: string | null;
+}
+
+export interface MockResponse {
+  status: number;
+  body: string;
+  headers?: Record<string, string>;
+}
+
+/** Capstone mock network: answer one request with the learner's minidjango app (earlier writes are replayed). */
+export async function serveRequest(code: string, history: MockRequest[], req: MockRequest, timeoutMs = 8000): Promise<MockResponse> {
+  try {
+    return await pyCall<MockResponse>({ kind: 'serve', code, history, req }, timeoutMs);
+  } catch (e) {
+    const msg = (e as Error).message === 'timeout' ? 'Backend timed out (infinite loop?)' : (e as Error).message;
+    return { status: 500, body: JSON.stringify({ detail: msg }) };
+  }
+}
+
+/** A fetch handler bound to a backend source; non-GET requests are appended to `history` so state persists. */
+export function backendFetcher(getCode: () => string, history: MockRequest[]): FetchHandler {
+  return async (req) => {
+    const path = req.url.replace(/^https?:\/\/[^/]+/, '');
+    const r: MockRequest = { method: req.method, url: path, headers: req.headers, body: req.body };
+    const res = await serveRequest(getCode(), history, r);
+    if (r.method !== 'GET' && res.status < 400) history.push(r);
+    return { status: res.status, headers: res.headers, body: res.body };
+  };
 }

@@ -186,6 +186,47 @@ def trace_call(code, fn_name, args_json, max_steps=600):
     return json.dumps(result)
 
 
+def serve_request(code, history_json, req_json):
+    """Capstone mock network: rebuild the learner's minidjango `app` from scratch,
+    replay every earlier state-changing request, then answer this one.
+    Replaying keeps the in-memory database consistent between requests."""
+    _reset_modules()
+    out = io.StringIO()
+    old = sys.stdout, sys.stderr
+    sys.stdout = sys.stderr = out
+    try:
+        ns = {"__name__": "__main__"}
+        err, line = _load(code, "", ns)
+        if err:
+            return json.dumps({"status": 500, "body": json.dumps({"detail": f"Backend failed to load: {err} (line {line})"}), "headers": {}})
+        app = ns.get("app")
+        if app is None:
+            return json.dumps({"status": 500, "body": json.dumps({"detail": "Define `app = App([...])` in the backend"}), "headers": {}})
+        from minidjango.test import Client
+
+        client = Client(app)
+
+        def call(r):
+            body = r.get("body")
+            if isinstance(body, str) and body:
+                try:
+                    body = json.loads(body)
+                except ValueError:
+                    pass
+            return client.request(r.get("method", "GET").upper(), r["url"], body if body not in ("", None) else None, r.get("headers") or {})
+
+        for h in json.loads(history_json):
+            call(h)
+        resp = call(json.loads(req_json))
+        content = resp.content if isinstance(resp.content, str) else json.dumps(resp.content)
+        return json.dumps({"status": resp.status_code, "body": content, "headers": resp.headers})
+    except Exception as e:  # noqa: BLE001
+        msg, line = _exc_info(e)
+        return json.dumps({"status": 500, "body": json.dumps({"detail": msg}), "headers": {}})
+    finally:
+        sys.stdout, sys.stderr = old
+
+
 class _OutOfFuel(BaseException):  # BaseException so learner-level `except Exception` can't swallow it
     pass
 
@@ -210,6 +251,10 @@ def _with_fuel(limit, fn):
 
 if __name__ == "__main__":
     # Batch mode for the offline validator: python harness.py jobs.json results.json
+    # Serve mode (capstone validation): python harness.py --serve code.py history.json req.json
+    if sys.argv[1] == "--serve":
+        print(serve_request(open(sys.argv[2], encoding="utf-8").read(), open(sys.argv[3], encoding="utf-8").read(), open(sys.argv[4], encoding="utf-8").read()))
+        sys.exit(0)
     sys.setrecursionlimit(5000)
     jobs = json.load(open(sys.argv[1], encoding="utf-8"))
     results = []

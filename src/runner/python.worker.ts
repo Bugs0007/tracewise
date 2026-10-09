@@ -43,6 +43,8 @@ self.onmessage = async (e: MessageEvent) => {
     let raw: string;
     if (kind === 'plain') {
       raw = h.run_plain(e.data.code);
+    } else if (kind === 'serve') {
+      raw = h.serve_request(e.data.code, JSON.stringify(e.data.history), JSON.stringify(e.data.req));
     } else if (kind === 'trace') {
       raw = h.trace_call(e.data.code, e.data.fnName, JSON.stringify(e.data.args), e.data.maxSteps ?? 600);
     } else {

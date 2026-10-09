@@ -52,6 +52,13 @@ const HARNESS = String.raw`
     }
     return host.querySelector(sel);
   }
+  // Assertions retry for a short while so async work (effects, fetches) can settle.
+  async function waitFor(fn) {
+    var t0 = Date.now();
+    while (true) {
+      try { return fn(); } catch (e) { if (Date.now() - t0 > 1500) throw e; await sleep(30); }
+    }
+  }
   function need(host, sel) { var el = q(host, sel); if (!el) throw new Error('No element matches "' + sel + '"'); return el; }
   function setValue(el, value) {
     var proto = el.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : el.tagName === 'SELECT' ? HTMLSelectElement.prototype : HTMLInputElement.prototype;
@@ -70,17 +77,21 @@ const HARNESS = String.raw`
         if (renderErr) throw renderErr;
         for (var j = 0; j < t.steps.length; j++) {
           var s = t.steps[j];
-          if (s.click !== undefined) { need(host, s.click).click(); await sleep(40); }
-          else if (s.type !== undefined) { setValue(need(host, s.type), s.value); await sleep(40); }
+          if (s.click !== undefined) { (await waitFor(function () { return need(host, s.click); })).click(); await sleep(40); }
+          else if (s.type !== undefined) { setValue(await waitFor(function () { return need(host, s.type); }), s.value); await sleep(40); }
           else if (s.expectText !== undefined) {
-            var scope = s.in ? need(host, s.in) : host;
-            if ((scope.textContent || '').indexOf(s.expectText) < 0) throw new Error('Expected to see "' + s.expectText + '"' + (s.in ? ' in ' + s.in : '') + ' — saw "' + (scope.textContent || '').slice(0, 120) + '"');
+            await waitFor(function () {
+              var scope = s.in ? need(host, s.in) : host;
+              if ((scope.textContent || '').indexOf(s.expectText) < 0) throw new Error('Expected to see "' + s.expectText + '"' + (s.in ? ' in ' + s.in : '') + ' — saw "' + (scope.textContent || '').slice(0, 120) + '"');
+            });
           } else if (s.expectNoText !== undefined) {
             var scope2 = s.in ? need(host, s.in) : host;
             if ((scope2.textContent || '').indexOf(s.expectNoText) >= 0) throw new Error('Did not expect to see "' + s.expectNoText + '"');
           } else if (s.expectCount !== undefined) {
-            var c = host.querySelectorAll(s.expectCount).length;
-            if (c !== s.n) throw new Error('Expected ' + s.n + ' × "' + s.expectCount + '", found ' + c);
+            await waitFor(function () {
+              var c = host.querySelectorAll(s.expectCount).length;
+              if (c !== s.n) throw new Error('Expected ' + s.n + ' × "' + s.expectCount + '", found ' + c);
+            });
           }
           if (renderErr) throw renderErr;
         }
@@ -137,7 +148,7 @@ export function compileForSandbox(code: string): { js?: string; error?: string; 
 
 export type FetchHandler = (req: { url: string; method: string; headers: Record<string, string>; body: string | null }) => Promise<{ status: number; headers?: Record<string, string>; body: string }>;
 
-export async function runReactTests(task: TaskBase, code: string, timeoutMs: number): Promise<RunResult> {
+export async function runReactTests(task: TaskBase, code: string, timeoutMs: number, onFetch?: FetchHandler): Promise<RunResult> {
   const t0 = performance.now();
   const tests: ReactTest[] = task.reactTests ?? [];
   const compiled = compileForSandbox(code);
@@ -154,6 +165,7 @@ export async function runReactTests(task: TaskBase, code: string, timeoutMs: num
       if (ev.source !== iframe.contentWindow) return;
       const m = ev.data ?? {};
       if (m.type === 'ready') iframe.contentWindow?.postMessage({ type: 'test', code: compiled.js, fnName: task.fnName, tests }, '*');
+      else if (m.type === 'fetch') answerFetch(iframe, m, onFetch);
       else if (m.type === 'result') {
         if (m.error) finish({ status: 'error', outcomes: [], stdout: '', error: m.error, ms: performance.now() - t0 });
         else {
@@ -172,4 +184,15 @@ export async function runReactTests(task: TaskBase, code: string, timeoutMs: num
   });
   document.body.appendChild(iframe);
   return done;
+}
+
+/** Reply to a fetch() the sandboxed component made (bridged over postMessage). */
+export async function answerFetch(iframe: HTMLIFrameElement, m: { id: number; url: string; method: string; headers: Record<string, string>; body: string | null }, onFetch?: FetchHandler): Promise<void> {
+  let res: { status: number; headers?: Record<string, string>; body: string };
+  try {
+    res = onFetch ? await onFetch({ url: m.url, method: m.method, headers: m.headers, body: m.body }) : { status: 503, body: JSON.stringify({ detail: 'No backend is connected in this exercise' }) };
+  } catch (e) {
+    res = { status: 500, body: JSON.stringify({ detail: String(e) }) };
+  }
+  iframe.contentWindow?.postMessage({ type: 'fetch-response', id: m.id, status: res.status, headers: res.headers ?? {}, body: res.body }, '*');
 }
