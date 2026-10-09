@@ -98,7 +98,7 @@ function LabViz({ id }: { id: string }) {
         </a>
         <span className="spacer" />
         <a className="btn sm" href={href(`/unit/${id}/predict`)}>
-          Open the full unit <Icon name="arrow-right" size={14} />
+          Open the full unit
         </a>
       </div>
       <h1 style={{ margin: '8px 0 14px' }}>{meta.title}</h1>

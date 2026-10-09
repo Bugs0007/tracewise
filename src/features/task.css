@@ -1,12 +1,27 @@
+/* ─── test results: a compact list, never a wall of red ─── */
+.results {
+  border: 1px solid var(--rule);
+  border-left-width: 4px;
+  border-radius: var(--r-panel);
+  background: var(--surface);
+  padding: 10px 14px;
+}
+.results.callout.good {
+  border-left-color: var(--mint);
+}
+.results.callout.warn,
+.results.callout.bad {
+  border-left-color: var(--tomato);
+}
 .results .err,
 .results .stdout {
-  font: 12.5px/1.5 var(--font-mono);
+  font: var(--fs-s) / 1.5 var(--font-mono);
   white-space: pre-wrap;
   margin: 6px 0 0;
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: var(--r-panel);
   background: var(--code-bg);
-  border: 1px solid var(--line);
+  border: 1px solid var(--rule);
   max-height: 200px;
   overflow: auto;
 }
@@ -16,50 +31,42 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 .results .tests li {
   display: flex;
-  gap: 8px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--panel) 70%, transparent);
-  animation: fade-up 240ms both;
-}
-.results .tests li:nth-child(2) {
-  animation-delay: 40ms;
-}
-.results .tests li:nth-child(3) {
-  animation-delay: 80ms;
-}
-.results .tests li:nth-child(4) {
-  animation-delay: 120ms;
-}
-.results .tests li:nth-child(n + 5) {
-  animation-delay: 160ms;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid var(--rule);
 }
 .results .mark {
-  font-weight: 800;
-  width: 16px;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  font: 800 var(--fs-xs) var(--font-ui);
+  margin-top: 1px;
 }
 .results li.ok .mark {
-  color: var(--good);
+  background: var(--mint);
+  color: var(--on-mint);
 }
 .results li.no .mark {
-  color: var(--bad);
+  background: var(--tomato);
+  color: var(--on-tomato);
 }
 .results .t-name {
   font-weight: 600;
-  font-size: 13px;
+  font-size: var(--fs-s);
 }
 .results .t-detail {
-  font-size: 12px;
-  color: var(--text-2);
+  font: var(--fs-s) / 1.45 var(--font-mono);
+  color: var(--ink-muted);
   margin-top: 2px;
   word-break: break-word;
 }
 .results .bad {
-  color: var(--bad);
+  color: var(--tomato-t);
 }
 .spin {
   width: 14px;
@@ -75,16 +82,19 @@
     transform: rotate(360deg);
   }
 }
+
+/* ─── fill-in-the-blanks ─── */
 .codeview.blanks {
   max-height: none;
-  font-size: 14px;
+  font-size: var(--fs-m);
+  padding: 12px 0;
 }
 .blank {
   font: inherit;
-  color: var(--accent-2);
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg-2));
-  border: 1px dashed var(--accent);
-  border-radius: 5px;
+  color: var(--cobalt-t);
+  background: var(--surface);
+  border: 1.5px dashed var(--cobalt);
+  border-radius: 3px;
   padding: 0 4px;
   margin: 0 1px;
   min-width: 3ch;
@@ -96,90 +106,140 @@
   border-style: solid;
 }
 .blank.right {
-  border: 1px solid var(--good);
-  color: var(--good);
-  background: color-mix(in srgb, var(--good) 14%, var(--bg-2));
+  border: 1.5px solid var(--mint);
+  background: color-mix(in srgb, var(--mint) 22%, var(--surface));
+  color: var(--ink);
 }
 .blank.wrong {
-  border: 1px solid var(--bad);
-  color: var(--bad);
-  background: color-mix(in srgb, var(--bad) 12%, var(--bg-2));
-  animation: shake 380ms both;
+  border: 1.5px solid var(--tomato);
+  background: color-mix(in srgb, var(--tomato) 14%, var(--surface));
+  color: var(--ink);
+  animation: shake 260ms both;
 }
-.steps-nav {
+
+/* ─── lesson header and the learning-loop stepper ─── */
+.crumbs {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin: 12px 0 18px;
+  gap: 8px;
+  align-items: center;
+  font-size: var(--fs-s);
+  color: var(--ink-muted);
+}
+.stepper {
+  list-style: none;
+  display: flex;
+  margin: 14px 0 22px;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+.stepper li {
+  flex: 1 1 0;
+  min-width: 0;
 }
 .step-tab {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px 8px 8px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--text-2);
-  font: 600 14px var(--font-ui);
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 12px 10px 0;
+  border: 0;
+  border-top: 3px solid transparent;
+  margin-top: -2px;
+  background: transparent;
+  color: var(--ink-muted);
+  font: 600 var(--fs-m) var(--font-ui);
+  text-align: left;
   cursor: pointer;
-  transition: border-color 160ms, background 160ms;
 }
 .step-tab:hover {
-  border-color: var(--line-2);
-  color: var(--text);
-}
-.step-tab[aria-current='step'] {
-  border-color: var(--accent);
-  color: var(--text);
+  color: var(--ink);
 }
 .step-tab .num {
+  flex: none;
   width: 24px;
   height: 24px;
-  border-radius: 8px;
   display: grid;
   place-items: center;
-  background: var(--panel-3);
-  font-size: 12px;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  font: 700 var(--fs-xs) var(--font-mono);
+  color: var(--ink);
 }
 .step-tab.done .num {
-  background: var(--good);
-  color: var(--t-ink);
+  background: var(--mint);
+  border-color: var(--mint);
+  color: var(--on-mint);
+}
+.step-tab[aria-current='step'] {
+  color: var(--ink);
+  font-weight: 800;
+  border-top-color: var(--ink);
+}
+.step-tab[aria-current='step'] .num {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.step-tab[aria-current='step'].done .num {
+  background: var(--mint);
+  border-color: var(--ink);
+  color: var(--on-mint);
+}
+@media (max-width: 760px) {
+  .stepper {
+    overflow-x: auto;
+  }
+  .stepper li {
+    flex: 0 0 auto;
+  }
+  .step-tab {
+    padding-right: 18px;
+    white-space: nowrap;
+  }
 }
 .hook {
-  font-size: 19px;
+  font-size: var(--fs-l);
   font-weight: 600;
-  line-height: 1.45;
-  max-width: 820px;
+  line-height: 1.4;
+  max-width: 52ch;
 }
+.boss-card {
+  border-color: var(--ink);
+}
+
+/* ─── typing ladder ─── */
 .ladder {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   align-items: center;
+  flex-wrap: wrap;
 }
 .rung {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 9px;
-  border: 1px solid var(--line);
-  background: var(--panel-2);
-  font: 600 12.5px var(--font-ui);
-  color: var(--text-3);
+  gap: 8px;
+  min-height: 36px;
+  padding: 4px 12px;
+  border-radius: var(--r-btn);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  font: 600 var(--fs-s) var(--font-ui);
+  color: var(--ink-muted);
   cursor: pointer;
 }
 .rung:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 .rung.cur {
-  border-color: var(--accent);
-  color: var(--text);
-  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
-.rung.passed {
-  color: var(--good);
+.rung.passed:not(.cur) {
+  border-color: var(--mint);
+  color: var(--ink);
 }
 .hints {
   display: flex;
@@ -187,5 +247,77 @@
   gap: 8px;
 }
 .hint {
-  animation: fade-up 260ms both;
+  animation: fade-up 160ms both;
+}
+
+/* ─── completion moment: ticks fill, the playhead travels to the end ─── */
+.completion {
+  margin-top: 16px;
+}
+.completion-track {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 22px;
+}
+.completion-track::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 50%;
+  border-top: 2px solid color-mix(in srgb, var(--ink) 25%, transparent);
+}
+.completion .tick {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  background: var(--paper);
+  display: block;
+  animation: tick-fill 1ms linear both;
+  animation-delay: calc(var(--i) * 230ms + 120ms);
+}
+.completion .playhead {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 3px;
+  border-radius: 50%;
+  background: var(--cobalt);
+  z-index: 2;
+  animation: playhead 1100ms var(--ease) both;
+}
+.completion.instant .tick {
+  animation: none;
+  background: var(--mint);
+  border-color: var(--mint);
+}
+.completion.instant .playhead {
+  animation: none;
+  left: calc(100% - 18px);
+}
+@keyframes tick-fill {
+  to {
+    background: var(--mint);
+    border-color: var(--mint);
+  }
+}
+@keyframes playhead {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(100% - 18px);
+  }
+}
+.completion-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: var(--fs-xs);
+  color: var(--ink-muted);
 }

@@ -23,7 +23,7 @@ Screens reviewed: home, map, lesson (watch), graph/sequence/timeline panels, pho
 ## Phases
 1. Tokens and base: done
 2. App shell + Home: done (hero polish continues in phase 4)
-3. Lesson page (stepper, stage, scrubber, predict, editor/results)
+3. Lesson page: done (stepper, dot-grid stage, tick timeline, caption, controls with key hints, predict, results, completion trace)
 4. 11 panel renderers (+ legend)
 5. Remaining pages
 6. Polish and QA, full e2e once, README screenshots, push

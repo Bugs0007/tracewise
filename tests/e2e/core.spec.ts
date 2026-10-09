@@ -97,8 +97,8 @@ test('binary search unit: predict → watch → type ladder → debug → boss',
   );
   res = await runAndWait(page);
   await expect(res).toHaveAttribute('data-status', 'pass');
-  await expect(page.getByText('Boss defeated.')).toBeVisible();
-  await expect(page.getByText('Cleared')).toBeVisible();
+  await expect(page.getByText('Boss cleared.')).toBeVisible();
+  await expect(page.getByText('Cleared', { exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });
 

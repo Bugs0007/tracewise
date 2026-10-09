@@ -180,7 +180,7 @@ function Session({ items, quick, onExit }: { items: SessionItem[]; quick: boolea
           </button>
         ) : (
           <button className="btn primary pop" onClick={() => setI(i + 1)} autoFocus data-testid="next-item">
-            Next <Icon name="arrow-right" size={15} />
+            Next
           </button>
         )}
       </div>

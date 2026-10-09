@@ -534,9 +534,9 @@ label.field {
   border-color: var(--mustard);
 }
 .chip.accent {
-  color: var(--on-cobalt);
-  background: var(--cobalt);
-  border-color: var(--cobalt);
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--ink);
 }
 .bar {
   height: 6px;

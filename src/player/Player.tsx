@@ -3,6 +3,8 @@ import type { Frame, InputField, Scalar, VizDef } from '@/engine/types';
 import { defaultInput, formatInput, InputError, parseInput } from '@/engine/inputs';
 import { parseAnchors } from '@/engine/recorder';
 import { CodeView } from './CodeView';
+import { Legend } from './Legend';
+import { tickKinds } from './ticks';
 import { isWide, PanelView } from './panels';
 import { Icon } from '@/ui/Icon';
 import { playSound } from '@/lib/sound';
@@ -213,6 +215,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
   };
 
   const hasOps = frames.some((f) => (f.ops ?? 0) > 0);
+  const kinds = useMemo(() => tickKinds(frames), [frames]);
 
   return (
     <div className={`player${compact ? ' compact' : ''}`} ref={rootRef} data-testid="player">
@@ -272,19 +275,11 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
         </div>
       )}
 
-      <div className="stage" aria-live="polite">
-        {error ? (
-          <div className="callout bad">{error}</div>
-        ) : frame ? (
-          <>
-            <div className="caption">
-              <span className="stepno">
-                {idx + 1}/{frames.length}
-              </span>
-              <span className="caption-text" key={idx} data-testid="caption">
-                {frame.caption}
-              </span>
-            </div>
+      <div className="p-main">
+        <div className="stage" aria-live="polite">
+          {error ? (
+            <div className="callout bad">{error}</div>
+          ) : frame ? (
             <div className="panels">
               {frame.panels.map((p, i) => (
                 <div key={i} className={`pnl${isWide(p) ? ' wide' : ''}`}>
@@ -292,31 +287,96 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
                 </div>
               ))}
             </div>
-          </>
-        ) : null}
-        {quiz && (
-          <div className="predict" role="dialog" aria-label="Predict the next step">
-            <div className="card pop">
-              <div className="eyebrow">Predict the next step</div>
-              <h3 style={{ marginTop: 4 }}>What happens next?</h3>
-              {quiz.options.map((o, i) => (
-                <button key={i} className={`opt${quiz.chosen !== null && i === quiz.answer ? ' right' : ''}${quiz.chosen === i && i !== quiz.answer ? ' wrong' : ''}`} disabled={quiz.chosen !== null} onClick={() => answerQuiz(i)}>
-                  <kbd>{i + 1}</kbd>
-                  {o}
-                </button>
-              ))}
-              {quiz.chosen !== null && (
-                <div className="row" style={{ marginTop: 10 }}>
-                  <span className={`chip ${quiz.chosen === quiz.answer ? 'good' : 'bad'}`}>{quiz.chosen === quiz.answer ? 'Correct!' : 'Not quite — watch it happen'}</span>
-                  <span className="spacer" />
-                  <button className="btn primary" onClick={continueQuiz} autoFocus>
-                    Continue <Icon name="arrow-right" size={16} />
+          ) : null}
+          <Legend />
+          {quiz && (
+            <div className="predict" role="dialog" aria-label="Predict the next step">
+              <div className="predict-box pop">
+                <h3>What happens next?</h3>
+                {quiz.options.map((o, i) => (
+                  <button key={i} className={`opt${quiz.chosen !== null && i === quiz.answer ? ' right' : ''}${quiz.chosen === i && i !== quiz.answer ? ' wrong' : ''}`} disabled={quiz.chosen !== null} onClick={() => answerQuiz(i)}>
+                    <kbd>{i + 1}</kbd>
+                    {o}
                   </button>
-                </div>
-              )}
+                ))}
+                {quiz.chosen !== null && (
+                  <div className="row" style={{ marginTop: 10 }}>
+                    <span className={`chip ${quiz.chosen === quiz.answer ? 'good' : 'bad'}`}>{quiz.chosen === quiz.answer ? 'Correct' : 'Not quite. Watch what happens.'}</span>
+                    <span className="spacer" />
+                    <button className="btn primary" onClick={continueQuiz} autoFocus>
+                      Continue
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
+        </div>
+        {frame && (
+          <p className="caption" key={idx} data-testid="caption">
+            {frame.caption}
+          </p>
         )}
+
+        <div className="timeline" aria-label="Timeline">
+          <div className="ticks-strip" aria-hidden>
+            {frames.map((_, i) => (
+              <i key={i} className={`k-${kinds[i]}${i === idx ? ' now' : ''}${i < idx ? ' past' : ''}`} onClick={() => setIdx(i)} />
+            ))}
+          </div>
+          <input className="scrub" type="range" min={0} max={Math.max(0, last)} value={idx} onChange={(e) => setIdx(Number(e.target.value))} aria-label="Timeline" aria-valuetext={`Step ${idx + 1} of ${frames.length}`} />
+        </div>
+
+        <div className="controls" role="toolbar" aria-label="Playback controls">
+          <div className="btn-group">
+            <button className="btn icon" onClick={() => setIdx(0)} aria-label="Reset to start" title="Reset (Home)">
+              <Icon name="reset" />
+              <kbd className="hint">Home</kbd>
+            </button>
+            <button className="btn icon" onClick={() => setIdx((i) => Math.max(0, i - 1))} disabled={idx === 0} aria-label="Step back" title="Step back (left arrow)">
+              <Icon name="prev" />
+              <kbd className="hint">←</kbd>
+            </button>
+            <button
+              className="btn primary icon"
+              onClick={() => {
+                if (idx >= last) {
+                  setIdx(0);
+                  setPlaying(true);
+                } else setPlaying((p) => !p);
+              }}
+              aria-label={playing ? 'Pause' : 'Play'}
+              title="Play or pause (Space)"
+              data-testid="play"
+            >
+              <Icon name={playing ? 'pause' : 'play'} />
+              <kbd className="hint">Space</kbd>
+            </button>
+            <button className="btn icon" onClick={forward} disabled={idx >= last} aria-label="Step forward" title="Step forward (right arrow)" data-testid="step">
+              <Icon name="next" />
+              <kbd className="hint">→</kbd>
+            </button>
+            <button className="btn icon" onClick={() => setIdx(last)} aria-label="Jump to end" title="Jump to end (End)" data-testid="end">
+              <Icon name="end" />
+              <kbd className="hint">End</kbd>
+            </button>
+          </div>
+          <span className="stepno mono" aria-hidden>
+            {frames.length ? idx + 1 : 0} of {frames.length}
+          </span>
+          <span className="spacer" />
+          <div className="seg" role="group" aria-label="Speed">
+            {SPEEDS.map((sp) => (
+              <button key={sp} aria-pressed={speed === sp} onClick={() => setSettings({ speed: sp })}>
+                {sp}×
+              </button>
+            ))}
+          </div>
+          <label className="row predict-switch">
+            <button className="toggle" role="switch" aria-checked={quizOn} onClick={() => setQuizOn((q) => !q)} aria-label="Predict mode" data-testid="predict-toggle" />
+            Predict mode
+          </label>
+        </div>
       </div>
 
       {!compact && (
@@ -325,46 +385,11 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
           <VarsView vars={frame?.vars ?? {}} prev={prevFrame?.vars} />
           {hasOps && (
             <div className="vars opcount">
-              operations so far <b>{frame?.ops ?? 0}</b>
+              Operations so far <b>{frame?.ops ?? 0}</b>
             </div>
           )}
         </div>
       )}
-
-      <div className="controls" role="toolbar" aria-label="Playback controls">
-        <button className="btn icon" onClick={() => setIdx(0)} aria-label="Reset to start" title="Reset (Home)">
-          <Icon name="reset" />
-        </button>
-        <button className="btn icon" onClick={() => setIdx((i) => Math.max(0, i - 1))} disabled={idx === 0} aria-label="Step back" title="Step back (←)">
-          <Icon name="prev" />
-        </button>
-        <button className="btn primary icon" onClick={() => {
-            if (idx >= last) {
-              setIdx(0);
-              setPlaying(true);
-            } else setPlaying((p) => !p);
-          }} aria-label={playing ? 'Pause' : 'Play'} title="Play/pause (Space)" data-testid="play">
-          <Icon name={playing ? 'pause' : 'play'} />
-        </button>
-        <button className="btn icon" onClick={forward} disabled={idx >= last} aria-label="Step forward" title="Step forward (→)" data-testid="step">
-          <Icon name="next" />
-        </button>
-        <button className="btn icon" onClick={() => setIdx(last)} aria-label="Jump to end" title="Jump to end (End)" data-testid="end">
-          <Icon name="end" />
-        </button>
-        <input className="scrub" type="range" min={0} max={Math.max(0, last)} value={idx} onChange={(e) => setIdx(Number(e.target.value))} aria-label="Timeline" />
-        <div className="seg" role="group" aria-label="Speed">
-          {SPEEDS.map((s) => (
-            <button key={s} aria-pressed={speed === s} onClick={() => setSettings({ speed: s })}>
-              {s}×
-            </button>
-          ))}
-        </div>
-        <label className="row" style={{ gap: 6, fontSize: 13, fontWeight: 600, color: 'var(--text-2)' }}>
-          <button className="toggle" role="switch" aria-checked={quizOn} onClick={() => setQuizOn((q) => !q)} aria-label="Predict mode" data-testid="predict-toggle" />
-          Predict mode
-        </label>
-      </div>
     </div>
   );
 }

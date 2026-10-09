@@ -10,16 +10,17 @@ import { Player } from '@/player/Player';
 import { BlanksRunner, TaskRunner } from '@/features/TaskRunner';
 import { CodeBlock, Collapsible, Md } from '@/ui/common';
 import { Icon } from '@/ui/Icon';
+import { CompletionTrace } from '@/ui/CompletionTrace';
 import { playSound } from '@/lib/sound';
 import type { RunResult } from '@/runner';
 import '@/features/task.css';
 
 const STEP_META: Record<StepId, { label: string; icon: string }> = {
-  predict: { label: 'Predict', icon: 'target' },
+  predict: { label: 'Hook and predict', icon: 'target' },
   watch: { label: 'Watch', icon: 'eye' },
   type: { label: 'Type it', icon: 'code' },
   debug: { label: 'Debug', icon: 'bug' },
-  boss: { label: 'Mini-boss', icon: 'crown' },
+  boss: { label: 'Boss', icon: 'crown' },
 };
 
 const Architect = lazy(() => import('@/features/Architect').then((m) => ({ default: m.Architect })));
@@ -62,11 +63,9 @@ export default function UnitPage({ id, step }: { id?: string; step?: string }) {
 
   return (
     <div className="page wide">
-      <div className="row dim" style={{ fontSize: 13 }}>
-        <a href={href(`/map/${mod.id}`)}>
-          {mod.code} · {mod.title}
-        </a>
-        <span>›</span>
+      <div className="crumbs">
+        <a href={href(`/map/${mod.id}`)}>{mod.title}</a>
+        <span aria-hidden>/</span>
         <span>{meta.topic}</span>
       </div>
       <div className="row" style={{ marginTop: 6 }}>
@@ -77,13 +76,17 @@ export default function UnitPage({ id, step }: { id?: string; step?: string }) {
           </span>
         )}
       </div>
-      <nav className="steps-nav" aria-label="Unit steps">
-        {STEP_ORDER.map((s, i) => (
-          <button key={s} className={`step-tab${progress?.steps[s] ? ' done' : ''}`} aria-current={cur === s ? 'step' : undefined} onClick={() => go(s)} data-testid={`step-${s}`}>
-            <span className="num">{progress?.steps[s] ? <Icon name="check" size={14} /> : i + 1}</span>
-            {STEP_META[s].label}
-          </button>
-        ))}
+      <nav aria-label="Unit steps">
+        <ol className="stepper">
+          {STEP_ORDER.map((s, i) => (
+            <li key={s}>
+              <button className={`step-tab${progress?.steps[s] ? ' done' : ''}`} aria-current={cur === s ? 'step' : undefined} onClick={() => go(s)} data-testid={`step-${s}`}>
+                <span className="num">{progress?.steps[s] ? <Icon name="check" size={13} stroke={3} /> : i + 1}</span>
+                {STEP_META[s].label}
+              </button>
+            </li>
+          ))}
+        </ol>
       </nav>
       {unit.simulationNote && (
         <div className="callout info" style={{ marginBottom: 14 }}>
@@ -101,7 +104,7 @@ export default function UnitPage({ id, step }: { id?: string; step?: string }) {
         <div className="row" style={{ marginTop: 18 }}>
           <span className="spacer" />
           <button className="btn primary lg" onClick={() => go(nextStep)}>
-            {STEP_META[nextStep].label} <Icon name="arrow-right" />
+            {STEP_META[nextStep].label}
           </button>
         </div>
       )}
@@ -182,7 +185,7 @@ function PredictStep({ unit, onNext }: { unit: Unit; onNext: () => void }) {
         <div className="row">
           <span className="spacer" />
           <button className="btn primary lg pop" onClick={onNext} autoFocus>
-            Watch it run <Icon name="arrow-right" />
+            Watch it run
           </button>
         </div>
       )}
@@ -241,7 +244,7 @@ function WatchStep({ unit, onNext }: { unit: Unit; onNext: () => void }) {
         <div className="row">
           <span className="spacer" />
           <button className="btn primary lg" onClick={onNext}>
-            Now type it <Icon name="arrow-right" />
+            Now type it
           </button>
         </div>
       )}
@@ -443,14 +446,11 @@ function BossStep({ unit, onNext, nextLabel }: { unit: Unit; onNext: () => void;
   };
   return (
     <div className="col" style={{ gap: 14 }}>
-      <div className="card" style={{ borderColor: 'color-mix(in srgb, var(--warn) 50%, var(--line))', background: 'linear-gradient(135deg, color-mix(in srgb, var(--warn) 9%, var(--panel)), var(--panel))' }}>
+      <div className="card boss-card">
         <div className="row">
-          <Icon name="crown" size={22} />
-          <div className="eyebrow" style={{ color: 'var(--warn)' }}>
-            Mini-boss
-          </div>
+          <div className="eyebrow">Boss</div>
           <span className="spacer" />
-          <span className="chip warn">+{XP.boss} XP</span>
+          <span className="chip">+{XP.boss} XP</span>
         </div>
         <h2 style={{ margin: '8px 0 4px' }}>{B.title}</h2>
         <p style={{ margin: 0, fontSize: 16 }}>
@@ -496,13 +496,16 @@ function BossStep({ unit, onNext, nextLabel }: { unit: Unit; onNext: () => void;
         )}
       </div>
       {(won || done) && (
-        <div className="callout good pop row">
-          <Icon name="trophy" size={20} />
-          <strong>Boss defeated.</strong>
-          <span className="spacer" />
-          <button className="btn primary" onClick={onNext}>
-            {nextLabel} <Icon name="arrow-right" />
-          </button>
+        <div className="callout good">
+          <div className="row">
+            <strong>Boss cleared.</strong>
+            <span className="muted">That finishes the unit.</span>
+            <span className="spacer" />
+            <button className="btn primary" onClick={onNext}>
+              {nextLabel}
+            </button>
+          </div>
+          <CompletionTrace animate={won} />
         </div>
       )}
     </div>

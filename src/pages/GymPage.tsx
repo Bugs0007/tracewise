@@ -198,7 +198,7 @@ function Typer({ snippet, onNext }: { snippet: GymSnippet; onNext: () => void })
         </button>
         {end && (
           <button className="btn primary pop" onClick={onNext} autoFocus>
-            Next snippet <Icon name="arrow-right" size={15} />
+            Next snippet
           </button>
         )}
       </div>
