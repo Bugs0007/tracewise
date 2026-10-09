@@ -147,7 +147,7 @@
   place-items: center;
   font-weight: 800;
   background: var(--mc);
-  color: var(--t-ink);
+  color: var(--accent-ink);
 }
 .path {
   display: flex;

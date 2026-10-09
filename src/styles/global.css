@@ -20,7 +20,7 @@
   --line-2: #364062;
   --text: #e7ebf5;
   --text-2: #a9b2cc;
-  --text-3: #6f7a99;
+  --text-3: #8791b0;
   --accent: #7c8cff;
   --accent-2: #5ee6d0;
   --accent-ink: #0b0e17;
@@ -74,13 +74,19 @@
   --line-2: #c9d0e2;
   --text: #151a2b;
   --text-2: #4a5470;
-  --text-3: #7c86a3;
-  --accent: #4f5ff0;
-  --accent-2: #0fae98;
+  --text-3: #5d6784;
+  --accent: #3f4fd9;
+  --accent-2: #07695a;
   --accent-ink: #ffffff;
-  --good: #11a36b;
-  --bad: #e03e3e;
-  --warn: #c98200;
+  --good: #086b43;
+  --bad: #c42b2b;
+  --warn: #855400;
+  --m-dsa: #4150d4;
+  --m-backend: #086b43;
+  --m-frontend: #0a6a9e;
+  --m-sysdesign: #855400;
+  --m-ai: #c01257;
+  --m-cloud: #6a3fd0;
   --shadow: 0 8px 24px rgba(30, 40, 80, 0.1);
   --glow: 0 0 0 1px rgba(79, 95, 240, 0.35), 0 8px 24px rgba(79, 95, 240, 0.15);
   --t-default: #e3e8f5;
@@ -278,7 +284,7 @@ kbd {
 .btn.primary {
   background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--accent-2)));
   border-color: transparent;
-  color: #fff;
+  color: var(--accent-ink);
   box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .btn.good {
@@ -394,7 +400,7 @@ label.field {
 }
 .seg button[aria-pressed='true'] {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 
 /* ─────────────────────────── Cards & chips ─────────────────────────── */
@@ -445,7 +451,7 @@ label.field {
   background: color-mix(in srgb, var(--warn) 12%, transparent);
 }
 .chip.accent {
-  color: var(--accent);
+  color: color-mix(in srgb, var(--accent) 78%, var(--text));
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
