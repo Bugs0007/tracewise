@@ -88,6 +88,7 @@
   --code-fn: #2f4bdb;
   --code-line: rgba(47, 75, 219, 0.1);
   --dot: rgba(27, 32, 48, 0.16);
+  --blend: multiply;
 
   color-scheme: light;
 }
@@ -126,6 +127,7 @@
   --code-fn: #8da0ff;
   --code-line: rgba(111, 134, 255, 0.16);
   --dot: rgba(233, 235, 242, 0.13);
+  --blend: normal;
 
   color-scheme: dark;
 }

@@ -20,7 +20,32 @@ import type {
 import { useReducedMotion } from '@/lib/motion';
 
 const TONES: Tone[] = ['default', 'active', 'compare', 'swap', 'visited', 'frontier', 'done', 'found', 'error', 'muted', 'path', 'new'];
-const toneVar = (t: Tone | undefined) => `var(--t-${t ?? 'default'})`;
+/** engine tone → ink colour (the same four-ink semantics as the CSS tone rules) */
+const toneVar = (t: Tone | undefined): string => {
+  switch (t) {
+    case 'active':
+      return 'var(--cobalt)';
+    case 'compare':
+    case 'swap':
+    case 'error':
+      return 'var(--tomato)';
+    case 'frontier':
+      return 'var(--mustard)';
+    case 'done':
+    case 'found':
+    case 'path':
+    case 'new':
+      return 'var(--mint)';
+    case 'visited':
+      return 'color-mix(in srgb, var(--ink) 55%, transparent)';
+    case 'muted':
+      return 'color-mix(in srgb, var(--ink) 25%, transparent)';
+    default:
+      return 'color-mix(in srgb, var(--ink) 40%, transparent)';
+  }
+};
+/** text colour that stays readable on a tone fill */
+const toneInk = (t: Tone | undefined): string => (t === 'active' ? 'var(--on-cobalt)' : t === 'compare' || t === 'swap' || t === 'error' ? 'var(--on-tomato)' : t === 'frontier' ? 'var(--on-mustard)' : t === 'done' || t === 'found' || t === 'path' || t === 'new' ? 'var(--on-mint)' : 'var(--ink)');
 
 export function PanelView({ panel }: { panel: Panel }) {
   switch (panel.type) {
@@ -196,7 +221,7 @@ function GridView({ p }: { p: GridPanel }) {
               const tone = p.tones?.[`${r},${c}`];
               const heatStyle =
                 p.heat && !tone && typeof v === 'number'
-                  ? { background: `color-mix(in srgb, var(--accent) ${Math.round((Math.abs(v) / heatMax) * 85)}%, var(--t-default))`, color: Math.abs(v) / heatMax > 0.5 ? '#fff' : undefined }
+                  ? { background: `color-mix(in srgb, var(--cobalt) ${Math.round((Math.abs(v) / heatMax) * 80)}%, var(--surface))`, color: Math.abs(v) / heatMax > 0.5 ? 'var(--on-cobalt)' : undefined }
                   : undefined;
               return (
                 <div key={c} className="g-cell" data-tone={tone ?? 'default'} style={heatStyle} role="cell" aria-label={`row ${r} col ${c}: ${v ?? ''}`}>
@@ -210,7 +235,7 @@ function GridView({ p }: { p: GridPanel }) {
           <svg aria-hidden width="100%" height="100%">
             <defs>
               <marker id={`ga-${uid}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" style={{ fill: 'var(--t-active)' }} />
+                <path d="M0,0 L10,5 L0,10 z" style={{ fill: 'var(--ink)' }} />
               </marker>
             </defs>
             {p.arrows.map((a, i) => {
@@ -220,7 +245,7 @@ function GridView({ p }: { p: GridPanel }) {
               const dy = e.y - s.y;
               const len = Math.hypot(dx, dy) || 1;
               const sh = 12 / len;
-              return <line key={i} x1={s.x + dx * sh} y1={s.y + dy * sh} x2={e.x - dx * sh} y2={e.y - dy * sh} stroke={toneVar(a.tone ?? 'active')} strokeWidth={2.5} markerEnd={`url(#ga-${uid})`} opacity={0.9} />;
+              return <line key={i} x1={s.x + dx * sh} y1={s.y + dy * sh} x2={e.x - dx * sh} y2={e.y - dy * sh} stroke="var(--ink)" strokeWidth={2.5} markerEnd={`url(#ga-${uid})`} opacity={0.9} />;
             })}
           </svg>
         )}
@@ -293,20 +318,120 @@ function boundary(n: GraphNode, c: { x: number; y: number }, dx: number, dy: num
   return { x: c.x + ux * t, y: c.y + uy * t };
 }
 
+/** shorten a label to what fits in `px` pixels (13px UI font is about 7px per character) */
+function fit(label: string, px: number): string {
+  const max = Math.max(3, Math.floor(px / 7));
+  return label.length <= max ? label : label.slice(0, Math.max(1, max - 1)) + '…';
+}
+
+/** break a label into at most two lines that fit `px` pixels each (second line ends with an ellipsis if needed) */
+function wrap(label: string, px: number): string[] {
+  const max = Math.max(4, Math.floor(px / 7));
+  if (label.length <= max) return [label];
+  let cut = label.lastIndexOf(' ', max);
+  if (cut < max * 0.5) cut = max;
+  return [label.slice(0, cut).trimEnd(), fit(label.slice(cut).trimStart(), px)];
+}
+
+type Pt = { x: number; y: number };
+interface Geo {
+  d: string;
+  at: (t: number) => Pt;
+  normal: (t: number) => Pt;
+}
+
+function edgeGeo(a: GraphNode, b: GraphNode, pa: Pt, pb: Pt, curve: number): Geo {
+  const dx = pb.x - pa.x;
+  const dy = pb.y - pa.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const mx = (pa.x + pb.x) / 2 - (dy / len) * curve;
+  const my = (pa.y + pb.y) / 2 + (dx / len) * curve;
+  const s = curve ? boundary(a, pa, mx - pa.x, my - pa.y) : boundary(a, pa, dx, dy);
+  const t = curve ? boundary(b, pb, mx - pb.x, my - pb.y) : boundary(b, pb, -dx, -dy);
+  const d = curve ? `M${s.x},${s.y} Q${mx},${my} ${t.x},${t.y}` : `M${s.x},${s.y} L${t.x},${t.y}`;
+  const at = (u: number): Pt => (curve ? { x: (1 - u) * (1 - u) * s.x + 2 * (1 - u) * u * mx + u * u * t.x, y: (1 - u) * (1 - u) * s.y + 2 * (1 - u) * u * my + u * u * t.y } : { x: s.x + (t.x - s.x) * u, y: s.y + (t.y - s.y) * u });
+  const normal = (u: number): Pt => {
+    const tx = curve ? 2 * (1 - u) * (mx - s.x) + 2 * u * (t.x - mx) : t.x - s.x;
+    const ty = curve ? 2 * (1 - u) * (my - s.y) + 2 * u * (t.y - my) : t.y - s.y;
+    const l = Math.hypot(tx, ty) || 1;
+    return { x: -ty / l, y: tx / l };
+  };
+  return { d, at, normal };
+}
+
+interface Box {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+const hit = (a: Box, b: Box) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+
+/**
+ * Put every edge label where it collides with no node, badge, tag or other label:
+ * try spots along its own edge first, then step off the line. Deterministic.
+ */
+function placeEdgeLabels(p: GraphPanel, pos: Record<string, Pt>, byId: Map<string, GraphNode>): Map<number, Pt> {
+  const obstacles: Box[] = [];
+  for (const n of p.nodes) {
+    const c = pos[n.id] ?? { x: n.x, y: n.y };
+    const sz = nodeSize(n);
+    obstacles.push({ x: c.x - sz.w / 2 - 3, y: c.y - sz.h / 2 - 3, w: sz.w + 6, h: sz.h + 6 });
+    if (n.badge) obstacles.push({ x: c.x - (n.badge.length * 7.4) / 2 - 2, y: c.y + sz.h / 2 + 1, w: n.badge.length * 7.4 + 4, h: 16 });
+    if (n.tags?.length) {
+      const tw = n.tags.join(' · ').length * 7.4 + 4;
+      obstacles.push({ x: c.x - tw / 2, y: c.y - sz.h / 2 - 18, w: tw, h: 16 });
+    }
+  }
+  const placed: Box[] = [];
+  const out = new Map<number, Pt>();
+  const spots: [number, number][] = [];
+  for (const off of [0, -12, 12, -22, 22]) for (const t of [0.5, 0.4, 0.6, 0.3, 0.7, 0.22, 0.78]) spots.push([t, off]);
+  p.edges.forEach((e, i) => {
+    if (!e.label || e.from === e.to) return;
+    const a = byId.get(e.from);
+    const b = byId.get(e.to);
+    const pa = pos[e.from];
+    const pb = pos[e.to];
+    if (!a || !b || !pa || !pb) return;
+    const g = edgeGeo(a, b, pa, pb, e.curve ?? 0);
+    const w = e.label.length * 7.4 + 8;
+    const h = 16;
+    let best: { pt: Pt; box: Box } | null = null;
+    for (const [t, off] of spots) {
+      const c = g.at(t);
+      const nrm = g.normal(t);
+      const pt = { x: c.x + nrm.x * off, y: c.y + nrm.y * off };
+      const box = { x: pt.x - w / 2, y: pt.y - h / 2, w, h };
+      if (!obstacles.some((o) => hit(o, box)) && !placed.some((o) => hit(o, box))) {
+        best = { pt, box };
+        break;
+      }
+      best ??= { pt, box };
+    }
+    if (best) {
+      placed.push(best.box);
+      out.set(i, best.pt);
+    }
+  });
+  return out;
+}
+
 function GraphView({ p }: { p: GraphPanel }) {
   const uid = useId().replace(/:/g, '');
   const reduced = useReducedMotion();
   const pos = useTweened(p.nodes, reduced ? 0 : 320);
   const byId = useMemo(() => new Map(p.nodes.map((n) => [n.id, n])), [p.nodes]);
+  const labelAt = placeEdgeLabels(p, pos, byId);
   const pad = 34;
   return (
     <div className="graph">
       <Title t={p.title} />
-      <svg viewBox={`${-pad} ${-pad} ${p.width + pad * 2} ${p.height + pad * 2}`} role="img" aria-label={`${p.title ?? 'graph'}: ${p.nodes.length} nodes, ${p.edges.length} edges`} style={{ maxWidth: Math.max(320, p.width + pad * 2) * 1.25 }}>
+      <svg viewBox={`${-pad} ${-pad} ${p.width + pad * 2} ${p.height + pad * 2}`} role="img" aria-label={`${p.title ?? 'graph'}: ${p.nodes.length} nodes, ${p.edges.length} edges`} style={{ minWidth: p.width + pad * 2, maxWidth: (p.width + pad * 2) * 1.15 }}>
         <defs>
           {TONES.map((t) => (
             <marker key={t} id={`ah-${uid}-${t}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 z" style={{ fill: t === 'default' ? 'var(--line-2)' : toneVar(t) }} />
+              <path d="M0,0 L10,5 L0,10 z" style={{ fill: toneVar(t) }} />
             </marker>
           ))}
         </defs>
@@ -354,9 +479,12 @@ function GraphView({ p }: { p: GraphPanel }) {
             <g key={`${e.from}-${e.to}-${i}`} className={`g-edge${e.dashed ? ' dashed' : ''}`} data-tone={tone}>
               <path id={`ep-${uid}-${i}`} d={d} markerEnd={directed ? `url(#ah-${uid}-${tone})` : undefined} />
               {e.label && (
-                <text x={lx} y={ly - (curve ? 0 : 9)}>
-                  {e.label}
-                </text>
+                <>
+                  <rect className="elbl" x={(labelAt.get(i)?.x ?? lx) - (e.label.length * 7.4 + 8) / 2} y={(labelAt.get(i)?.y ?? ly) - 8} width={e.label.length * 7.4 + 8} height={16} rx={2} />
+                  <text x={labelAt.get(i)?.x ?? lx} y={labelAt.get(i)?.y ?? ly}>
+                    {e.label}
+                  </text>
+                </>
               )}
               {e.flow && !reduced && (
                 <circle r={5} className="flow-dot">
@@ -375,8 +503,8 @@ function GraphView({ p }: { p: GraphPanel }) {
           return (
             <g key={n.id} className="g-node" data-tone={n.tone ?? 'default'} transform={`translate(${c.x},${c.y})`}>
               {shape === 'circle' && <circle r={s.r} />}
-              {(shape === 'rect' || shape === 'actor') && <rect x={-s.w / 2} y={-s.h / 2} width={s.w} height={s.h} rx={shape === 'actor' ? 12 : 8} />}
-              {shape === 'pill' && <rect x={-s.w / 2} y={-s.h / 2} width={s.w} height={s.h} rx={s.h / 2} />}
+              {(shape === 'rect' || shape === 'actor') && <rect x={-s.w / 2} y={-s.h / 2} width={s.w} height={s.h} rx={shape === 'actor' ? 4 : 3} />}
+              {shape === 'pill' && <rect x={-s.w / 2} y={-s.h / 2} width={s.w} height={s.h} rx={4} />}
               {shape === 'cylinder' && (
                 <path
                   className="shape"
@@ -463,45 +591,50 @@ function BucketsView({ p }: { p: BucketsPanel }) {
 function SequenceView({ p }: { p: SequencePanel }) {
   const uid = useId().replace(/:/g, '');
   const reduced = useReducedMotion();
-  const colW = 150;
-  const W = Math.max(420, p.actors.length * colW);
+  const colW = 190;
+  const W = Math.max(480, p.actors.length * colW);
   const xOf = (a: string) => (p.actors.indexOf(a) + 0.5) * (W / p.actors.length);
-  const rowH = 38;
-  const H = 70 + Math.max(1, p.messages.length) * rowH + 10;
+  const rowH = 48;
+  const H = 90 + Math.max(1, p.messages.length) * rowH + 10;
   return (
     <div className="seq">
       <Title t={p.title} />
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Sequence: ${p.messages.map((m) => `${m.from} to ${m.to}: ${m.label}`).join('; ')}`} style={{ maxWidth: W * 1.2 }}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Sequence: ${p.messages.map((m) => `${m.from} to ${m.to}: ${m.label}`).join('; ')}`} style={{ minWidth: W, maxWidth: W * 1.1 }}>
         <defs>
           {TONES.map((t) => (
             <marker key={t} id={`sq-${uid}-${t}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 z" style={{ fill: t === 'default' ? 'var(--text-2)' : toneVar(t) }} />
+              <path d="M0,0 L10,5 L0,10 z" style={{ fill: t === 'default' ? 'var(--ink-muted)' : toneVar(t) }} />
             </marker>
           ))}
         </defs>
         {p.actors.map((a) => (
           <g key={a}>
             <line x1={xOf(a)} y1={44} x2={xOf(a)} y2={H} className="svg-line" strokeDasharray="4 5" />
-            <rect x={xOf(a) - 62} y={8} width={124} height={34} rx={9} style={{ fill: 'var(--panel-3)', stroke: 'var(--line-2)' }} />
+            <rect x={xOf(a) - 62} y={8} width={124} height={34} rx={3} style={{ fill: 'var(--surface)', stroke: 'var(--ink)' }} />
             <text x={xOf(a)} y={25} className="svg-text" textAnchor="middle" dominantBaseline="central">
               {a}
             </text>
           </g>
         ))}
         {p.messages.map((m, i) => {
-          const y = 66 + i * rowH;
+          const y = 94 + i * rowH;
           const x1 = xOf(m.from);
           const x2 = xOf(m.to);
           const active = i === p.active;
           const tone = m.tone ?? (active ? 'active' : 'default');
-          const stroke = tone === 'default' ? 'var(--text-2)' : toneVar(tone);
+          const stroke = tone === 'default' ? 'var(--ink-muted)' : toneVar(tone);
           const self = m.from === m.to;
           const d = self ? `M${x1},${y - 8} h36 v16 h-34` : `M${x1},${y} L${x2 + (x2 > x1 ? -3 : 3)},${y}`;
           return (
             <g key={i} opacity={p.active !== undefined && i > p.active ? 0.25 : 1} className={active ? 'fade-up' : undefined}>
               <path id={`sm-${uid}-${i}`} d={d} fill="none" stroke={stroke} strokeWidth={active ? 2.5 : 1.6} strokeDasharray={m.dashed ? '6 4' : undefined} markerEnd={`url(#sq-${uid}-${tone})`} />
-              <text x={self ? x1 + 42 : (x1 + x2) / 2} y={y - 9} className="svg-text" textAnchor={self ? 'start' : 'middle'} style={{ fontSize: 11.5, fill: active ? 'var(--text)' : 'var(--text-2)' }}>
-                {m.label}
+              <text x={self ? x1 + 42 : (x1 + x2) / 2} y={y - 9 - (wrap(m.label, self ? 150 : Math.abs(x2 - x1) - 14).length - 1) * 16} className="svg-text" textAnchor={self ? 'start' : 'middle'} style={{ fill: active ? 'var(--ink)' : 'var(--ink-muted)', fontWeight: active ? 700 : 600 }}>
+                <title>{m.label}</title>
+                {wrap(m.label, self ? 150 : Math.abs(x2 - x1) - 14).map((line, li) => (
+                  <tspan key={li} x={self ? x1 + 42 : (x1 + x2) / 2} dy={li ? 16 : 0}>
+                    {line}
+                  </tspan>
+                ))}
               </text>
               {active && !reduced && !self && (
                 <circle r={4.5} style={{ fill: stroke }}>
@@ -531,7 +664,7 @@ function TimelineView({ p }: { p: TimelinePanel }) {
   return (
     <div className="tl">
       <Title t={p.title} />
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={p.title ?? 'timeline'} style={{ maxWidth: W * 1.25 }}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={p.title ?? 'timeline'} style={{ minWidth: W, maxWidth: W * 1.1 }}>
         {ticks.map((t) => (
           <g key={t}>
             <line x1={x(t)} y1={18} x2={x(t)} y2={H} className="svg-line" strokeDasharray="2 5" opacity={0.6} />
@@ -552,15 +685,16 @@ function TimelineView({ p }: { p: TimelinePanel }) {
               {lane.events.map((ev, ei) =>
                 ev.dur ? (
                   <g key={ei} className="fade-up">
-                    <rect x={x(ev.t)} y={y + 4} width={Math.max(4, x(ev.t + ev.dur) - x(ev.t))} height={laneH - 14} rx={6} style={{ fill: toneVar(ev.tone ?? 'compare') }} opacity={0.9} />
-                    <text x={x(ev.t) + 6} y={y + laneH / 2 - 3} dominantBaseline="central" style={{ fill: 'var(--t-ink)', font: '700 11px var(--font-ui)' }}>
-                      {ev.label}
+                    <rect className="tl-ev" x={x(ev.t)} y={y + 4} width={Math.max(4, x(ev.t + ev.dur) - x(ev.t))} height={laneH - 14} rx={2} style={{ fill: toneVar(ev.tone ?? 'compare') }} />
+                    <text x={x(ev.t) + 6} y={y + laneH / 2 - 3} dominantBaseline="central" style={{ fill: toneInk(ev.tone ?? 'compare'), font: '700 13px var(--font-ui)' }}>
+                      <title>{ev.label}</title>
+                      {x(ev.t + ev.dur) - x(ev.t) < 42 ? '' : fit(ev.label, x(ev.t + ev.dur) - x(ev.t) - 10)}
                     </text>
                   </g>
                 ) : (
                   <g key={ei} className="fade-up">
                     <circle cx={x(ev.t)} cy={y + laneH / 2 - 3} r={7} style={{ fill: toneVar(ev.tone ?? 'active') }} />
-                    <text x={x(ev.t)} y={y + 2} className="svg-dim" textAnchor="middle" style={{ fontSize: 10 }}>
+                    <text x={x(ev.t)} y={y + 2} className="svg-dim" textAnchor="middle">
                       {ev.label}
                     </text>
                   </g>
@@ -569,7 +703,7 @@ function TimelineView({ p }: { p: TimelinePanel }) {
             </g>
           );
         })}
-        {p.now !== undefined && <line x1={x(p.now)} y1={16} x2={x(p.now)} y2={H} style={{ stroke: 'var(--t-active)' }} strokeWidth={2} />}
+        {p.now !== undefined && <line x1={x(p.now)} y1={16} x2={x(p.now)} y2={H} style={{ stroke: 'var(--cobalt)' }} strokeWidth={2.5} />}
       </svg>
     </div>
   );
@@ -577,7 +711,10 @@ function TimelineView({ p }: { p: TimelinePanel }) {
 
 // ─── Chart ────────────────────────────────────────────
 
-const SERIES_TONES: Tone[] = ['compare', 'active', 'swap', 'done', 'frontier', 'path', 'new'];
+const SERIES_INKS = ['var(--cobalt)', 'var(--tomato)', 'var(--mustard)', 'var(--mint)'];
+/** the first four series use the four inks; further series are ink with a dash pattern */
+const seriesColor = (si: number, tone?: Tone) => (tone ? toneVar(tone) : si < 4 ? SERIES_INKS[si] : 'var(--ink)');
+const seriesDash = (si: number) => (si < 4 ? undefined : si % 2 ? '5 4' : '2 3');
 
 function ChartView({ p }: { p: ChartPanel }) {
   const W = 560;
@@ -593,7 +730,7 @@ function ChartView({ p }: { p: ChartPanel }) {
   return (
     <div className="chart">
       <Title t={p.title} />
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${p.title ?? 'chart'}: ${p.series.map((s) => s.label).join(', ')}`} style={{ maxWidth: W * 1.2 }}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${p.title ?? 'chart'}: ${p.series.map((s) => s.label).join(', ')}`} style={{ minWidth: W, maxWidth: W * 1.1 }}>
         {[0, 0.25, 0.5, 0.75, 1].map((f) => (
           <g key={f}>
             <line x1={m.l} x2={W - m.r} y1={Y(yMax * f)} y2={Y(yMax * f)} className="svg-line" opacity={0.35} />
@@ -617,7 +754,7 @@ function ChartView({ p }: { p: ChartPanel }) {
           ? p.series.map((s, si) =>
               s.points.map(([xv, yv], i) => {
                 const bw = Math.max(4, (W - m.l - m.r) / (s.points.length * p.series.length + 2) - 4);
-                return <rect key={`${si}-${i}`} x={X(xv) - (bw * p.series.length) / 2 + si * bw} y={Y(yv)} width={bw - 2} height={H - m.b - Y(yv)} rx={3} style={{ fill: toneVar(s.tone ?? SERIES_TONES[si % SERIES_TONES.length]), transition: 'all var(--dur) var(--ease)' }} />;
+                return <rect key={`${si}-${i}`} x={X(xv) - (bw * p.series.length) / 2 + si * bw} y={Y(yv)} width={bw - 2} height={H - m.b - Y(yv)} rx={1} style={{ fill: seriesColor(si, s.tone), transition: 'all var(--dur) var(--ease)' }} />;
               }),
             )
           : p.series.map((s, si) => (
@@ -627,15 +764,16 @@ function ChartView({ p }: { p: ChartPanel }) {
                 fill="none"
                 strokeWidth={2.6}
                 strokeLinejoin="round"
-                style={{ stroke: toneVar(s.tone ?? SERIES_TONES[si % SERIES_TONES.length]) }}
+                style={{ stroke: seriesColor(si, s.tone) }}
+                strokeDasharray={seriesDash(si)}
               />
             ))}
-        {p.marker !== undefined && <line x1={X(p.marker)} x2={X(p.marker)} y1={m.t} y2={H - m.b} style={{ stroke: 'var(--text-2)' }} strokeDasharray="4 4" />}
+        {p.marker !== undefined && <line x1={X(p.marker)} x2={X(p.marker)} y1={m.t} y2={H - m.b} style={{ stroke: 'var(--ink-muted)' }} strokeDasharray="4 4" />}
       </svg>
       <div className="row" style={{ gap: 12, fontSize: 12 }}>
         {p.series.map((s, si) => (
           <span key={s.label} className="row" style={{ gap: 5 }}>
-            <i style={{ width: 12, height: 4, borderRadius: 2, background: toneVar(s.tone ?? SERIES_TONES[si % SERIES_TONES.length]), display: 'inline-block' }} />
+            <i style={{ width: 14, height: 4, background: seriesColor(si, s.tone), display: 'inline-block' }} />
             <span className="mono">{s.label}</span>
           </span>
         ))}
