@@ -171,10 +171,14 @@ pre,
   font-variant-ligatures: none;
   font-feature-settings: 'liga' 0, 'calt' 0;
 }
-[class*='codeview'],
-.arr,
-.gridp,
-.gym-text {
+/* `html` raises specificity: the `font:` shorthand used by component styles would otherwise reset these */
+html [class*='codeview'],
+html [class*='codeview'] *,
+html .arr,
+html .gridp,
+html .gym-text,
+html .logp,
+html .blank {
   font-variant-ligatures: none;
   font-feature-settings: 'liga' 0, 'calt' 0;
 }

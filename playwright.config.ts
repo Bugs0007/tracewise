@@ -2,7 +2,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 // E2E runs against the production build (`npm run build` first) served by `vite preview`.
 export default defineConfig({
-  testDir: 'tests/e2e',
+  testDir: '.',
+  // `SHOTS=1 npx playwright test` regenerates the README screenshots instead of running the e2e suite
+  testMatch: process.env.SHOTS ? ['scripts/screenshots.spec.ts'] : ['tests/e2e/**/*.spec.ts'],
   timeout: 90_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,

@@ -18,6 +18,16 @@ Runs entirely in your browser: no backend, no accounts, no tracking. Python runs
 | **Gamification** | XP, levels, daily streak and goal, world map per module, badges, focus mode, satisfying-but-short celebrations, optional sound. |
 | **Accessibility** | Keyboard shortcuts everywhere, reduced-motion switch, light/dark themes, screen-reader labels on visualizers. |
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Home](docs/screenshots/home-dark.png) | ![World map](docs/screenshots/map-dark.png) |
+| ![Dijkstra visualizer](docs/screenshots/watch-dark.png) | ![DP table with dependency arrows](docs/screenshots/watch-dp-dark.png) |
+| ![Typing ladder](docs/screenshots/type-dark.png) | ![Architecture lab](docs/screenshots/architect-dark.png) |
+
+Light theme and mobile layouts are supported too (`docs/screenshots/*-light.png`, `mobile-*.png`). Regenerate with `npm run build && SHOTS=1 npx playwright test`.
+
 ## Run it
 
 ```bash

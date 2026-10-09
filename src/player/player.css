@@ -255,7 +255,7 @@
 .arr {
   display: flex;
   gap: 6px;
-  padding: 26px 4px 30px;
+  padding: 38px 4px 30px;
   overflow-x: auto;
   position: relative;
 }
