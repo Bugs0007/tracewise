@@ -37,7 +37,7 @@
   --rule: #cdd1ca;
 
   /* inks as FILLS (text on top: --on-*) */
-  --cobalt: #2f4bdb;
+  --cobalt: #1f5fd6;
   --on-cobalt: #ffffff;
   --mustard: #f2b52d;
   --on-mustard: #1b2030;
@@ -46,7 +46,7 @@
   --mint: #1fa67a;
   --on-mint: #1b2030;
   /* inks as TEXT / thin lines on paper (AA-safe) */
-  --cobalt-t: #2f4bdb;
+  --cobalt-t: #1a54c2;
   --mustard-t: #8a5f00;
   --tomato-t: #c2321b;
   --mint-t: #0b7a56;
@@ -81,12 +81,12 @@
 
   /* code */
   --code-bg: #f1f2ee;
-  --code-kw: #7a2fc0;
+  --code-kw: #0a6a80;
   --code-str: #1f6a1f;
   --code-num: #9a4210;
   --code-com: #575e72;
-  --code-fn: #2f4bdb;
-  --code-line: rgba(47, 75, 219, 0.1);
+  --code-fn: #1a54c2;
+  --code-line: rgba(31, 95, 214, 0.1);
   --dot: rgba(27, 32, 48, 0.16);
   --blend: multiply;
 
@@ -100,15 +100,15 @@
   --ink-muted: #aaa89d;
   --rule: #36352f;
 
-  --cobalt: #7d94ff;
-  --on-cobalt: #0e0f14;
+  --cobalt: #5b9cff;
+  --on-cobalt: #0b1220;
   --mustard: #f5c04a;
   --on-mustard: #121211;
   --tomato: #f0664f;
   --on-tomato: #121211;
   --mint: #3dc99c;
   --on-mint: #121211;
-  --cobalt-t: #98a9ff;
+  --cobalt-t: #86b6ff;
   --mustard-t: #f5c04a;
   --tomato-t: #f58a77;
   --mint-t: #4fd3a8;
@@ -120,12 +120,12 @@
   --text-3: #928f84;
 
   --code-bg: #171715;
-  --code-kw: #c9a2f0;
+  --code-kw: #5ccbe0;
   --code-str: #a6d98b;
   --code-num: #f0a070;
   --code-com: #86847a;
-  --code-fn: #98a9ff;
-  --code-line: rgba(125, 148, 255, 0.16);
+  --code-fn: #86b6ff;
+  --code-line: rgba(91, 156, 255, 0.16);
   --dot: rgba(236, 235, 228, 0.12);
   --blend: normal;
 
