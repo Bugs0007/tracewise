@@ -717,6 +717,9 @@ label.field {
   .topnav {
     display: none;
   }
+  .seg-bar i {
+    width: 5px;
+  }
   .tabbar {
     display: flex;
     flex: none;

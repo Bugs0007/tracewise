@@ -4,10 +4,10 @@ import { freshStart, runAndWait, setEditor, trackErrors } from './helpers';
 test('home renders with modules and no errors', async ({ page }) => {
   const errors = trackErrors(page);
   await freshStart(page);
-  await expect(page.getByRole('heading', { name: /Watch it\. Predict it\./ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Watch the code run/ })).toBeVisible();
   await expect(page.getByTestId('module-dsa')).toBeVisible();
   await expect(page.getByTestId('module-cloud')).toBeVisible();
-  await page.getByRole('link', { name: 'Map', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Main' }).first().getByRole('link', { name: 'Learn', exact: true }).click();
   await expect(page.getByTestId('node-binary-search')).toBeVisible();
   expect(errors).toEqual([]);
 });

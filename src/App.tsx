@@ -12,20 +12,18 @@ const UnitPage = lazy(() => import('./pages/UnitPage'));
 const LabPage = lazy(() => import('./pages/LabPage'));
 const GymPage = lazy(() => import('./pages/GymPage'));
 const ReviewPage = lazy(() => import('./pages/ReviewPage'));
+const PracticePage = lazy(() => import('./pages/PracticePage'));
 const InterviewPage = lazy(() => import('./pages/InterviewPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const CapstonePage = lazy(() => import('./pages/CapstonePage'));
 const CertificatePage = lazy(() => import('./pages/CertificatePage'));
 
 const NAV = [
-  { to: '/', label: 'Home', icon: 'home', match: (p: string[]) => p.length === 0 },
-  { to: '/map', label: 'Map', icon: 'map', match: (p: string[]) => p[0] === 'map' || p[0] === 'unit' },
-  { to: '/lab', label: 'Lab', icon: 'lab', match: (p: string[]) => p[0] === 'lab' },
-  { to: '/gym', label: 'Gym', icon: 'gym', match: (p: string[]) => p[0] === 'gym' },
-  { to: '/review', label: 'Review', icon: 'review', match: (p: string[]) => p[0] === 'review' },
-  { to: '/interview', label: 'Interview', icon: 'timer', match: (p: string[]) => p[0] === 'interview' },
-  { to: '/capstone', label: 'Capstone', icon: 'trophy', match: (p: string[]) => p[0] === 'capstone' || p[0] === 'certificate' },
-  { to: '/settings', label: 'Settings', icon: 'settings', match: (p: string[]) => p[0] === 'settings' },
+  { to: '/', label: 'Home', icon: 'home', tab: true, top: false, match: (p: string[]) => p.length === 0 },
+  { to: '/map', label: 'Learn', icon: 'map', tab: true, top: true, match: (p: string[]) => p[0] === 'map' || p[0] === 'unit' },
+  { to: '/practice', label: 'Practice', icon: 'lab', tab: true, top: true, match: (p: string[]) => ['practice', 'review', 'gym', 'lab'].includes(p[0]) },
+  { to: '/interview', label: 'Interview', icon: 'timer', tab: true, top: true, match: (p: string[]) => p[0] === 'interview' },
+  { to: '/capstone', label: 'Capstone', icon: 'trophy', tab: true, top: true, match: (p: string[]) => p[0] === 'capstone' || p[0] === 'certificate' },
 ];
 
 function useThemeEffects() {
@@ -50,42 +48,56 @@ function useThemeEffects() {
   }, [fontSize]);
 }
 
+const SEGMENTS = 10;
+
 function TopBar() {
+  const { parts } = useRoute();
   const xp = useApp((s) => s.xp);
   const streak = useApp((s) => s.streak);
   const focus = useApp((s) => s.settings.focus);
   const setSettings = useApp((s) => s.setSettings);
+  const due = useApp((s) => dueReviews(s).length);
   const { level, into, span } = levelInfo(xp);
+  const filled = Math.floor((into / span) * SEGMENTS);
   return (
     <header className="topbar">
       <a className="brand" href={href('/')} aria-label="Tracewise home">
         <Logo />
-        <span className="hide-sm">Tracewise</span>
+        <span>Tracewise</span>
       </a>
+      <nav className="topnav" aria-label="Main">
+        {NAV.filter((n) => n.top).map((n) => (
+          <a key={n.to} href={href(n.to)} aria-current={n.match(parts) ? 'page' : undefined}>
+            {n.label}
+            {n.to === '/practice' && due > 0 && <span className="badge-dot" aria-label={`${due} reviews due`}>{due}</span>}
+          </a>
+        ))}
+      </nav>
       <span className="spacer" />
-      <a className="btn sm primary hide-sm" href={href('/review?quick=1')} title="A focused 10-minute mixed session">
-        <Icon name="bolt" size={15} /> Quick 10
+      <a className="btn sm hide-sm" href={href('/review?quick=1')} title="A focused 10-minute mixed session">
+        Quick 10
       </a>
-      <div className={`streak${streak.count ? '' : ' cold'}`} title={`Daily streak (best ${streak.best})`}>
-        <Icon name="flame" size={18} />
+      <div className={`streak${streak.count ? '' : ' cold'}`} title={`Daily streak, best ${streak.best}`}>
+        <Icon name="flame" size={16} />
         <span data-testid="streak">{streak.count}</span>
       </div>
-      <div className="xpbox" title={`${xp} XP total`}>
-        <span className="lvl" aria-label={`Level ${level}`}>
-          {level}
-        </span>
-        <div className="grow">
-          <div className="bar" role="progressbar" aria-valuemin={0} aria-valuemax={span} aria-valuenow={into} aria-label="Progress to next level">
-            <span style={{ width: `${(into / span) * 100}%` }} />
-          </div>
-          <div className="dim mono" style={{ fontSize: 11, marginTop: 2 }} data-testid="xp">
-            {xp} XP
-          </div>
+      <div className="xpbox" title={`${xp} XP in total`}>
+        <span className="hide-sm">Level {level}</span>
+        <div className="seg-bar" title={`Level ${level}`} role="progressbar" aria-valuemin={0} aria-valuemax={span} aria-valuenow={into} aria-label="Progress to next level">
+          {Array.from({ length: SEGMENTS }, (_, i) => (
+            <i key={i} className={i < filled ? 'on' : ''} />
+          ))}
         </div>
+        <span className="hide-sm mono" data-testid="xp">
+          {xp} XP
+        </span>
       </div>
-      <button className={`btn icon sm ${focus ? 'primary' : 'ghost'}`} onClick={() => setSettings({ focus: !focus })} aria-pressed={focus} aria-label="Focus mode" title="Focus mode: hide everything but the task">
-        <Icon name="focus" size={16} />
+      <button className={`btn icon sm ${focus ? '' : 'ghost'}`} onClick={() => setSettings({ focus: !focus })} aria-pressed={focus} aria-label="Focus mode" title="Focus mode: hide everything but the task">
+        <Icon name="focus" size={17} />
       </button>
+      <a className="btn icon sm ghost" href={href('/settings')} aria-label="Settings" title="Settings" aria-current={parts[0] === 'settings' ? 'page' : undefined}>
+        <Icon name="settings" size={17} />
+      </a>
     </header>
   );
 }
@@ -100,16 +112,16 @@ export function Logo({ size = 28 }: { size?: number }) {
   );
 }
 
-function Nav() {
+function TabBar() {
   const { parts } = useRoute();
   const due = useApp((s) => dueReviews(s).length);
   return (
-    <nav className="nav" aria-label="Main">
-      {NAV.map((n) => (
+    <nav className="tabbar" aria-label="Main">
+      {NAV.filter((n) => n.tab).map((n) => (
         <a key={n.to} href={href(n.to)} aria-current={n.match(parts) ? 'page' : undefined}>
           <Icon name={n.icon} size={20} />
           {n.label}
-          {n.to === '/review' && due > 0 && <span className="badge-dot">{due}</span>}
+          {n.to === '/practice' && due > 0 && <span className="sr-only">{due} reviews due</span>}
         </a>
       ))}
     </nav>
@@ -126,6 +138,8 @@ function Routes() {
       return <MapPage module={b} />;
     case 'unit':
       return <UnitPage id={b} step={c} />;
+    case 'practice':
+      return <PracticePage />;
     case 'lab':
       return <LabPage id={b} />;
     case 'gym':
@@ -143,8 +157,8 @@ function Routes() {
     default:
       return (
         <div className="page">
-          <h1>Not found</h1>
-          <a href={href('/')}>Go home</a>
+          <h1>Page not found</h1>
+          <a href={href('/')}>Back to the home page</a>
         </div>
       );
   }
@@ -163,12 +177,12 @@ export default function App() {
         Skip to content
       </a>
       <TopBar />
-      <Nav />
       <main className="main" id="main" tabIndex={-1}>
         <Suspense fallback={<div className="page dim">Loading…</div>}>
           <Routes />
         </Suspense>
       </main>
+      <TabBar />
       <Celebrations />
     </div>
   );
