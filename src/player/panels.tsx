@@ -170,7 +170,7 @@ function GridView({ p }: { p: GridPanel }) {
   const cw = p.compact ? 22 : 42;
   const ch = p.compact ? 22 : 36;
   const gap = 3;
-  const lw = p.rowLabels ? 28 : 0;
+  const lw = p.rowLabels ? Math.max(28, ...p.rowLabels.map((l) => String(l).length * 7.5 + 10)) : 0;
   const lh = p.colLabels ? 20 : 0;
   const heatMax = p.heat ? Math.max(1e-9, ...p.cells.flat().map((v) => (typeof v === 'number' ? Math.abs(v) : 0))) : 1;
   const center = (r: number, c: number) => ({ x: lw + (p.rowLabels ? gap : 0) + c * (cw + gap) + cw / 2, y: lh + (p.colLabels ? gap : 0) + r * (ch + gap) + ch / 2 });
@@ -323,6 +323,21 @@ function GraphView({ p }: { p: GraphPanel }) {
           const pb = pos[e.to];
           if (!a || !b || !pa || !pb) return null;
           const directed = e.directed ?? p.directed;
+          if (e.from === e.to) {
+            // self-loop: a small arc above the node
+            const r0 = nodeSize(a).h / 2;
+            const d = `M${pa.x - 8},${pa.y - r0} C${pa.x - 30},${pa.y - r0 - 42} ${pa.x + 30},${pa.y - r0 - 42} ${pa.x + 8},${pa.y - r0 - 2}`;
+            return (
+              <g key={`${e.from}-self-${i}`} className={`g-edge${e.dashed ? ' dashed' : ''}`} data-tone={e.tone ?? 'default'}>
+                <path d={d} markerEnd={directed ? `url(#ah-${uid}-${e.tone ?? 'default'})` : undefined} />
+                {e.label && (
+                  <text x={pa.x} y={pa.y - r0 - 40}>
+                    {e.label}
+                  </text>
+                )}
+              </g>
+            );
+          }
           const dx = pb.x - pa.x;
           const dy = pb.y - pa.y;
           const len = Math.hypot(dx, dy) || 1;

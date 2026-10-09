@@ -9,6 +9,7 @@ import { lazy, Suspense } from 'react';
 import './pages.css';
 
 const TracePanel = lazy(() => import('@/features/TracePanel'));
+const Architect = lazy(() => import('@/features/Architect').then((m) => ({ default: m.Architect })));
 
 export default function LabPage({ id }: { id?: string }) {
   if (id === 'trace')
@@ -24,6 +25,19 @@ export default function LabPage({ id }: { id?: string }) {
         </Suspense>
       </div>
     );
+  if (id === 'architect')
+    return (
+      <div className="page wide">
+        <a href={href('/lab')} className="dim">
+          ← Visualizer Lab
+        </a>
+        <h1 style={{ marginTop: 8 }}>Architecture lab</h1>
+        <p className="muted">Pick a scenario, assemble a system from components, wire it up and run traffic through it. Overloaded parts turn red.</p>
+        <Suspense fallback={<div className="dim">Loading…</div>}>
+          <Architect />
+        </Suspense>
+      </div>
+    );
   if (id) return <LabViz id={id} />;
   return (
     <div className="page">
@@ -35,6 +49,9 @@ export default function LabPage({ id }: { id?: string }) {
             Every visualizer, outside the lesson flow. Change inputs, scrub the timeline, quiz yourself.
           </p>
         </div>
+        <a className="btn" href={href('/lab/architect')} data-testid="architect-link">
+          <Icon name="server" size={16} /> Architecture lab
+        </a>
         <a className="btn primary" href={href('/lab/trace')} data-testid="trace-link">
           <Icon name="terminal" size={16} /> Trace your own code
         </a>

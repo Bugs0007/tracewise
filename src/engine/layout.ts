@@ -174,6 +174,10 @@ export function linkedListPanel(order: LLNodeView[], next: Record<string, string
     const a = idx.get(n.id)!;
     const b = idx.get(to);
     if (b === undefined) continue;
+    if (to === n.id) {
+      edges.push({ from: n.id, to, directed: true, tone: opts.edgeTones?.[`${n.id}>${to}`] ?? 'error' });
+      continue;
+    }
     const back = b <= a;
     edges.push({ from: n.id, to, directed: true, curve: back ? -40 - (a - b) * 6 : b - a > 1 ? -24 : 0, tone: opts.edgeTones?.[`${n.id}>${to}`] ?? (back ? 'error' : undefined) });
   }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { CATALOG, CATALOG_BY_ID, MODULES } from '@/content/catalog';
 import { AVAILABLE_UNITS, loadUnit } from '@/content/loader';
 import type { Question, Unit } from '@/content/types';
@@ -21,6 +21,8 @@ const STEP_META: Record<StepId, { label: string; icon: string }> = {
   debug: { label: 'Debug', icon: 'bug' },
   boss: { label: 'Mini-boss', icon: 'crown' },
 };
+
+const Architect = lazy(() => import('@/features/Architect').then((m) => ({ default: m.Architect })));
 
 export const XP = { predictRight: 10, predictWrong: 4, watch: 10, quiz: 3, typePerLevel: 15, debug: 25, boss: 50 };
 
@@ -197,6 +199,14 @@ function WatchStep({ unit, onNext }: { unit: Unit; onNext: () => void }) {
   return (
     <div className="col" style={{ gap: 16 }}>
       <Player viz={unit.viz} initialInput={unit.vizInput} onComplete={() => completeStep(unit.id, 'watch', XP.watch)} onQuizAnswer={(ok) => ok && awardXp(XP.quiz)} />
+      {unit.interactive === 'architect' && (
+        <div className="card">
+          <h3>Build it: architecture lab</h3>
+          <Suspense fallback={<div className="dim">Loading…</div>}>
+            <Architect />
+          </Suspense>
+        </div>
+      )}
       {!done && <div className="dim" style={{ fontSize: 13 }}>Step through to the end to complete this step. Edit the input and re-run as often as you like. Turn on Predict mode for bonus XP.</div>}
       {unit.deeper && (
         <Collapsible title="Go deeper: theory, complexity, pitfalls">

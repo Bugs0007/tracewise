@@ -114,4 +114,6 @@ export interface Unit {
   quiz?: Question[];
   /** honest note shown when a concept is simulated (mini-Django, Next.js-style, mock LLM) */
   simulationNote?: string;
+  /** an extra hands-on widget shown under the visualizer in the Watch step */
+  interactive?: 'architect';
 }
