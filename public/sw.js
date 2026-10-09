@@ -1,7 +1,7 @@
 // Minimal offline service worker.
 // - Navigations: network first, fall back to the cached app shell.
 // - Same-origin assets (hashed JS/CSS, Pyodide runtime): cache first, filled on first use.
-const CACHE = 'tracewise-v1';
+const CACHE = 'tracewise-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './favicon.svg', './manifest.webmanifest'])).then(() => self.skipWaiting()));
