@@ -24,8 +24,8 @@ interface In {
   clicks: string[];
 }
 
-const NAMES = ['sidebar', 'modal'] as const;
-type Who = (typeof NAMES)[number];
+const _NAMES = ['sidebar', 'modal'] as const;
+type Who = (typeof _NAMES)[number];
 const parse = (raw: string[]): Who[] => raw.map((c) => c.trim().toLowerCase()).filter((c): c is Who => c === 'sidebar' || c === 'modal');
 
 const viz: VizDef<In> = {

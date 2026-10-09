@@ -65,6 +65,8 @@ export interface SimResult {
   edgeLoad: Record<string, number>;
   p99: number;
   problems: string[];
+  /** informational, not failures */
+  notes: string[];
   bottleneck: string | null;
   passed: boolean;
 }
@@ -78,6 +80,7 @@ export function simulate(nodes: ANode[], edges: AEdge[], s: Scenario): SimResult
   const load: Record<string, number> = Object.fromEntries(nodes.map((n) => [n.id, 0]));
   const edgeLoad: Record<string, number> = {};
   const problems: string[] = [];
+  const notes: string[] = [];
   const kids = (id: string, kinds: Kind[]) => (out.get(id) ?? []).filter((t) => kinds.includes(byId.get(t)!.kind));
   const add = (from: string, to: string, rps: number) => {
     load[to] += rps;
@@ -148,8 +151,8 @@ export function simulate(nodes: ANode[], edges: AEdge[], s: Scenario): SimResult
   // reads: replicas if the app talks to them, else primary
   if (appToReplicas.length) {
     for (const r of appToReplicas) for (const a of appIds) if (kids(a, ['replica']).includes(r)) add(a, r, per(readsToDb) / appToReplicas.length);
-    for (const r of appToReplicas) add(db.id, r, writesAtApp); // replication stream (counted as edge traffic)
-    for (const r of appToReplicas) load[r] -= 0; // replication is cheap in this model
+    // replication stream: shown on the edge, treated as cheap for the replica itself
+    for (const r of appToReplicas) edgeLoad[key(db.id, r)] = (edgeLoad[key(db.id, r)] ?? 0) + writesAtApp;
   } else {
     for (const a of appsToDb) add(a, db.id, readsToDb / appsToDb.length);
   }
@@ -159,11 +162,14 @@ export function simulate(nodes: ANode[], edges: AEdge[], s: Scenario): SimResult
     for (const a of appIds) if (kids(a, ['queue']).includes(queue)) add(a, queue, per(writesAtApp));
     const workers = kids(queue, ['worker']);
     if (!workers.length) problems.push('The queue has no workers: jobs pile up forever.');
+    // workers drain at most their own capacity; the queue absorbs the rest (fine for a burst, never for ever)
+    const drain = Math.min(writesAtApp, workers.length * KINDS.worker.capacity);
     for (const w of workers) {
-      add(queue, w, writesAtApp / workers.length);
-      if (kids(w, ['db']).includes(db.id)) add(w, db.id, writesAtApp / workers.length);
+      add(queue, w, drain / workers.length);
+      if (kids(w, ['db']).includes(db.id)) add(w, db.id, drain / workers.length);
       else problems.push('A worker is not connected to the database.');
     }
+    if (workers.length && drain < writesAtApp) notes.push(`Workers drain ${Math.round(drain)}/s of ${Math.round(writesAtApp)}/s: the queue grows by ${Math.round(writesAtApp - drain)}/s and catches up after the burst.`);
     latency += KINDS.queue.latency;
   } else {
     for (const a of appsToDb) add(a, db.id, writesAtApp / appsToDb.length);
@@ -193,9 +199,9 @@ export function simulate(nodes: ANode[], edges: AEdge[], s: Scenario): SimResult
   }
   void total;
   const unique = [...new Set(problems)];
-  return { load, util, edgeLoad, p99, problems: unique, bottleneck: over[0]?.id ?? null, passed: unique.length === 0 };
+  return { load, util, edgeLoad, p99, problems: unique, notes, bottleneck: over[0]?.id ?? null, passed: unique.length === 0 };
 
   function fail(msg: string): SimResult {
-    return { load, util: Object.fromEntries(nodes.map((n) => [n.id, 0])), edgeLoad, p99: 0, problems: [msg], bottleneck: null, passed: false };
+    return { load, util: Object.fromEntries(nodes.map((n) => [n.id, 0])), edgeLoad, p99: 0, problems: [msg], notes: [], bottleneck: null, passed: false };
   }
 }

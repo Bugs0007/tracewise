@@ -252,6 +252,15 @@ export function Architect({ onPass }: { onPass?: (scenarioId: string) => void })
           </span>
         )}
       </div>
+      {sim && sim.notes.length > 0 && (
+        <div className="callout info">
+          <ul style={{ margin: 0, paddingLeft: 18 }}>
+            {sim.notes.map((p, i) => (
+              <li key={i}>{p}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       {sim && sim.problems.length > 0 && (
         <div className="callout bad fade-up">
           <ul style={{ margin: 0, paddingLeft: 18 }}>
