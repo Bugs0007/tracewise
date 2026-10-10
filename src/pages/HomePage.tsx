@@ -4,6 +4,7 @@ import { href } from '@/router';
 import { dueReviews, unitProgress, useApp } from '@/store/store';
 import { addDays, dayKey, STEP_ORDER } from '@/store/save';
 import { HeroTrace } from '@/ui/HeroTrace';
+import { SignInBanner } from '@/account/AccountChip';
 import './pages.css';
 
 const DAILY_GOAL = 60;
@@ -52,6 +53,7 @@ export function HomePage() {
 
   return (
     <div className="page">
+      <SignInBanner />
       <section className="hero">
         <div className="hero-copy">
           <h1 className="hero-title">Watch the code run. Then write it yourself.</h1>

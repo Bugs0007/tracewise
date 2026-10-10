@@ -6,6 +6,7 @@ import { Icon } from './ui/Icon';
 import { Celebrations } from './ui/Celebrations';
 import { useReducedMotion } from './lib/motion';
 import { HomePage } from './pages/HomePage';
+import { AccountChip } from './account/AccountChip';
 
 const MapPage = lazy(() => import('./pages/MapPage'));
 const UnitPage = lazy(() => import('./pages/UnitPage'));
@@ -56,6 +57,8 @@ function TopBar() {
   const streak = useApp((s) => s.streak);
   const focus = useApp((s) => s.settings.focus);
   const setSettings = useApp((s) => s.setSettings);
+  const theme = useApp((s) => s.settings.theme);
+  const dark = theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   const due = useApp((s) => dueReviews(s).length);
   const { level, into, span } = levelInfo(xp);
   const filled = Math.floor((into / span) * SEGMENTS);
@@ -95,9 +98,13 @@ function TopBar() {
       <button className={`btn icon sm ${focus ? '' : 'ghost'}`} onClick={() => setSettings({ focus: !focus })} aria-pressed={focus} aria-label="Focus mode" title="Focus mode: hide everything but the task">
         <Icon name="focus" size={17} />
       </button>
+      <button className="btn icon sm ghost" onClick={() => setSettings({ theme: dark ? 'light' : 'dark' })} aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'} title={dark ? 'Switch to light theme' : 'Switch to dark theme'} data-testid="theme-toggle">
+        <Icon name={dark ? 'sun' : 'moon'} size={17} />
+      </button>
       <a className="btn icon sm ghost" href={href('/settings')} aria-label="Settings" title="Settings" aria-current={parts[0] === 'settings' ? 'page' : undefined}>
         <Icon name="settings" size={17} />
       </a>
+      <AccountChip />
     </header>
   );
 }

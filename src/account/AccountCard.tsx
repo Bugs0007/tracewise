@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { accountsConfigured, deleteCloudCopy, signInWithGoogle, signOut, syncNow, useAccount } from './account';
 
-function GoogleG() {
+export function GoogleG() {
   return (
     <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden>
       <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z" />
