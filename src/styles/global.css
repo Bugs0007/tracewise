@@ -660,6 +660,8 @@ label.field {
   gap: 8px;
   font-size: var(--fs-s);
   font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .seg-bar {
   display: flex;

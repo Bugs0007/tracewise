@@ -153,3 +153,23 @@ test('syntax gym: typing a snippet completes it', async ({ page }) => {
   await page.keyboard.type('return f"{greeting}, {name}!"');
   await expect(page.getByTestId('gym-done')).toBeVisible();
 });
+
+test('editor closes brackets and completes the word being typed with Tab', async ({ page }) => {
+  await freshStart(page, '/unit/binary-search/boss');
+  const content = page.locator('.cm-content').first();
+  await content.click();
+  await page.keyboard.press('Control+A');
+  await page.keyboard.press('Delete');
+  await page.keyboard.type('print(');
+  await expect(content).toContainText('print()');
+  await page.keyboard.press('Control+A');
+  await page.keyboard.press('Delete');
+  await page.keyboard.type('retu');
+  await expect(page.locator('.cm-tooltip-autocomplete')).toContainText('return');
+  await page.keyboard.press('Tab');
+  await expect(content).toContainText('return');
+  // Enter never accepts a suggestion: it inserts a newline
+  await page.keyboard.type(' x');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.cm-line')).toHaveCount(2);
+});

@@ -1,5 +1,5 @@
-// CodeMirror 6 wrapper. Autocomplete and auto-closing brackets are deliberately
-// OFF: the point of the app is rebuilding typing muscle memory.
+// CodeMirror 6 wrapper. Word autocomplete (Tab accepts, Enter always inserts a newline)
+// and auto-closing brackets are on by default and can be turned off in Settings.
 import { useEffect, useRef } from 'react';
 import { EditorState, StateEffect, StateField, Compartment, type Extension } from '@codemirror/state';
 import { Decoration, EditorView, keymap, lineNumbers, highlightActiveLine, highlightActiveLineGutter, drawSelection, type DecorationSet } from '@codemirror/view';
@@ -8,7 +8,9 @@ import { bracketMatching, indentOnInput, syntaxHighlighting, HighlightStyle, ind
 import { python } from '@codemirror/lang-python';
 import { javascript } from '@codemirror/lang-javascript';
 import { tags as t } from '@lezer/highlight';
+import { autocompletion, closeBrackets, closeBracketsKeymap, acceptCompletion, closeCompletion, moveCompletionSelection, completionStatus, type CompletionContext, type Completion } from '@codemirror/autocomplete';
 import type { Lang } from '@/content/types';
+import { useApp } from '@/store/store';
 
 const highlight = HighlightStyle.define([
   { tag: [t.keyword, t.controlKeyword, t.operatorKeyword, t.definitionKeyword, t.moduleKeyword], color: 'var(--code-kw)' },
@@ -32,6 +34,11 @@ const theme = EditorView.theme({
   '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { background: 'color-mix(in srgb, var(--cobalt) 28%, transparent) !important' },
   '.cm-matchingBracket': { background: 'color-mix(in srgb, var(--mint) 25%, transparent)', outline: '1px solid var(--mint)' },
   '.cm-error-line': { background: 'color-mix(in srgb, var(--bad) 18%, transparent)' },
+  '.cm-tooltip.cm-tooltip-autocomplete': { background: 'var(--panel)', border: '1px solid var(--line-2)', borderRadius: '4px', fontFamily: 'var(--font-mono)' },
+  '.cm-tooltip-autocomplete ul li': { padding: '2px 8px', color: 'var(--text)' },
+  '.cm-tooltip-autocomplete ul li[aria-selected]': { background: 'var(--cobalt)', color: 'var(--on-cobalt)' },
+  '.cm-completionMatchedText': { textDecoration: 'none', fontWeight: '700' },
+  '.cm-completionDetail': { display: 'none' },
   '.cm-scroller': { overflow: 'auto', lineHeight: '1.6' },
 });
 
@@ -58,6 +65,49 @@ function langExt(lang: Lang): Extension {
   return [javascript({ jsx: lang === 'jsx', typescript: lang === 'typescript' || lang === 'jsx' }), indentUnit.of('  ')];
 }
 
+
+const PY_WORDS = 'False None True and as assert async await break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield print len range enumerate zip map filter sorted reversed sum min max abs any all isinstance int str float list dict set tuple bool append extend insert pop remove sort reverse items keys values get add discard update join split strip lower upper startswith endswith format heapq heappush heappop deque defaultdict Counter collections self __init__ __name__'.split(' ');
+const JS_WORDS = 'async await break case catch class const continue default delete do else export extends false finally for function if import in instanceof let new null of return static super switch this throw true try typeof undefined var void while yield console log length push pop shift unshift slice splice concat join map filter reduce forEach find findIndex includes indexOf sort reverse keys values entries Object Array Map Set Math floor ceil round min max abs Number String Boolean JSON stringify parse Promise resolve reject then useState useEffect useRef useMemo useCallback useReducer useContext interface type number string boolean'.split(' ');
+
+/** Completes only the word being typed: language keywords and builtins plus identifiers already in the file. */
+function wordSource(lang: Lang) {
+  const base = lang === 'python' ? PY_WORDS : JS_WORDS;
+  return (ctx: CompletionContext) => {
+    const w = ctx.matchBefore(/[A-Za-z_$][\w$]*/);
+    if (!w || (w.from === w.to && !ctx.explicit)) return null;
+    const typed = w.text;
+    const seen = new Set<string>(base);
+    for (const m of ctx.state.doc.toString().matchAll(/[A-Za-z_$][\w$]*/g)) {
+      // skip the word under the cursor, it would only suggest itself
+      if (m.index !== undefined && m.index + m[0].length === w.to && m.index === w.from) continue;
+      seen.add(m[0]);
+    }
+    const lower = typed.toLowerCase();
+    const options: Completion[] = [];
+    for (const word of seen) {
+      if (word === typed || !word.toLowerCase().startsWith(lower)) continue;
+      options.push({ label: word, type: base.includes(word) ? 'keyword' : 'variable', boost: base.includes(word) ? 0 : 1 });
+    }
+    if (!options.length) return null;
+    return { from: w.from, options, validFor: /^[\w$]*$/ };
+  };
+}
+
+function assistExt(lang: Lang, on: boolean): Extension {
+  if (!on) return [];
+  return [
+    closeBrackets(),
+    autocompletion({ override: [wordSource(lang)], defaultKeymap: false, icons: false, maxRenderedOptions: 8, activateOnTyping: true, interactionDelay: 0 }),
+    keymap.of([
+      ...closeBracketsKeymap,
+      { key: 'Tab', run: (v) => (completionStatus(v.state) === 'active' ? acceptCompletion(v) : false) },
+      { key: 'ArrowDown', run: (v) => (completionStatus(v.state) === 'active' ? moveCompletionSelection(true)(v) : false) },
+      { key: 'ArrowUp', run: (v) => (completionStatus(v.state) === 'active' ? moveCompletionSelection(false)(v) : false) },
+      { key: 'Escape', run: (v) => (completionStatus(v.state) === 'active' ? closeCompletion(v) : false) },
+    ]),
+  ];
+}
+
 export interface CodeEditorProps {
   value: string;
   onChange?: (v: string) => void;
@@ -77,6 +127,8 @@ export function CodeEditor({ value, onChange, language, errorLine, readOnly, onR
   cbs.current = { onChange, onRun };
   const langComp = useRef(new Compartment());
   const roComp = useRef(new Compartment());
+  const assistComp = useRef(new Compartment());
+  const assist = useApp((s) => s.settings.assist);
 
   useEffect(() => {
     const state = EditorState.create({
@@ -90,6 +142,7 @@ export function CodeEditor({ value, onChange, language, errorLine, readOnly, onR
         indentOnInput(),
         bracketMatching(),
         syntaxHighlighting(highlight),
+        assistComp.current.of(assistExt(language, assist)),
         keymap.of([
           { key: 'Mod-Enter', run: () => (cbs.current.onRun?.(), true) },
           { key: 'Shift-Enter', run: () => (cbs.current.onRun?.(), true) },
@@ -122,8 +175,8 @@ export function CodeEditor({ value, onChange, language, errorLine, readOnly, onR
   }, [value]);
 
   useEffect(() => {
-    view.current?.dispatch({ effects: langComp.current.reconfigure(langExt(language)) });
-  }, [language]);
+    view.current?.dispatch({ effects: [langComp.current.reconfigure(langExt(language)), assistComp.current.reconfigure(assistExt(language, assist))] });
+  }, [language, assist]);
 
   useEffect(() => {
     view.current?.dispatch({ effects: roComp.current.reconfigure([EditorState.readOnly.of(!!readOnly), EditorView.editable.of(!readOnly)]) });

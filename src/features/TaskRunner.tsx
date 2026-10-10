@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { TaskBase } from '@/content/types';
 import { onPyStatus, preloadPython, runTask, type PyStatus, type RunResult } from '@/runner';
+import { show } from '@/runner/compare';
 import { CodeEditor } from '@/ui/CodeEditor';
 import { Icon } from '@/ui/Icon';
 import { useApp } from '@/store/store';
@@ -87,6 +88,33 @@ export function Results({ result }: { result: RunResult | null }) {
   );
 }
 
+
+/** Example calls with their expected output, taken from the task's own tests, so every task shows what a correct answer looks like. */
+export function Examples({ task, max = 3 }: { task: TaskBase; max?: number }) {
+  const tests = task.tests ?? [];
+  if (!tests.length) return null;
+  const shown = tests.slice(0, max);
+  return (
+    <section className="examples" aria-label="Examples">
+      <h3>Examples</h3>
+      <ul>
+        {shown.map((t, i) => (
+          <li key={i}>
+            <div className="ex-call mono">
+              {task.fnName}({t.args.map(show).join(', ')})
+            </div>
+            <div className="ex-out mono">
+              <span className="ex-label">returns</span> {show(t.expected)}
+            </div>
+            {t.name && <div className="ex-name">{t.name}</div>}
+          </li>
+        ))}
+      </ul>
+      {tests.length > shown.length && <p className="ex-more">{tests.length - shown.length} more cases run when you press Run tests.</p>}
+    </section>
+  );
+}
+
 export interface TaskRunnerProps {
   task: TaskBase;
   starter: string;
@@ -155,6 +183,7 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
           {running ? <span className="spin" /> : <Icon name="run" size={14} />} {running ? 'Running…' : runLabel}
         </button>
       </div>
+      <Examples task={task} />
       <CodeEditor value={code} onChange={onChange} language={task.language} errorLine={result?.errorLine ?? result?.outcomes.find((o) => o.line)?.line} onRun={run} minHeight={minHeight} />
       <Results result={result} />
     </div>

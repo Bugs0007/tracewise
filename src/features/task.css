@@ -321,3 +321,41 @@
   font-size: var(--fs-xs);
   color: var(--ink-muted);
 }
+
+.examples h3 {
+  margin: 0 0 6px;
+  font-size: var(--fs-md, 1rem);
+}
+.examples ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 6px;
+}
+.examples li {
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  background: var(--panel);
+  padding: 8px 12px;
+  min-width: 0;
+}
+.examples .mono {
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+.examples .ex-label {
+  color: var(--text-3);
+  margin-right: 6px;
+}
+.examples .ex-name {
+  margin-top: 2px;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+.examples .ex-more {
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}

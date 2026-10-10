@@ -78,6 +78,9 @@ export default function SettingsPage() {
         <Row label="Focus mode" help="Hide navigation and keep only the current task on screen.">
           <Toggle label="Focus mode" on={settings.focus} onChange={(v) => set({ focus: v })} />
         </Row>
+        <Row label="Editor assists" help="Suggests words as you type (Tab to accept) and closes brackets and quotes. Turn off to practise raw typing.">
+          <Toggle label="Editor assists" on={settings.assist} onChange={(v) => set({ assist: v })} />
+        </Row>
         <Row label="Editor font size">
           <div className="row">
             <button className="btn sm icon" onClick={() => set({ fontSize: Math.max(11, settings.fontSize - 1) })} aria-label="Smaller">

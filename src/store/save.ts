@@ -45,6 +45,8 @@ export interface Settings {
   focus: boolean;
   speed: number;
   fontSize: number;
+  /** word autocomplete and auto-closing brackets in code editors */
+  assist: boolean;
 }
 
 export interface SaveData {
@@ -65,7 +67,7 @@ export interface SaveData {
   settings: Settings;
 }
 
-export const DEFAULT_SETTINGS: Settings = { theme: 'system', motion: 'system', sound: false, focus: false, speed: 1, fontSize: 14 };
+export const DEFAULT_SETTINGS: Settings = { theme: 'system', motion: 'system', sound: false, focus: false, speed: 1, fontSize: 14, assist: true };
 
 export function freshSave(): SaveData {
   return {
