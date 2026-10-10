@@ -2,7 +2,7 @@
 
 **Watch it. Predict it. Type it yourself.** An open-source, interactive interview-prep console for software engineers — step-through visualizers driven by real execution, then a typing ladder that fades the scaffolding until you can write it from a blank page.
 
-Runs entirely in your browser: no backend, no accounts, no tracking. Python runs in WebAssembly (Pyodide), JavaScript in a worker, React in a sandboxed iframe. Your progress stays in local storage, with JSON export/import.
+Runs entirely in your browser: no backend, no tracking, and accounts are optional (local-first by default; see [docs/ACCOUNTS.md](docs/ACCOUNTS.md) to add Google sign-in and cross-device sync). Python runs in WebAssembly (Pyodide), JavaScript in a worker, React in a sandboxed iframe. Your progress stays in local storage, with JSON export/import.
 
 > Built for developers who've leaned on AI coding tools and want their hands back on the keyboard: short units, instant feedback, no walls of text, and **no AI help anywhere in the app**.
 

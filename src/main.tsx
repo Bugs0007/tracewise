@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { initAccount } from './account/account';
 import '@fontsource/schibsted-grotesk/latin-400.css';
 import '@fontsource/schibsted-grotesk/latin-500.css';
 import '@fontsource/schibsted-grotesk/latin-700.css';
@@ -14,6 +15,8 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 );
+
+void initAccount();
 
 // Offline support: cache the app shell and assets after first load (production only).
 if ('serviceWorker' in navigator && import.meta.env.PROD) {

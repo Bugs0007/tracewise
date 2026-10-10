@@ -4,6 +4,8 @@ import { exportSave, importSave, SaveError, type Settings } from '@/store/save';
 import { Icon } from '@/ui/Icon';
 import { Modal } from '@/ui/common';
 import { playSound } from '@/lib/sound';
+import { AccountCard } from '@/account/AccountCard';
+import { accountsConfigured, deleteCloudCopy, useAccount } from '@/account/account';
 
 function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
   return <button className="toggle" role="switch" aria-checked={on} aria-label={label} onClick={() => onChange(!on)} />;
@@ -29,6 +31,7 @@ export default function SettingsPage() {
   const [msg, setMsg] = useState<{ tone: 'good' | 'bad'; text: string } | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const signedIn = useAccount((a) => a.status === 'signed-in');
   const set = (p: Partial<Settings>) => setSettings(p);
 
   const doExport = () => {
@@ -90,10 +93,14 @@ export default function SettingsPage() {
         </Row>
       </div>
 
+      <AccountCard />
+
       <h2 style={{ marginTop: 28 }}>Your data</h2>
       <div className="card col" style={{ gap: 14 }}>
         <p className="muted" style={{ margin: 0 }}>
-          Everything — progress, XP, streaks, drafts, settings — lives only in this browser. Nothing is sent anywhere. Export a backup to move devices or keep it safe.
+          {accountsConfigured
+            ? 'Progress, XP, streaks, drafts and settings are saved in this browser. If you sign in, a copy also syncs to your account so it follows you across devices. Export a backup any time.'
+            : 'Everything — progress, XP, streaks, drafts, settings — lives only in this browser. Nothing is sent anywhere. Export a backup to move devices or keep it safe.'}
         </p>
         <div className="row">
           <button className="btn" onClick={doExport} data-testid="export">
@@ -137,7 +144,7 @@ export default function SettingsPage() {
       </div>
 
       <Modal open={confirmReset} onClose={() => setConfirmReset(false)} title="Reset all progress?">
-        <p>This wipes XP, streaks, unit progress, drafts and settings from this browser. Export first if you might want it back.</p>
+        <p>This wipes XP, streaks, unit progress, drafts and settings from this browser{signedIn ? ' and deletes your cloud copy' : ''}. Export first if you might want it back.</p>
         <div className="row">
           <span className="spacer" />
           <button className="btn" onClick={() => setConfirmReset(false)}>
@@ -146,7 +153,16 @@ export default function SettingsPage() {
           <button
             className="btn"
             style={{ background: 'var(--bad)', color: '#fff', borderColor: 'transparent' }}
-            onClick={() => {
+            onClick={async () => {
+              // signed in: remove the cloud copy first, or the next sync would merge it straight back
+              if (signedIn) {
+                const err = await deleteCloudCopy();
+                if (err) {
+                  setConfirmReset(false);
+                  setMsg({ tone: 'bad', text: err });
+                  return;
+                }
+              }
               resetAll();
               persistNow();
               setConfirmReset(false);
