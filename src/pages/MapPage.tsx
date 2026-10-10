@@ -1,6 +1,7 @@
 import { MODULES, topicsOf, type ModuleId } from '@/content/catalog';
 import { AVAILABLE_UNITS } from '@/content/loader';
 import { href } from '@/router';
+import { trackProgress } from '@/dsa/progress';
 import { useApp } from '@/store/store';
 import { STEP_ORDER } from '@/store/save';
 import { moduleProgress } from './HomePage';
@@ -11,6 +12,7 @@ export default function MapPage({ module }: { module?: string }) {
   const mod = MODULES.find((m) => m.id === module) ?? MODULES[0];
   const topics = topicsOf(mod.id as ModuleId);
   const p = moduleProgress(units, mod.id);
+  const track = trackProgress(useApp((s) => s.dsa));
 
   return (
     <div className="page">
@@ -32,6 +34,16 @@ export default function MapPage({ module }: { module?: string }) {
           <b style={{ color: 'var(--ink)' }}>{p.done}</b> of {p.total} cleared
         </p>
       </div>
+
+      {mod.id === 'dsa' && (
+        <a className="plain-row" href={href('/dsa')} data-testid="dsa-track-link" style={{ borderTop: '1px solid var(--ink)' }}>
+          <div className="grow">
+            <h3>NeetCode 150 track</h3>
+            <p>The classic interview list in 18 pattern groups. Spot the pattern, watch the algorithm run, then write it yourself.</p>
+          </div>
+          <span className="chip">{track.solved} of {track.total} solved</span>
+        </a>
+      )}
 
       <div className="index">
         {topics.map((t) => (

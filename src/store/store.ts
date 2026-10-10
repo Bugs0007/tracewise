@@ -11,6 +11,7 @@ import {
   scheduleReview,
   STEP_ORDER,
   STORAGE_KEY,
+  type DsaProblemProgress,
   type InterviewRecord,
   type ReviewKind,
   type SaveData,
@@ -39,6 +40,11 @@ interface Actions {
   recordInterview: (r: InterviewRecord) => void;
   recordGym: (wpm: number) => void;
   setCapstone: (id: string, patch: Partial<SaveData['capstone'][string]>) => void;
+  /** record progress on a NeetCode track problem (counters and flags merge into the stored record) */
+  dsaProblem: (slug: string, patch: Partial<DsaProblemProgress>) => void;
+  /** "Mark solved" / "Needs review" on a track problem; needs-review also joins the Leitner queue */
+  dsaMark: (slug: string, status: 'solved' | 'review' | null) => void;
+  dsaBoss: (topic: string, patch: { quizScore?: number; solved?: boolean }) => void;
   replaceAll: (d: SaveData) => void;
   resetAll: () => void;
   dismiss: (id: number) => void;
@@ -182,6 +188,39 @@ export const useApp = create<AppState>((set, get) => {
         return { capstone: { ...s.capstone, [id]: { ...cur, ...patch } } };
       }),
 
+    dsaProblem: (slug, patch) =>
+      set((s) => {
+        const cur = s.dsa.problems[slug] ?? { hints: 0, predictRight: 0, predictTotal: 0 };
+        return { dsa: { ...s.dsa, problems: { ...s.dsa.problems, [slug]: { ...cur, ...patch, lastSeen: dayKey() } } } };
+      }),
+
+    dsaMark: (slug, status) =>
+      set((s) => {
+        const cur = s.dsa.problems[slug] ?? { hints: 0, predictRight: 0, predictTotal: 0 };
+        const next: DsaProblemProgress = { ...cur, lastSeen: dayKey(), at: new Date().toISOString() };
+        if (status) next.status = status;
+        else delete next.status;
+        const key = `dsa:${slug}:problem`;
+        const review = { ...s.review };
+        // "needs review" joins the queue; solving (or clearing) retires it
+        if (status === 'review') review[key] = scheduleReview(review[key], `dsa:${slug}`, 'problem', false);
+        else delete review[key];
+        const patch: Partial<AppState> = { dsa: { ...s.dsa, problems: { ...s.dsa.problems, [slug]: next } }, review };
+        if (status === 'solved' && cur.status !== 'solved') Object.assign(patch, gain(s, 20));
+        return patch;
+      }),
+
+    dsaBoss: (topic, patch) =>
+      set((s) => {
+        const cur = s.dsa.bosses[topic] ?? {};
+        const next = { ...cur };
+        if (patch.quizScore !== undefined) next.quizBest = Math.max(cur.quizBest ?? 0, patch.quizScore);
+        if (patch.solved && !cur.solvedAt) next.solvedAt = new Date().toISOString();
+        const out: Partial<AppState> = { dsa: { ...s.dsa, bosses: { ...s.dsa.bosses, [topic]: next } } };
+        if (patch.solved && !cur.solvedAt) Object.assign(out, gain(s, 40));
+        return out;
+      }),
+
     replaceAll: (d) => set({ ...d }),
 
     resetAll: () => set({ ...freshSave() }),
@@ -207,6 +246,7 @@ export function persistNow(): void {
     interviews: s.interviews,
     gym: s.gym,
     capstone: s.capstone,
+    dsa: s.dsa,
     settings: s.settings,
   };
   try {

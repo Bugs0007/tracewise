@@ -64,6 +64,20 @@ describe('save', () => {
     expect(j.settings.sound).toBe(false);
     expect(j.badges).toEqual(['x']);
   });
+  it('migrates a v1 save to v2 with empty track progress, and keeps what is there', () => {
+    const v1 = migrate({ schema: 1, xp: 90, units: { a: { steps: { predict: true } } } });
+    expect(v1.schema).toBe(2);
+    expect(v1.dsa).toEqual({ problems: {}, bosses: {} });
+    expect(v1.units.a).toBeDefined();
+    const v2 = migrate({ schema: 2, dsa: { problems: { 'two-sum': { status: 'solved', hints: 1, predictRight: 2, predictTotal: 3 } }, bosses: 'junk' } });
+    expect(v2.dsa.problems['two-sum'].status).toBe('solved');
+    expect(v2.dsa.bosses).toEqual({});
+    // hand-edited junk is coerced, not trusted
+    const junk = migrate({ schema: 2, dsa: { problems: { a: { status: 'banana', hints: -4, predictTotal: 'x', typed: 'yes' }, b: 7 }, bosses: { t: { quizBest: -1, solvedAt: 5 } } } });
+    expect(junk.dsa.problems.a).toEqual({ hints: 0, predictRight: 0, predictTotal: 0 });
+    expect(junk.dsa.problems.b).toBeUndefined();
+    expect(junk.dsa.bosses.t).toEqual({});
+  });
   it('rejects newer schemas and non-objects', () => {
     expect(() => migrate({ schema: 999 })).toThrow(/newer/);
     expect(() => importSave('[]')).toThrow();

@@ -2,7 +2,7 @@
 // Bump SCHEMA_VERSION and add a step to MIGRATIONS whenever the shape changes.
 import type { LadderLevel } from '@/content/ladder';
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 export const STORAGE_KEY = 'tracewise:save';
 
 export type StepId = 'predict' | 'watch' | 'type' | 'debug' | 'boss';
@@ -18,7 +18,7 @@ export interface UnitProgress {
   lastSeen?: string;
 }
 
-export type ReviewKind = 'predict' | 'practice' | 'debug' | 'boss';
+export type ReviewKind = 'predict' | 'practice' | 'debug' | 'boss' | 'problem';
 
 export interface ReviewItem {
   key: string;
@@ -29,6 +29,36 @@ export interface ReviewItem {
   due: string;
   lapses: number;
 }
+
+/** Progress on the NeetCode 150 track (src/dsa). Keyed by LeetCode slug / topic id. */
+export interface DsaProblemProgress {
+  /** set by "Mark solved" / "Needs review" */
+  status?: 'solved' | 'review';
+  /** when status last changed (ISO), so the latest decision wins when merging devices */
+  at?: string;
+  /** answered "Spot the pattern" correctly on the first try */
+  pattern?: boolean;
+  hints: number;
+  predictRight: number;
+  predictTotal: number;
+  /** the in-browser tests have passed at least once */
+  typed?: boolean;
+  /** the reference solution was revealed */
+  revealed?: boolean;
+  lastSeen?: string;
+}
+
+export interface DsaBossProgress {
+  quizBest?: number;
+  solvedAt?: string;
+}
+
+export interface DsaSave {
+  problems: Record<string, DsaProblemProgress>;
+  bosses: Record<string, DsaBossProgress>;
+}
+
+export const emptyDsa = (): DsaSave => ({ problems: {}, bosses: {} });
 
 export interface InterviewRecord {
   at: string;
@@ -64,6 +94,7 @@ export interface SaveData {
   interviews: InterviewRecord[];
   gym: { bestWpm: number; sessions: number };
   capstone: Record<string, { milestone: number; backend: string; frontend: string; done?: string }>;
+  dsa: DsaSave;
   settings: Settings;
 }
 
@@ -83,6 +114,7 @@ export function freshSave(): SaveData {
     interviews: [],
     gym: { bestWpm: 0, sessions: 0 },
     capstone: {},
+    dsa: emptyDsa(),
     settings: { ...DEFAULT_SETTINGS },
   };
 }
@@ -91,6 +123,8 @@ export function freshSave(): SaveData {
 const MIGRATIONS: Record<number, (d: any) => any> = {
   // v0 = pre-release format without a schema field: {xp, progress}
   0: (d) => ({ ...freshSave(), xp: Number(d.xp) || 0, units: d.progress ?? d.units ?? {}, schema: 1 }),
+  // v2 adds the NeetCode 150 track progress
+  1: (d) => ({ ...d, dsa: emptyDsa(), schema: 2 }),
 };
 
 export class SaveError extends Error {}
@@ -107,6 +141,33 @@ export function migrate(raw: unknown): SaveData {
     v = d.schema;
   }
   return sanitize(d);
+}
+
+function sanitizeDsa(x: any): DsaSave {
+  const isObj = (v: unknown): v is Record<string, any> => !!v && typeof v === 'object' && !Array.isArray(v);
+  const n = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.floor(v) : 0);
+  const str = (v: unknown) => (typeof v === 'string' && v ? v : undefined);
+  const problems: DsaSave['problems'] = {};
+  for (const [slug, p] of Object.entries(isObj(x?.problems) ? x.problems : {})) {
+    if (!isObj(p)) continue;
+    const out: DsaProblemProgress = { hints: n(p.hints), predictRight: n(p.predictRight), predictTotal: n(p.predictTotal) };
+    if (p.status === 'solved' || p.status === 'review') out.status = p.status;
+    if (str(p.at)) out.at = str(p.at);
+    if (typeof p.pattern === 'boolean') out.pattern = p.pattern;
+    if (p.typed === true) out.typed = true;
+    if (p.revealed === true) out.revealed = true;
+    if (str(p.lastSeen)) out.lastSeen = str(p.lastSeen);
+    problems[slug] = out;
+  }
+  const bosses: DsaSave['bosses'] = {};
+  for (const [topic, b] of Object.entries(isObj(x?.bosses) ? x.bosses : {})) {
+    if (!isObj(b)) continue;
+    const out: DsaBossProgress = {};
+    if (typeof b.quizBest === 'number' && Number.isFinite(b.quizBest) && b.quizBest >= 0) out.quizBest = Math.floor(b.quizBest);
+    if (str(b.solvedAt)) out.solvedAt = str(b.solvedAt);
+    bosses[topic] = out;
+  }
+  return { problems, bosses };
 }
 
 /** Fill missing fields with defaults and drop wrong types, so partial/old data never crashes the app. */
@@ -127,6 +188,7 @@ function sanitize(d: any): SaveData {
     interviews: Array.isArray(d.interviews) ? d.interviews : [],
     gym: { ...f.gym, ...obj(d.gym, {}) },
     capstone: obj(d.capstone, {}),
+    dsa: sanitizeDsa(d.dsa),
     settings: { ...DEFAULT_SETTINGS, ...obj(d.settings, {}) },
   };
 }

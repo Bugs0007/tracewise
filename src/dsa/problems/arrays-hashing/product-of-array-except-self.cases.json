@@ -1,0 +1,146 @@
+{
+ "fn": "product_except_self",
+ "cases": [
+  {
+   "name": "four numbers",
+   "args": [
+    [
+     3,
+     5,
+     2,
+     4
+    ]
+   ],
+   "expected": [
+    40,
+    24,
+    60,
+    30
+   ]
+  },
+  {
+   "name": "one zero",
+   "args": [
+    [
+     2,
+     -2,
+     0,
+     4,
+     -5
+    ]
+   ],
+   "expected": [
+    0,
+    0,
+    80,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "two zeros",
+   "args": [
+    [
+     0,
+     0,
+     2
+    ]
+   ],
+   "expected": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "two elements",
+   "args": [
+    [
+     2,
+     3
+    ]
+   ],
+   "expected": [
+    3,
+    2
+   ]
+  },
+  {
+   "name": "single element",
+   "args": [
+    [
+     5
+    ]
+   ],
+   "expected": [
+    1
+   ]
+  },
+  {
+   "name": "all ones",
+   "args": [
+    [
+     1,
+     1,
+     1
+    ]
+   ],
+   "expected": [
+    1,
+    1,
+    1
+   ]
+  },
+  {
+   "name": "negatives",
+   "args": [
+    [
+     -2,
+     -3,
+     4
+    ]
+   ],
+   "expected": [
+    -12,
+    -8,
+    6
+   ]
+  },
+  {
+   "name": "zero first",
+   "args": [
+    [
+     0,
+     4,
+     5
+    ]
+   ],
+   "expected": [
+    20,
+    0,
+    0
+   ]
+  },
+  {
+   "name": "longer run",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ]
+   ],
+   "expected": [
+    720,
+    360,
+    240,
+    180,
+    144,
+    120
+   ]
+  }
+ ]
+}

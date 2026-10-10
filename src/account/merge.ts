@@ -2,7 +2,7 @@
 // never loses progress, so syncing in any order, from any number of devices, converges on the same result.
 // Known limit: because progress only ever grows under a merge, deleting something on one device (a retired
 // review item, a reset) is not propagated. Reset therefore also deletes the cloud copy (see account.ts).
-import { DEFAULT_SETTINGS, freshSave, type InterviewRecord, type ReviewItem, type SaveData, type UnitProgress } from '@/store/save';
+import { DEFAULT_SETTINGS, freshSave, type DsaBossProgress, type DsaProblemProgress, type DsaSave, type InterviewRecord, type ReviewItem, type SaveData, type UnitProgress } from '@/store/save';
 
 const earliest = (a?: string, b?: string) => (a && b ? (a < b ? a : b) : a ?? b);
 const latest = (a?: string, b?: string) => (a && b ? (a > b ? a : b) : a ?? b);
@@ -33,6 +33,41 @@ function mergeReview(a: ReviewItem, b: ReviewItem): ReviewItem {
 function mergeStreak(a: SaveData['streak'], b: SaveData['streak']): SaveData['streak'] {
   const lead = (a.lastDay ?? '') !== (b.lastDay ?? '') ? ((a.lastDay ?? '') > (b.lastDay ?? '') ? a : b) : b.count > a.count ? b : a;
   return { count: lead.count, lastDay: lead.lastDay, best: Math.max(a.best, b.best, lead.count) };
+}
+
+function mergeDsaProblem(a: DsaProblemProgress, b: DsaProblemProgress): DsaProblemProgress {
+  // the latest explicit decision (solved / needs review) wins; counters only grow; flags are a union
+  const lead = (a.at ?? '') >= (b.at ?? '') ? a : b;
+  const out: DsaProblemProgress = {
+    hints: Math.max(a.hints, b.hints),
+    predictRight: Math.max(a.predictRight, b.predictRight),
+    predictTotal: Math.max(a.predictTotal, b.predictTotal),
+  };
+  if (lead.status) out.status = lead.status;
+  if (lead.at) out.at = lead.at;
+  if (a.pattern || b.pattern) out.pattern = true;
+  if (a.typed || b.typed) out.typed = true;
+  if (a.revealed || b.revealed) out.revealed = true;
+  const seen = latest(a.lastSeen, b.lastSeen);
+  if (seen) out.lastSeen = seen;
+  return out;
+}
+
+function mergeDsaBoss(a: DsaBossProgress, b: DsaBossProgress): DsaBossProgress {
+  const out: DsaBossProgress = {};
+  const best = Math.max(a.quizBest ?? -1, b.quizBest ?? -1);
+  if (best >= 0) out.quizBest = best;
+  const at = earliest(a.solvedAt, b.solvedAt);
+  if (at) out.solvedAt = at;
+  return out;
+}
+
+export function mergeDsa(local: DsaSave, remote: DsaSave): DsaSave {
+  const problems: DsaSave['problems'] = { ...remote.problems };
+  for (const [id, p] of Object.entries(local.problems)) problems[id] = remote.problems[id] ? mergeDsaProblem(p, remote.problems[id]) : p;
+  const bosses: DsaSave['bosses'] = { ...remote.bosses };
+  for (const [id, b] of Object.entries(local.bosses)) bosses[id] = remote.bosses[id] ? mergeDsaBoss(b, remote.bosses[id]) : b;
+  return { problems, bosses };
 }
 
 export function isDefaultSettings(s: SaveData['settings']): boolean {
@@ -81,6 +116,7 @@ export function mergeSaves(local: SaveData, remote: SaveData): SaveData {
     interviews,
     gym: { bestWpm: Math.max(local.gym.bestWpm, remote.gym.bestWpm), sessions: Math.max(local.gym.sessions, remote.gym.sessions) },
     capstone,
+    dsa: mergeDsa(local.dsa, remote.dsa),
     // settings are per device; a brand-new device (still on defaults) adopts the cloud copy's
     settings: isDefaultSettings(local.settings) ? remote.settings : local.settings,
   };

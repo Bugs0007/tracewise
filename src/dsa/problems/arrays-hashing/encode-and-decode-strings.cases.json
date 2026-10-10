@@ -1,0 +1,124 @@
+{
+ "fn": "encode",
+ "cases": [
+  {
+   "name": "ordinary words",
+   "args": [
+    [
+     "tree",
+     "stone",
+     "river",
+     "bell"
+    ]
+   ],
+   "expected": [
+    "tree",
+    "stone",
+    "river",
+    "bell"
+   ]
+  },
+  {
+   "name": "no strings",
+   "args": [
+    []
+   ],
+   "expected": []
+  },
+  {
+   "name": "one empty string",
+   "args": [
+    [
+     ""
+    ]
+   ],
+   "expected": [
+    ""
+   ]
+  },
+  {
+   "name": "two empty strings",
+   "args": [
+    [
+     "",
+     ""
+    ]
+   ],
+   "expected": [
+    "",
+    ""
+   ]
+  },
+  {
+   "name": "delimiter characters inside",
+   "args": [
+    [
+     "#",
+     "1#",
+     "12#a",
+     "#5#"
+    ]
+   ],
+   "expected": [
+    "#",
+    "1#",
+    "12#a",
+    "#5#"
+   ]
+  },
+  {
+   "name": "commas, spaces, newlines",
+   "args": [
+    [
+     "a,b",
+     "c d",
+     "e\nf"
+    ]
+   ],
+   "expected": [
+    "a,b",
+    "c d",
+    "e\nf"
+   ]
+  },
+  {
+   "name": "non-ASCII text",
+   "args": [
+    [
+     "héllo",
+     "日本語"
+    ]
+   ],
+   "expected": [
+    "héllo",
+    "日本語"
+   ]
+  },
+  {
+   "name": "looks like an encoding",
+   "args": [
+    [
+     "5#hello"
+    ]
+   ],
+   "expected": [
+    "5#hello"
+   ]
+  },
+  {
+   "name": "a long string",
+   "args": [
+    [
+     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "",
+     "yyyyyyyyyyyy"
+    ]
+   ],
+   "expected": [
+    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "",
+    "yyyyyyyyyyyy"
+   ]
+  }
+ ]
+}

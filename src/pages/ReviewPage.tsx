@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CATALOG, CATALOG_BY_ID } from '@/content/catalog';
+import { PROBLEM_BY_ID } from '@/dsa/catalog';
 import { AVAILABLE_UNITS, loadUnit } from '@/content/loader';
 import type { Unit } from '@/content/types';
 import { href, navigate, useRoute } from '@/router';
@@ -23,7 +24,7 @@ function shuffle<T>(a: T[]): T[] {
 
 /** Quick 10: due reviews first, then quick questions from units you've touched (or the next ones), then one bug to fix. */
 export function buildQuickSession(due: ReviewItem[], units: Record<string, { completedAt?: string; steps: Record<string, boolean | undefined> }>): SessionItem[] {
-  const items: SessionItem[] = due.slice(0, 4).map((r) => ({ unitId: r.unitId, kind: r.kind, fromQueue: true }));
+  const items: SessionItem[] = due.filter((r) => r.kind !== 'problem').slice(0, 4).map((r) => ({ unitId: r.unitId, kind: r.kind, fromQueue: true }));
   const avail = CATALOG.filter((c) => AVAILABLE_UNITS.has(c.id));
   const touched = avail.filter((c) => units[c.id]);
   const pool = touched.length >= 3 ? touched : avail.slice(0, Math.max(3, touched.length + 3));
@@ -63,7 +64,7 @@ export default function ReviewPage() {
         <a className="btn" href={href('/review?quick=1')}>
           <Icon name="bolt" size={16} /> Quick 10
         </a>
-        <button className="btn primary" disabled={!due.length} onClick={() => setSession(due.map((r) => ({ unitId: r.unitId, kind: r.kind, fromQueue: true })))} data-testid="start-review">
+        <button className="btn primary" disabled={!due.some((r) => r.kind !== 'problem')} onClick={() => setSession(due.filter((r) => r.kind !== 'problem').map((r) => ({ unitId: r.unitId, kind: r.kind, fromQueue: true })))} data-testid="start-review">
           <Icon name="play" size={14} /> Review {due.length} due
         </button>
       </div>
@@ -86,7 +87,11 @@ function ReviewList({ items, title }: { items: ReviewItem[]; title: string }) {
         {items.map((r) => (
           <div key={r.key} className="card flat row" style={{ padding: '10px 14px' }}>
             <span className="chip accent">{KIND_LABEL[r.kind]}</span>
-            <a href={href(`/unit/${r.unitId}`)}>{CATALOG_BY_ID[r.unitId]?.title ?? r.unitId}</a>
+            {r.unitId.startsWith('dsa:') ? (
+              <a href={href(`/dsa/${PROBLEM_BY_ID[r.unitId.slice(4)]?.topic}/${r.unitId.slice(4)}`)}>{PROBLEM_BY_ID[r.unitId.slice(4)]?.title ?? r.unitId}</a>
+            ) : (
+              <a href={href(`/unit/${r.unitId}`)}>{CATALOG_BY_ID[r.unitId]?.title ?? r.unitId}</a>
+            )}
             <span className="spacer" />
             <span className="dim mono" style={{ fontSize: 13 }}>
               box {r.box}, due {r.due}

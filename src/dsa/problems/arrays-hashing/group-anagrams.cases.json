@@ -1,0 +1,146 @@
+{
+ "fn": "group_anagrams",
+ "compare": "nested",
+ "cases": [
+  {
+   "name": "three groups",
+   "args": [
+    [
+     "stop",
+     "pots",
+     "tops",
+     "cat",
+     "act",
+     "dog"
+    ]
+   ],
+   "expected": [
+    [
+     "dog"
+    ],
+    [
+     "cat",
+     "act"
+    ],
+    [
+     "stop",
+     "pots",
+     "tops"
+    ]
+   ]
+  },
+  {
+   "name": "empty string",
+   "args": [
+    [
+     ""
+    ]
+   ],
+   "expected": [
+    [
+     ""
+    ]
+   ]
+  },
+  {
+   "name": "single word",
+   "args": [
+    [
+     "a"
+    ]
+   ],
+   "expected": [
+    [
+     "a"
+    ]
+   ]
+  },
+  {
+   "name": "no input",
+   "args": [
+    []
+   ],
+   "expected": []
+  },
+  {
+   "name": "mixed lengths",
+   "args": [
+    [
+     "ab",
+     "ba",
+     "abc",
+     "cab",
+     "b"
+    ]
+   ],
+   "expected": [
+    [
+     "ab",
+     "ba"
+    ],
+    [
+     "abc",
+     "cab"
+    ],
+    [
+     "b"
+    ]
+   ]
+  },
+  {
+   "name": "three empty strings",
+   "args": [
+    [
+     "",
+     "",
+     ""
+    ]
+   ],
+   "expected": [
+    [
+     "",
+     "",
+     ""
+    ]
+   ]
+  },
+  {
+   "name": "same letters, different counts",
+   "args": [
+    [
+     "aab",
+     "aba",
+     "baa",
+     "abb"
+    ]
+   ],
+   "expected": [
+    [
+     "aab",
+     "aba",
+     "baa"
+    ],
+    [
+     "abb"
+    ]
+   ]
+  },
+  {
+   "name": "repeated words",
+   "args": [
+    [
+     "abc",
+     "abc",
+     "bca"
+    ]
+   ],
+   "expected": [
+    [
+     "abc",
+     "abc",
+     "bca"
+    ]
+   ]
+  }
+ ]
+}

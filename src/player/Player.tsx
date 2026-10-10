@@ -23,6 +23,8 @@ export interface PlayerProps {
   onQuizAnswer?: (correct: boolean) => void;
   compact?: boolean;
   hideInputs?: boolean;
+  /** 'authored': ask only the checkpoints a trace generator attached to its frames (Frame.predict) */
+  predictMode?: 'generic' | 'authored';
 }
 
 const SPEEDS = [0.5, 1, 2, 4];
@@ -32,6 +34,8 @@ interface QuizState {
   options: string[];
   answer: number;
   chosen: number | null;
+  question?: string;
+  explain?: string;
 }
 
 /** Deterministic pseudo-random so quiz options don't reshuffle between renders. */
@@ -73,7 +77,7 @@ function checkpoints(n: number): Set<number> {
   return out;
 }
 
-export function Player({ viz, initialInput, frames: given, onComplete, quizDefault = false, onQuizAnswer, compact, hideInputs }: PlayerProps) {
+export function Player({ viz, initialInput, frames: given, onComplete, quizDefault = false, onQuizAnswer, compact, hideInputs, predictMode = 'generic' }: PlayerProps) {
   const sound = useApp((s) => s.settings.sound);
   const speedPref = useApp((s) => s.settings.speed);
   const setSettings = useApp((s) => s.setSettings);
@@ -91,6 +95,8 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
   const { frames, error } = useMemo(() => {
     if (given) return { frames: given, error: null as string | null };
     try {
+      const bad = viz.validate?.(structuredClone(input) as any);
+      if (bad) return { frames: [] as Frame[], error: bad };
       const r = viz.run(structuredClone(input) as any);
       return { frames: r.frames, error: r.frames.length ? null : 'This input produced no steps.' };
     } catch (e) {
@@ -127,8 +133,9 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
       setPlaying(false);
       return;
     }
-    if (quizOn && cps.has(idx) && !asked.has(idx)) {
-      const q = buildQuiz(frames, idx);
+    const cp = predictMode === 'authored' ? frames[idx]?.predict : undefined;
+    if (quizOn && !asked.has(idx) && (predictMode === 'authored' ? !!cp : cps.has(idx))) {
+      const q: QuizState | null = cp ? { at: idx, options: cp.options, answer: cp.answer, chosen: null, question: cp.question, explain: cp.explain } : buildQuiz(frames, idx);
       if (q) {
         setQuiz(q);
         setPlaying(false);
@@ -138,7 +145,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
     }
     setIdx((i) => Math.min(i + 1, last));
     if (sound) playSound('tick');
-  }, [quiz, idx, last, quizOn, cps, asked, frames, sound]);
+  }, [quiz, idx, last, quizOn, cps, asked, frames, sound, predictMode]);
 
   useEffect(() => {
     if (!playing) return;
@@ -289,10 +296,10 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
             </div>
           ) : null}
           <Legend />
-          {quiz && (
+          {quiz && !quiz.question && (
             <div className="predict" role="dialog" aria-label="Predict the next step">
               <div className="predict-box pop">
-                <h3>What happens next?</h3>
+                <h3>{quiz.question ?? 'What happens next?'}</h3>
                 {quiz.options.map((o, i) => (
                   <button key={i} className={`opt${quiz.chosen !== null && i === quiz.answer ? ' right' : ''}${quiz.chosen === i && i !== quiz.answer ? ' wrong' : ''}`} disabled={quiz.chosen !== null} onClick={() => answerQuiz(i)}>
                     <kbd>{i + 1}</kbd>
@@ -302,6 +309,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
                 {quiz.chosen !== null && (
                   <div className="row" style={{ marginTop: 10 }}>
                     <span className={`chip ${quiz.chosen === quiz.answer ? 'good' : 'bad'}`}>{quiz.chosen === quiz.answer ? 'Correct' : 'Not quite. Watch what happens.'}</span>
+                    {quiz.explain && <span className="predict-why">{quiz.explain}</span>}
                     <span className="spacer" />
                     <button className="btn primary" onClick={continueQuiz} autoFocus>
                       Continue
@@ -316,6 +324,30 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
           <p className="caption" key={idx} data-testid="caption">
             {frame.caption}
           </p>
+        )}
+
+        {quiz?.question && (
+          <div className="predict docked" role="dialog" aria-label="Predict the next step">
+              <div className="predict-box pop">
+                <h3>{quiz.question ?? 'What happens next?'}</h3>
+                {quiz.options.map((o, i) => (
+                  <button key={i} className={`opt${quiz.chosen !== null && i === quiz.answer ? ' right' : ''}${quiz.chosen === i && i !== quiz.answer ? ' wrong' : ''}`} disabled={quiz.chosen !== null} onClick={() => answerQuiz(i)}>
+                    <kbd>{i + 1}</kbd>
+                    {o}
+                  </button>
+                ))}
+                {quiz.chosen !== null && (
+                  <div className="row" style={{ marginTop: 10 }}>
+                    <span className={`chip ${quiz.chosen === quiz.answer ? 'good' : 'bad'}`}>{quiz.chosen === quiz.answer ? 'Correct' : 'Not quite. Watch what happens.'}</span>
+                    {quiz.explain && <span className="predict-why">{quiz.explain}</span>}
+                    <span className="spacer" />
+                    <button className="btn primary" onClick={continueQuiz} autoFocus>
+                      Continue
+                    </button>
+                  </div>
+                )}
+              </div>
+          </div>
         )}
 
         <div className="timeline" aria-label="Timeline">

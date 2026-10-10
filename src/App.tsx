@@ -18,10 +18,11 @@ const InterviewPage = lazy(() => import('./pages/InterviewPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const CapstonePage = lazy(() => import('./pages/CapstonePage'));
 const CertificatePage = lazy(() => import('./pages/CertificatePage'));
+const DsaPage = lazy(() => import('./dsa/pages/DsaPage'));
 
 const NAV = [
   { to: '/', label: 'Home', icon: 'home', tab: true, top: false, match: (p: string[]) => p.length === 0 },
-  { to: '/map', label: 'Learn', icon: 'map', tab: true, top: true, match: (p: string[]) => p[0] === 'map' || p[0] === 'unit' },
+  { to: '/map', label: 'Learn', icon: 'map', tab: true, top: true, match: (p: string[]) => p[0] === 'map' || p[0] === 'unit' || p[0] === 'dsa' },
   { to: '/practice', label: 'Practice', icon: 'lab', tab: true, top: true, match: (p: string[]) => ['practice', 'review', 'gym', 'lab'].includes(p[0]) },
   { to: '/interview', label: 'Interview', icon: 'timer', tab: true, top: true, match: (p: string[]) => p[0] === 'interview' },
   { to: '/capstone', label: 'Capstone', icon: 'trophy', tab: true, top: true, match: (p: string[]) => p[0] === 'capstone' || p[0] === 'certificate' },
@@ -145,6 +146,8 @@ function Routes() {
       return <MapPage module={b} />;
     case 'unit':
       return <UnitPage id={b} step={c} />;
+    case 'dsa':
+      return <DsaPage topic={b} slug={c} />;
     case 'practice':
       return <PracticePage />;
     case 'lab':

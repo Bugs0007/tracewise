@@ -1,4 +1,4 @@
-import type { Frame, Panel, Scalar } from './types';
+import type { Frame, Panel, PredictCheckpoint, Scalar } from './types';
 
 const ANCHOR_RE = /\s*(?:#|\/\/)@([\w-]+)\s*$/;
 
@@ -43,6 +43,12 @@ export class Recorder {
     const l = this.anchors[at];
     if (l === undefined) throw new Error(`Unknown code anchor "${at}"`);
     return l;
+  }
+
+  /** attach an authored predict-the-next-step checkpoint to the frame recorded last */
+  attachPredict(p: PredictCheckpoint): void {
+    const f = this.frames[this.frames.length - 1];
+    if (f) f.predict = p;
   }
 
   step(at: string | number | undefined, caption: string, panels: Panel[], vars: Record<string, unknown> = {}): void {

@@ -65,3 +65,32 @@ describe('mergeSaves', () => {
     expect(stable([a, b])).toBe(before);
   });
 });
+
+describe('mergeSaves: NeetCode track progress', () => {
+  const prob = (over: Partial<SaveData['dsa']['problems'][string]> = {}) => ({ hints: 0, predictRight: 0, predictTotal: 0, ...over });
+
+  it('keeps problems from both devices and the latest solved / review decision', () => {
+    const a = save({ dsa: { problems: { x: prob({ status: 'solved', at: '2026-10-01T00:00:00.000Z' }), only_a: prob({ typed: true }) }, bosses: {} } });
+    const b = save({ dsa: { problems: { x: prob({ status: 'review', at: '2026-10-05T00:00:00.000Z' }), only_b: prob({ pattern: true }) }, bosses: {} } });
+    const m = mergeSaves(a, b).dsa.problems;
+    expect(m.x.status).toBe('review'); // the later decision wins
+    expect(Object.keys(m).sort()).toEqual(['only_a', 'only_b', 'x']);
+  });
+
+  it('counters only grow, flags are a union, boss results keep the best and the earliest solve', () => {
+    const a = save({ dsa: { problems: { x: prob({ hints: 3, predictRight: 1, predictTotal: 4, typed: true }) }, bosses: { t: { quizBest: 4, solvedAt: '2026-10-09T00:00:00.000Z' } } } });
+    const b = save({ dsa: { problems: { x: prob({ hints: 1, predictRight: 5, predictTotal: 6, revealed: true }) }, bosses: { t: { quizBest: 6, solvedAt: '2026-10-02T00:00:00.000Z' } } } });
+    const m = mergeSaves(a, b).dsa;
+    expect(m.problems.x).toMatchObject({ hints: 3, predictRight: 5, predictTotal: 6, typed: true, revealed: true });
+    expect(m.bosses.t).toEqual({ quizBest: 6, solvedAt: '2026-10-02T00:00:00.000Z' });
+  });
+
+  it('is commutative and idempotent', () => {
+    const a = save({ dsa: { problems: { x: prob({ status: 'solved', at: '2026-10-01T00:00:00.000Z', hints: 2 }) }, bosses: { t: { quizBest: 3 } } } });
+    const b = save({ dsa: { problems: { x: prob({ status: 'review', at: '2026-10-03T00:00:00.000Z', hints: 1 }), y: prob({ typed: true }) }, bosses: { t: { solvedAt: '2026-10-04T00:00:00.000Z' } } } });
+    const ab = mergeSaves(a, b);
+    expect(stable(ab.dsa)).toBe(stable(mergeSaves(b, a).dsa));
+    expect(stable(mergeSaves(ab, ab).dsa)).toBe(stable(ab.dsa));
+  });
+});
+

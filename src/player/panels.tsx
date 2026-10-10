@@ -8,6 +8,7 @@ import type {
   GraphNode,
   GraphPanel,
   GridPanel,
+  IntervalsPanel,
   KVPanel,
   ListPanel,
   LogPanel,
@@ -69,13 +70,15 @@ export function PanelView({ panel }: { panel: Panel }) {
       return <LogView p={panel} />;
     case 'kv':
       return <KVView p={panel} />;
+    case 'intervals':
+      return <IntervalsView p={panel} />;
     case 'note':
       return <NoteView p={panel} />;
   }
 }
 
 export function isWide(p: Panel): boolean {
-  return p.type === 'graph' || p.type === 'sequence' || p.type === 'timeline' || p.type === 'chart' || (p.type === 'array' && (p.values.length > 8 || !!p.bars)) || p.type === 'note';
+  return p.type === 'graph' || p.type === 'sequence' || p.type === 'timeline' || p.type === 'chart' || p.type === 'intervals' || (p.type === 'array' && (p.values.length > 8 || !!p.bars)) || p.type === 'note';
 }
 
 function Title({ t }: { t?: string }) {
@@ -134,8 +137,8 @@ function ArrayView({ p }: { p: ArrayPanel }) {
   return (
     <div>
       <Title t={p.title} />
-      <div className={`arr${p.bars ? ' bars' : ''}`} role="list" aria-label={p.title ?? 'array'}>
-        {p.range && rangeBox && (
+      <div className={`arr${p.bars ? ' bars' : ''}${p.wrap ? ' wrap' : ''}`} role="list" aria-label={p.title ?? 'array'}>
+        {p.range && rangeBox && !p.wrap && (
           <div className="arr-range" style={{ left: rangeBox.left, width: rangeBox.width, borderColor: p.range.tone ? toneVar(p.range.tone) : undefined }}>
             {p.range.label && <span>{p.range.label}</span>}
           </div>
@@ -205,18 +208,22 @@ function GridView({ p }: { p: GridPanel }) {
       <Title t={p.title} />
       <div className={`gridp${p.compact ? ' compact' : ''}`} style={{ gridTemplateColumns: template }} role="table" aria-label={p.title ?? 'grid'}>
         {p.colLabels && (
-          <>
-            {p.rowLabels && <div className="g-head" style={{ height: lh }} />}
+          <Row>
+            {p.rowLabels && <div className="g-head" role="columnheader" aria-label="row labels" style={{ height: lh }} />}
             {p.colLabels.map((l, c) => (
-              <div key={`ch${c}`} className="g-head" style={{ height: lh }}>
+              <div key={`ch${c}`} className="g-head" role="columnheader" style={{ height: lh }}>
                 {l}
               </div>
             ))}
-          </>
+          </Row>
         )}
         {p.cells.map((row, r) => (
           <Row key={r}>
-            {p.rowLabels && <div className="g-head">{p.rowLabels[r]}</div>}
+            {p.rowLabels && (
+              <div className="g-head" role="rowheader">
+                {p.rowLabels[r]}
+              </div>
+            )}
             {row.map((v, c) => {
               const tone = p.tones?.[`${r},${c}`];
               const heatStyle =
@@ -254,8 +261,13 @@ function GridView({ p }: { p: GridPanel }) {
   );
 }
 
+/** a table row for assistive tech that does not disturb the CSS grid layout of its cells */
 function Row({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <div role="row" style={{ display: 'contents' }}>
+      {children}
+    </div>
+  );
 }
 
 // ─── Graph ──────────────────────────────────────────────
@@ -425,7 +437,7 @@ function GraphView({ p }: { p: GraphPanel }) {
   const labelAt = placeEdgeLabels(p, pos, byId);
   const pad = 34;
   return (
-    <div className="graph">
+    <div className="graph" tabIndex={0} role="region" aria-label={p.title ? `${p.title} (scrollable)` : 'graph (scrollable)'}>
       <Title t={p.title} />
       <svg viewBox={`${-pad} ${-pad} ${p.width + pad * 2} ${p.height + pad * 2}`} role="img" aria-label={`${p.title ?? 'graph'}: ${p.nodes.length} nodes, ${p.edges.length} edges`} style={{ minWidth: p.width + pad * 2, maxWidth: (p.width + pad * 2) * 1.15 }}>
         <defs>
@@ -827,6 +839,71 @@ function NoteView({ p }: { p: NotePanel }) {
   return (
     <div className="notep" data-tone={p.tone ?? 'default'}>
       {p.text}
+    </div>
+  );
+}
+
+// ─── Intervals on a number line ─────────────────────────
+
+function IntervalsView({ p }: { p: IntervalsPanel }) {
+  const all = p.items.flatMap((i) => [i.start, i.end]).concat((p.marks ?? []).map((m) => m.at));
+  const lo = p.min ?? (all.length ? Math.min(...all) : 0);
+  const hi = Math.max(p.max ?? (all.length ? Math.max(...all) : 1), lo + 1);
+  // greedy lane assignment so overlapping bars never sit on top of each other
+  const laneEnd: number[] = [];
+  const lanes = p.items.map((it) => {
+    let l = laneEnd.findIndex((e) => e < it.start);
+    if (l < 0) l = laneEnd.length;
+    laneEnd[l] = it.end;
+    return l;
+  });
+  const W = 640;
+  const padX = 28;
+  const rowH = 30;
+  const top = 26;
+  const H = top + Math.max(1, laneEnd.length) * rowH + 30;
+  const x = (v: number) => padX + ((v - lo) / (hi - lo)) * (W - 2 * padX);
+  const step = Math.max(1, Math.ceil((hi - lo) / 12));
+  const ticks: number[] = [];
+  for (let v = lo; v <= hi; v += step) ticks.push(v);
+  return (
+    <div>
+      <Title t={p.title} />
+      <div className="ivl-wrap" tabIndex={0} role="region" aria-label={p.title ? `${p.title} (scrollable)` : 'intervals (scrollable)'}>
+        <svg className="ivl" viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img" aria-label={p.title ?? 'intervals on a number line'}>
+          <line x1={padX} x2={W - padX} y1={H - 24} y2={H - 24} stroke="var(--ink)" strokeWidth={1.5} />
+          {ticks.map((v) => (
+            <g key={v}>
+              <line x1={x(v)} x2={x(v)} y1={H - 28} y2={H - 20} stroke="var(--ink)" strokeWidth={1.5} />
+              <text x={x(v)} y={H - 6} textAnchor="middle" className="ivl-tick">
+                {v}
+              </text>
+            </g>
+          ))}
+          {p.items.map((it, i) => {
+            const w = Math.max(6, x(it.end) - x(it.start));
+            const y = top + lanes[i] * rowH;
+            return (
+              <g key={i} data-tone={it.tone ?? 'default'}>
+                <rect x={x(it.start)} y={y} width={w} height={rowH - 8} rx={3} className="ivl-bar" />
+                <text x={x(it.start) + w / 2} y={y + (rowH - 8) / 2 + 4.5} textAnchor="middle" className="ivl-label">
+                  {it.label ?? `${it.start}–${it.end}`}
+                </text>
+              </g>
+            );
+          })}
+          {(p.marks ?? []).map((m, i) => (
+            <g key={`m${i}`} data-tone={m.tone ?? 'active'}>
+              <line x1={x(m.at)} x2={x(m.at)} y1={10} y2={H - 24} className="ivl-mark" />
+              {m.label && (
+                <text x={x(m.at)} y={8} textAnchor="middle" className="ivl-tick">
+                  {m.label}
+                </text>
+              )}
+            </g>
+          ))}
+        </svg>
+      </div>
     </div>
   );
 }

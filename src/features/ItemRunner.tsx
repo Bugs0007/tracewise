@@ -24,6 +24,7 @@ export const KIND_LABEL: Record<ItemKind, string> = {
   practice: 'Type it (signature only)',
   debug: 'Fix the bug',
   boss: 'Boss rematch',
+  problem: 'Track problem',
 };
 
 export function questionsOf(u: Unit): Question[] {

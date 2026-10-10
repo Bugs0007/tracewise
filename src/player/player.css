@@ -773,3 +773,69 @@
 .opt kbd {
   flex: none;
 }
+
+/* intervals on a number line */
+.ivl-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.ivl {
+  display: block;
+  max-width: none;
+}
+.ivl-bar {
+  fill: var(--tc);
+  stroke: var(--tb);
+  stroke-width: 1.5;
+  transition: fill var(--dur) var(--ease);
+}
+.ivl-label {
+  fill: var(--ti);
+  font: 600 13px var(--font-mono);
+}
+.ivl-tick {
+  fill: var(--ink-muted);
+  font: 500 13px var(--font-mono);
+}
+.ivl-mark {
+  stroke: var(--tb);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+
+/* authored checkpoints sit under the stage so the state being predicted stays visible */
+.predict.docked {
+  position: static;
+  background: none;
+  padding: 0;
+  display: block;
+}
+.predict.docked .predict-box {
+  width: 100%;
+  border-color: var(--cobalt);
+  border-width: 2px;
+  padding: 14px 16px;
+}
+.predict.docked h3 {
+  font-size: var(--fs-m);
+  margin-bottom: 8px;
+}
+.predict-why {
+  color: var(--ink-muted);
+  font-size: var(--fs-s);
+  flex: 1 1 200px;
+}
+
+/* long arrays and strings wrap onto several rows (each row leaves room for its pointer labels) */
+.arr.wrap {
+  flex-wrap: wrap;
+  overflow-x: visible;
+  row-gap: 30px;
+  padding-bottom: 40px;
+}
+.arr.wrap .arr-box {
+  min-width: 34px;
+  height: 38px;
+  padding: 0 4px;
+  font-size: var(--fs-s);
+}

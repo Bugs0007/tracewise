@@ -1,0 +1,334 @@
+/* NeetCode 150 track. Built on the shared tokens: four inks, 1px rules, no gradients or shadows. */
+
+.dsa-page {
+  max-width: 1180px;
+}
+.dsa-head {
+  margin: 6px 0 4px;
+}
+.dsa-head h1 {
+  margin: 0 0 8px;
+}
+.ledger-row.soon {
+  color: var(--ink-muted);
+}
+
+/* difficulty chips: the word carries the meaning (in ink, AA-safe); the border colour is only a hint */
+.chip.diff-easy,
+.chip.diff-medium,
+.chip.diff-hard {
+  color: var(--ink);
+  border-width: 1.5px;
+}
+.chip.diff-easy {
+  border-color: var(--mint);
+}
+.chip.diff-medium {
+  border-color: var(--mustard);
+}
+.chip.diff-hard {
+  border-color: var(--tomato);
+}
+
+/* ─── problem page ─── */
+.dsa-flow {
+  display: flex;
+  flex-direction: column;
+}
+.dsa-sec {
+  padding: 22px 0 26px;
+  border-top: 1px solid var(--rule);
+  min-width: 0;
+}
+.dsa-sec:first-child {
+  border-top: 1px solid var(--ink);
+  margin-top: 14px;
+}
+.dsa-sec h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: var(--fs-l);
+  margin-bottom: 12px;
+}
+.sec-n {
+  font: 700 var(--fs-s) var(--font-mono);
+  color: var(--ink-muted);
+  min-width: 1.4em;
+}
+.dsa-lede {
+  font-size: var(--fs-m);
+  max-width: 68ch;
+}
+.dsa-example {
+  border-left: 3px solid var(--ink);
+  background: var(--surface);
+  padding: 10px 14px;
+  max-width: 68ch;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dsa-example .k {
+  display: inline-block;
+  min-width: 56px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.dsa-example p {
+  margin: 4px 0 0;
+  font-size: var(--fs-s);
+}
+.dsa-links {
+  margin-top: 12px;
+}
+.dsa-opts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+.dsa-opts .opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  text-align: left;
+}
+.dsa-opts .opt span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dsa-opts .opt small {
+  font-size: var(--fs-s);
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+.dsa-locked {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  margin: 8px 0 24px;
+  border: 1.5px dashed color-mix(in srgb, var(--ink) 35%, transparent);
+  color: var(--ink-muted);
+}
+.dsa-hints {
+  margin: 0 0 12px;
+  padding-left: 22px;
+  max-width: 68ch;
+}
+.dsa-hints li {
+  margin-bottom: 8px;
+}
+.dsa-insight {
+  font-size: var(--fs-l);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  max-width: 52ch;
+  padding: 2px 0 14px;
+}
+.dsa-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 0 0 12px;
+  max-width: 900px;
+}
+.dsa-compare dt,
+.dsa-cx dt {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+.dsa-compare dd,
+.dsa-cx dd {
+  margin: 2px 0 10px;
+}
+.dsa-cx {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 0;
+  max-width: 900px;
+}
+.dsa-more {
+  border-top: 1px solid var(--rule);
+  max-width: 76ch;
+}
+.dsa-more:last-of-type {
+  border-bottom: 1px solid var(--rule);
+}
+.dsa-more summary {
+  cursor: pointer;
+  padding: 11px 0;
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.dsa-more[open] summary {
+  color: var(--cobalt-t);
+}
+.dsa-more > :not(summary) {
+  margin-bottom: 10px;
+}
+.dsa-more ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.dsa-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0 8px;
+  border-top: 1px solid var(--ink);
+  margin-top: 8px;
+}
+
+/* ─── topic page ─── */
+.dsa-topic-guide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 40px;
+  margin-top: 22px;
+  border-top: 1px solid var(--ink);
+}
+.dsa-topic-guide section {
+  padding: 18px 0;
+  min-width: 0;
+}
+.dsa-topic-guide section.wide {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--rule);
+}
+.dsa-topic-guide h2,
+.dsa-problems h2,
+.dsa-boss h2 {
+  font-size: var(--fs-l);
+}
+.dsa-tpl-title {
+  font-size: var(--fs-m);
+  margin: 12px 0 0;
+}
+.dsa-checklist {
+  margin: 0;
+  padding-left: 20px;
+}
+.dsa-checklist li {
+  margin-bottom: 7px;
+}
+.dsa-problems {
+  padding: 18px 0 8px;
+  border-top: 1px solid var(--ink);
+}
+.dsa-plist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dsa-prow {
+  display: grid;
+  grid-template-columns: 2.4em minmax(0, 1fr) auto 3.4em;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+.dsa-prow:hover {
+  background: var(--surface);
+  text-decoration: none;
+}
+.dsa-prow .n {
+  font: 700 var(--fs-s) var(--font-mono);
+  color: var(--ink-muted);
+}
+.dsa-prow .s {
+  text-align: right;
+  font-size: var(--fs-s);
+  color: var(--ink-muted);
+}
+.dsa-prow.solved .s {
+  color: var(--mint-t);
+}
+.dsa-prow.review .s {
+  color: var(--tomato-t);
+}
+.dsa-prow.soon {
+  color: var(--ink-muted);
+}
+.dsa-boss {
+  padding: 22px 0 10px;
+  margin-top: 18px;
+  border-top: 1px solid var(--ink);
+}
+.dsa-boss-box {
+  border: 1px solid var(--ink);
+  border-radius: var(--r-panel);
+  background: var(--surface);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dsa-boss-box p {
+  margin: 0;
+}
+.dsa-q {
+  font-size: var(--fs-m);
+  font-weight: 600;
+}
+
+/* ─── gallery ─── */
+.dsa-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+.dsa-gal-item h3 {
+  font-size: var(--fs-m);
+  margin-bottom: 8px;
+}
+.dsa-gal-item .stage {
+  min-height: 0;
+}
+
+@media (max-width: 760px) {
+  .dsa-opts,
+  .dsa-compare,
+  .dsa-cx,
+  .dsa-topic-guide,
+  .dsa-gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dsa-insight {
+    font-size: var(--fs-m);
+  }
+  .dsa-sec h2 {
+    font-size: var(--fs-m);
+  }
+  .dsa-prow {
+    grid-template-columns: 2em minmax(0, 1fr) auto;
+  }
+  .dsa-prow .s {
+    display: none;
+  }
+}
+
+/* answered options keep their blurb readable on the tone fill */
+.dsa-opts .opt.right small,
+.dsa-opts .opt.wrong small {
+  color: inherit;
+}
+
+/* map rows: the tone highlight hugs the value instead of stretching across the panel */
+.dsa-page .kvp .v {
+  justify-self: start;
+  padding: 0 8px;
+  border-radius: 2px;
+}

@@ -1,0 +1,77 @@
+{
+ "fn": "is_anagram",
+ "cases": [
+  {
+   "name": "repeated letters, rearranged",
+   "args": [
+    "banana",
+    "ananab"
+   ],
+   "expected": true
+  },
+  {
+   "name": "same length, different letters",
+   "args": [
+    "cart",
+    "cast"
+   ],
+   "expected": false
+  },
+  {
+   "name": "both empty",
+   "args": [
+    "",
+    ""
+   ],
+   "expected": true
+  },
+  {
+   "name": "single same",
+   "args": [
+    "a",
+    "a"
+   ],
+   "expected": true
+  },
+  {
+   "name": "single different",
+   "args": [
+    "a",
+    "b"
+   ],
+   "expected": false
+  },
+  {
+   "name": "different lengths",
+   "args": [
+    "ab",
+    "a"
+   ],
+   "expected": false
+  },
+  {
+   "name": "same letters, different counts",
+   "args": [
+    "aacc",
+    "ccac"
+   ],
+   "expected": false
+  },
+  {
+   "name": "listen / silent",
+   "args": [
+    "listen",
+    "silent"
+   ],
+   "expected": true
+  },
+  {
+   "name": "long repeated",
+   "args": [
+    "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc",
+    "cbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacbacba"
+   ],
+   "expected": true
+  }
+ ]
+}

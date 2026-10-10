@@ -1,0 +1,48 @@
+// The pattern taxonomy. Used for tags in the catalog and for the "Spot the pattern" step.
+import type { Pattern } from './types';
+
+const rows: [string, string, string][] = [
+  ['hash-lookup', 'Hash lookup', 'Store what you have seen in a hash map or set so "have I seen this?" is O(1) instead of a scan.'],
+  ['frequency-count', 'Frequency count', 'Count occurrences of each value in a map or a fixed-size array, then compare or rank the counts.'],
+  ['group-by-key', 'Group by a canonical key', 'Compute a key that is identical for all items that belong together, and bucket items by that key.'],
+  ['bucket-sort', 'Bucket sort by count', 'When values are bounded (counts are at most n), index buckets by the value and read them off in order, skipping a sort.'],
+  ['length-prefix', 'Length-prefix encoding', 'Write the length before the payload so a reader never has to guess where it ends or escape delimiters.'],
+  ['prefix-suffix', 'Prefix and suffix passes', 'Sweep left to right collecting what is to the left, then right to left collecting what is to the right, and combine.'],
+  ['constraint-sets', 'Constraint sets', 'One set per constraint (row, column, box); a placement is legal only if it is not already in any of its sets.'],
+  ['set-run-start', 'Set plus run starts', 'Put everything in a set, and only start counting from elements that have no predecessor, so each run is walked once.'],
+  ['two-pointers', 'Two pointers', 'Two indices move toward each other (or in step) over a sorted or symmetric structure, discarding options as they go.'],
+  ['fast-slow', 'Fast and slow pointers', 'Two pointers moving at different speeds to find a middle, a cycle, or a gap.'],
+  ['sliding-window', 'Sliding window', 'A contiguous range that grows on the right and shrinks on the left while a property is maintained.'],
+  ['monotonic-stack', 'Monotonic stack', 'A stack kept in sorted order so each element finds its next greater or smaller neighbour in amortised O(1).'],
+  ['stack', 'Stack', 'Last in, first out: matching pairs, undo, nested structure, evaluating expressions.'],
+  ['binary-search', 'Binary search', 'Halve a sorted or monotone search space each step by testing the middle.'],
+  ['binary-search-answer', 'Binary search on the answer', 'Search the range of possible answers, testing "is this value feasible?" at the middle.'],
+  ['linked-list', 'Linked list pointers', 'Rewire next pointers carefully, usually with a dummy head and a few named cursors.'],
+  ['dfs', 'Depth-first search', 'Go as deep as possible along one branch, then backtrack. Recursion or an explicit stack.'],
+  ['bfs', 'Breadth-first search', 'Explore level by level with a queue; shortest path in unweighted graphs.'],
+  ['bst', 'BST property', 'Left subtree is smaller, right subtree is larger, so ordering questions walk one branch.'],
+  ['trie', 'Trie', 'A tree keyed by characters so words that share a prefix share a path.'],
+  ['heap', 'Heap / priority queue', 'Keep the min or max of a changing collection available in O(log n).'],
+  ['two-heaps', 'Two heaps', 'A max-heap for the lower half and a min-heap for the upper half give the median instantly.'],
+  ['backtracking', 'Backtracking', 'Build a candidate one choice at a time, recurse, then undo the choice and try the next.'],
+  ['topo-sort', 'Topological sort', 'Order nodes of a directed acyclic graph so every edge points forward; detects cycles.'],
+  ['union-find', 'Union-Find', 'Track which items are connected with near-constant-time merge and find.'],
+  ['dijkstra', 'Dijkstra', 'Shortest paths with non-negative weights by always expanding the closest unsettled node.'],
+  ['mst', 'Minimum spanning tree', 'Connect all nodes with minimum total edge weight (Kruskal or Prim).'],
+  ['dp-1d', '1-D dynamic programming', 'The answer for index i depends on a few earlier answers; fill a line left to right.'],
+  ['dp-2d', '2-D dynamic programming', 'The answer depends on two indices (two strings, a grid, a budget); fill a table.'],
+  ['greedy', 'Greedy', 'Make the locally best choice and never reconsider it, when a proof says that is safe.'],
+  ['intervals', 'Intervals', 'Sort by start (or end) and sweep, merging or counting overlaps.'],
+  ['matrix', 'Matrix traversal', 'Walk or transform a grid with careful index and boundary handling.'],
+  ['math', 'Math / number theory', 'A closed-form or digit-by-digit arithmetic idea replaces simulation.'],
+  ['bit-xor', 'XOR tricks', 'x ^ x = 0 and x ^ 0 = x, so paired values cancel out.'],
+  ['bit-ops', 'Bit manipulation', 'Shifts, masks and carries instead of arithmetic.'],
+  ['design', 'Design a data structure', 'Combine basic structures so every operation meets its required complexity.'],
+  ['sorting', 'Sorting', 'Sort first, and the answer becomes adjacent elements or a sweep.'],
+  ['prefix-sum', 'Prefix sums', 'Precompute running totals so any range query is a subtraction.'],
+  ['divide-conquer', 'Divide and conquer', 'Split the problem, solve the halves, combine the answers.'],
+  ['simulation', 'Simulation', 'Carry out the process directly, step by step, with careful bookkeeping.'],
+];
+
+export const PATTERNS: Record<string, Pattern> = Object.fromEntries(rows.map(([id, label, blurb]) => [id, { id, label, blurb }]));
+export const PATTERN_IDS = rows.map(([id]) => id);

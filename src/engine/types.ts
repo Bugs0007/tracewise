@@ -40,6 +40,8 @@ export interface ArrayPanel {
   hideIndex?: boolean;
   /** stable identity per cell so moves (swaps, shifts) animate */
   ids?: (string | number)[];
+  /** wrap long arrays onto several rows instead of scrolling sideways (no range bracket in this mode) */
+  wrap?: boolean;
 }
 
 export interface GridPanel {
@@ -181,6 +183,18 @@ export interface KVPanel {
   entries: { k: string; v: Scalar; tone?: Tone }[];
 }
 
+export interface IntervalsPanel {
+  type: 'intervals';
+  title?: string;
+  /** each interval is drawn as a bar on a shared number line */
+  items: { start: number; end: number; label?: string; tone?: Tone }[];
+  /** inclusive axis range; defaults to the min/max of the items */
+  min?: number;
+  max?: number;
+  /** vertical markers on the line (a sweep position, a query point) */
+  marks?: { at: number; label?: string; tone?: Tone }[];
+}
+
 export interface NotePanel {
   type: 'note';
   text: string;
@@ -198,7 +212,18 @@ export type Panel =
   | ChartPanel
   | LogPanel
   | KVPanel
+  | IntervalsPanel
   | NotePanel;
+
+/** An authored "predict the next step" checkpoint. Asked before the following frame is shown. */
+export interface PredictCheckpoint {
+  question: string;
+  options: string[];
+  /** index of the correct option */
+  answer: number;
+  /** shown after answering */
+  explain?: string;
+}
 
 export interface Frame {
   /** 1-based line in the visualizer's code, or 0 for none */
@@ -208,6 +233,8 @@ export interface Frame {
   vars: Record<string, Scalar>;
   /** cumulative operation counter (comparisons, writes, ...) */
   ops?: number;
+  /** when set (and Predict mode is on) the player asks this before showing the next frame */
+  predict?: PredictCheckpoint;
 }
 
 export type InputKind = 'numbers' | 'number' | 'string' | 'strings' | 'edges' | 'grid' | 'json' | 'select';
@@ -236,6 +263,8 @@ export interface VizDef<I = any> {
   language: 'python' | 'javascript' | 'text';
   inputs: InputField[];
   presets?: { label: string; input: Partial<I> }[];
+  /** optional extra check on an edited input (readability limits); return a message to reject it. Not applied to test inputs. */
+  validate?: (input: I) => string | null;
   run: (input: I) => VizResult;
   /** optional reference implementation, used by tests to verify `result` */
   reference?: (input: I) => unknown;
