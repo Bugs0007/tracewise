@@ -1,0 +1,88 @@
+{
+ "fn": "jump",
+ "cases": [
+  {
+   "name": "two jumps",
+   "args": [
+    [
+     2,
+     3,
+     1,
+     1,
+     2
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "single cell",
+   "args": [
+    [
+     0
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one jump",
+   "args": [
+    [
+     5,
+     0,
+     0
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "each step is one",
+   "args": [
+    [
+     1,
+     1,
+     1,
+     1
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "long first jump",
+   "args": [
+    [
+     4,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "choose the better landing",
+   "args": [
+    [
+     2,
+     4,
+     1,
+     1,
+     1,
+     1
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "two cells",
+   "args": [
+    [
+     1,
+     0
+    ]
+   ],
+   "expected": 1
+  }
+ ]
+}

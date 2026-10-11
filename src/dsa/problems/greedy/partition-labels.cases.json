@@ -1,0 +1,78 @@
+{
+ "fn": "partition_labels",
+ "cases": [
+  {
+   "name": "three parts",
+   "args": [
+    "abacdxcdyz"
+   ],
+   "expected": [
+    3,
+    5,
+    1,
+    1
+   ]
+  },
+  {
+   "name": "single letter",
+   "args": [
+    "a"
+   ],
+   "expected": [
+    1
+   ]
+  },
+  {
+   "name": "one big part",
+   "args": [
+    "abcab"
+   ],
+   "expected": [
+    5
+   ]
+  },
+  {
+   "name": "all different",
+   "args": [
+    "abcd"
+   ],
+   "expected": [
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  {
+   "name": "repeated letter spans everything",
+   "args": [
+    "axxxa"
+   ],
+   "expected": [
+    5
+   ]
+  },
+  {
+   "name": "blocks",
+   "args": [
+    "aabbcc"
+   ],
+   "expected": [
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "name": "nested",
+   "args": [
+    "abccbaxy"
+   ],
+   "expected": [
+    6,
+    1,
+    1
+   ]
+  }
+ ]
+}

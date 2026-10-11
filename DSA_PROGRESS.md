@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **121 of 150** problems done.
+Progress: **129 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -185,17 +185,17 @@ Progress: **121 of 150** problems done.
 - [x] 120. Burst Balloons (`burst-balloons`, Hard)
 - [x] 121. Regular Expression Matching (`regular-expression-matching`, Hard)
 
-## Greedy (0/8)
+## Greedy (8/8)
 
-- [ ] Topic page content (`topics/greedy.ts`) and `tests/dsa/test_greedy.py`
-- [ ] 122. Maximum Subarray (`maximum-subarray`, Medium)
-- [ ] 123. Jump Game (`jump-game`, Medium)
-- [ ] 124. Jump Game II (`jump-game-ii`, Medium)
-- [ ] 125. Gas Station (`gas-station`, Medium)
-- [ ] 126. Hand of Straights (`hand-of-straights`, Medium)
-- [ ] 127. Merge Triplets to Form Target Triplet (`merge-triplets-to-form-target-triplet`, Medium)
-- [ ] 128. Partition Labels (`partition-labels`, Medium)
-- [ ] 129. Valid Parenthesis String (`valid-parenthesis-string`, Medium)
+- [x] Topic page content (`topics/greedy.ts`) and `tests/dsa/test_greedy.py`
+- [x] 122. Maximum Subarray (`maximum-subarray`, Medium)
+- [x] 123. Jump Game (`jump-game`, Medium)
+- [x] 124. Jump Game II (`jump-game-ii`, Medium)
+- [x] 125. Gas Station (`gas-station`, Medium)
+- [x] 126. Hand of Straights (`hand-of-straights`, Medium)
+- [x] 127. Merge Triplets to Form Target Triplet (`merge-triplets-to-form-target-triplet`, Medium)
+- [x] 128. Partition Labels (`partition-labels`, Medium)
+- [x] 129. Valid Parenthesis String (`valid-parenthesis-string`, Medium)
 
 ## Intervals (0/6)
 

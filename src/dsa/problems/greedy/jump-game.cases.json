@@ -1,0 +1,98 @@
+{
+ "fn": "can_jump",
+ "cases": [
+  {
+   "name": "enough reach",
+   "args": [
+    [
+     3,
+     0,
+     2,
+     0,
+     1
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "stuck on a zero",
+   "args": [
+    [
+     1,
+     1,
+     0,
+     0,
+     4
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "single cell",
+   "args": [
+    [
+     0
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "first jump is zero",
+   "args": [
+    [
+     0,
+     5
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "big first jump",
+   "args": [
+    [
+     9,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "exact landing",
+   "args": [
+    [
+     2,
+     0,
+     1
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "zero at the end is fine",
+   "args": [
+    [
+     2,
+     2,
+     0
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "hole in the middle",
+   "args": [
+    [
+     2,
+     1,
+     0,
+     0,
+     3
+    ]
+   ],
+   "expected": false
+  }
+ ]
+}

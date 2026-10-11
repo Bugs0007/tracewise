@@ -1,0 +1,114 @@
+{
+ "fn": "is_n_straight_hand",
+ "cases": [
+  {
+   "name": "two runs of three",
+   "args": [
+    [
+     5,
+     6,
+     7,
+     6,
+     7,
+     8
+    ],
+    3
+   ],
+   "expected": true
+  },
+  {
+   "name": "a gap",
+   "args": [
+    [
+     1,
+     2,
+     4
+    ],
+    3
+   ],
+   "expected": false
+  },
+  {
+   "name": "size not divisible",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4
+    ],
+    3
+   ],
+   "expected": false
+  },
+  {
+   "name": "groups of one",
+   "args": [
+    [
+     7,
+     3,
+     9
+    ],
+    1
+   ],
+   "expected": true
+  },
+  {
+   "name": "duplicates need two runs",
+   "args": [
+    [
+     1,
+     1,
+     2,
+     2,
+     3,
+     3
+    ],
+    3
+   ],
+   "expected": true
+  },
+  {
+   "name": "overlapping runs",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     3,
+     4,
+     5
+    ],
+    3
+   ],
+   "expected": true
+  },
+  {
+   "name": "runs of two",
+   "args": [
+    [
+     9,
+     8,
+     10,
+     7
+    ],
+    2
+   ],
+   "expected": true
+  },
+  {
+   "name": "too many of the smallest",
+   "args": [
+    [
+     1,
+     1,
+     1,
+     2,
+     3
+    ],
+    3
+   ],
+   "expected": false
+  }
+ ]
+}

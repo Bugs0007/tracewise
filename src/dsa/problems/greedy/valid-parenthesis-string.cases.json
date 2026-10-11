@@ -1,0 +1,68 @@
+{
+ "fn": "check_valid_string",
+ "cases": [
+  {
+   "name": "star as a closer",
+   "args": [
+    "(*)"
+   ],
+   "expected": true
+  },
+  {
+   "name": "star as a closer at the end",
+   "args": [
+    "(*"
+   ],
+   "expected": true
+  },
+  {
+   "name": "star as an opener",
+   "args": [
+    "*)"
+   ],
+   "expected": true
+  },
+  {
+   "name": "unbalanced",
+   "args": [
+    "((("
+   ],
+   "expected": false
+  },
+  {
+   "name": "closer first",
+   "args": [
+    ")("
+   ],
+   "expected": false
+  },
+  {
+   "name": "star cannot fix a leading closer",
+   "args": [
+    ")*"
+   ],
+   "expected": false
+  },
+  {
+   "name": "empty",
+   "args": [
+    ""
+   ],
+   "expected": true
+  },
+  {
+   "name": "many stars",
+   "args": [
+    "**(*)*"
+   ],
+   "expected": true
+  },
+  {
+   "name": "too many openers",
+   "args": [
+    "(**(("
+   ],
+   "expected": false
+  }
+ ]
+}
