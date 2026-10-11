@@ -81,6 +81,11 @@ export default function SettingsPage() {
         <Row label="Predict mode by default" help="Step-through visualizations pause at key moments and ask what happens next. Off by default; you can still switch it on per visualization.">
           <Toggle label="Predict mode by default" on={settings.predict} onChange={(v) => set({ predict: v })} />
         </Row>
+        {accountsConfigured && (
+          <Row label="Show my level on the leaderboard" help={signedIn ? 'Opt in to appear on the public leaderboard as a rank and a level only. No name, email or photo is shown. Turn off to be removed straight away.' : 'Sign in first (below). Then you can appear on the public leaderboard as a rank and a level only.'}>
+            <Toggle label="Show my level on the leaderboard" on={settings.leaderboard && signedIn} onChange={(v) => signedIn && set({ leaderboard: v })} />
+          </Row>
+        )}
         <Row label="Focus mode" help="Hide navigation and keep only the current task on screen.">
           <Toggle label="Focus mode" on={settings.focus} onChange={(v) => set({ focus: v })} />
         </Row>

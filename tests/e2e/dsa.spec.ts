@@ -136,6 +136,17 @@ test('the Predict mode default can be switched on in settings', async ({ page })
   await expect(page.getByTestId('predict-toggle')).toHaveAttribute('aria-checked', 'true');
 });
 
+test('the leaderboard page and the Settings opt-in agree on whether accounts exist', async ({ page }) => {
+  await freshStart(page, '/leaderboard');
+  await expect(page.getByRole('heading', { name: 'Leaderboard' })).toBeVisible();
+  const unavailable = await page.getByTestId('board-unavailable').count();
+  await expect(page.getByTestId('board-all')).toHaveCount(unavailable ? 0 : 1);
+  await page.goto('./#/settings');
+  await expect(page.getByRole('switch', { name: 'Show my level on the leaderboard' })).toHaveCount(unavailable ? 0 : 1);
+  // never on by default
+  if (!unavailable) await expect(page.getByRole('switch', { name: 'Show my level on the leaderboard' })).toHaveAttribute('aria-checked', 'false');
+});
+
 test('topic page: guide, problem list and boss quiz', async ({ page }) => {
   const errors = trackErrors(page);
   await freshStart(page, `/dsa/${TOPIC}`);

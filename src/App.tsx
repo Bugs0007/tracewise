@@ -7,6 +7,7 @@ import { Celebrations } from './ui/Celebrations';
 import { useReducedMotion } from './lib/motion';
 import { HomePage } from './pages/HomePage';
 import { AccountChip } from './account/AccountChip';
+import { accountsConfigured } from './account/account';
 
 const MapPage = lazy(() => import('./pages/MapPage'));
 const UnitPage = lazy(() => import('./pages/UnitPage'));
@@ -18,6 +19,7 @@ const InterviewPage = lazy(() => import('./pages/InterviewPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const CapstonePage = lazy(() => import('./pages/CapstonePage'));
 const CertificatePage = lazy(() => import('./pages/CertificatePage'));
+const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
 const DsaPage = lazy(() => import('./dsa/pages/DsaPage'));
 
 const NAV = [
@@ -26,6 +28,8 @@ const NAV = [
   { to: '/practice', label: 'Practice', icon: 'lab', tab: true, top: true, match: (p: string[]) => ['practice', 'review', 'gym', 'lab'].includes(p[0]) },
   { to: '/interview', label: 'Interview', icon: 'timer', tab: true, top: true, match: (p: string[]) => p[0] === 'interview' },
   { to: '/capstone', label: 'Capstone', icon: 'trophy', tab: true, top: true, match: (p: string[]) => p[0] === 'capstone' || p[0] === 'certificate' },
+  // only offered where accounts exist: the board needs them
+  ...(accountsConfigured ? [{ to: '/leaderboard', label: 'Leaderboard', icon: 'trophy', tab: false, top: true, match: (p: string[]) => p[0] === 'leaderboard' }] : []),
 ];
 
 function useThemeEffects() {
@@ -164,6 +168,8 @@ function Routes() {
       return <CapstonePage id={b} />;
     case 'certificate':
       return <CertificatePage />;
+    case 'leaderboard':
+      return <LeaderboardPage />;
     default:
       return (
         <div className="page">

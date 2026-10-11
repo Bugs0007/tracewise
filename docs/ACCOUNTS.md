@@ -32,6 +32,11 @@ Never put the `service_role` key in a `VITE_` variable: everything with that pre
 - Open the deployed site on another device, sign in with the same Google account: your XP and units appear.
 - **Delete cloud copy** removes the row. **Reset everything** while signed in also removes it (otherwise the next sync would merge it back).
 
+## 5. Leaderboard (optional, opt-in)
+Run `supabase/migrations/002_tracewise_leaderboard.sql` too. It adds a `tracewise_leaderboard` table that only its owner can read, plus a function `tracewise_leaderboard(scope, lim)` that everyone can call. The function returns a **rank and a level and nothing else** (no name, email, id or XP), for `scope = 'all'` (total XP) or `'week'` (XP since Monday, UTC).
+
+Players are never included by default: a signed-in player turns on **Show my level on the leaderboard** in Settings, and turning it off (or using Delete cloud copy / Reset everything) removes their row. The page is `#/leaderboard`, and the nav link only appears on builds where accounts are configured. Guests can view the board but cannot appear on it. Scores come from the player's own browser, so the board is for friendly motivation, not a verified ranking.
+
 ## Troubleshooting
 | Symptom | Fix |
 |---|---|

@@ -7,12 +7,14 @@ import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { migrate, SaveError, type SaveData } from '@/store/save';
 import { persistNow, snapshot, useApp } from '@/store/store';
 import { mergeSaves, stable } from './merge';
+import { parseBoard, scoreRow, type BoardRow, type BoardScope } from './leaderboard';
 
 const URL = import.meta.env.VITE_SUPABASE_URL;
 const KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const accountsConfigured = Boolean(URL && KEY);
 
 const TABLE = 'tracewise_progress';
+const BOARD_TABLE = 'tracewise_leaderboard';
 const RETURN_KEY = 'tracewise:return-hash';
 const PUSH_DELAY_MS = 4000;
 const MAX_BYTES = 900_000;
@@ -101,11 +103,43 @@ async function runSync(): Promise<void> {
     }
     lastPushed = body;
     ready = true;
+    await publishScore(sb, uid, merged);
     useAccount.setState({ sync: 'synced', lastSynced: new Date().toISOString(), error: null });
   } catch {
     const offline = typeof navigator !== 'undefined' && !navigator.onLine;
     useAccount.setState({ sync: offline ? 'offline' : 'error', error: offline ? null : 'Could not sync. Your progress is safe on this device; it will retry.' });
   }
+}
+
+/** Share this player's level (and the XP behind the ranking) if, and only if, they opted in. Never blocks syncing. */
+async function publishScore(sb: SupabaseClient, uid: string, data: SaveData): Promise<void> {
+  if (!data.settings.leaderboard) return;
+  try {
+    await sb.from(BOARD_TABLE).upsert({ user_id: uid, ...scoreRow(data), updated_at: new Date().toISOString() });
+  } catch {
+    // the leaderboard is a nice-to-have; a failed update is retried at the next sync
+  }
+}
+
+/** Take this player off the leaderboard. Returns an error message, or null. */
+export async function removeScore(): Promise<string | null> {
+  if (!userId) return null;
+  const uid = userId;
+  try {
+    const sb = await client();
+    const { error } = await sb.from(BOARD_TABLE).delete().eq('user_id', uid);
+    return error ? 'Could not remove you from the leaderboard. Try again.' : null;
+  } catch {
+    return 'Could not remove you from the leaderboard. Try again.';
+  }
+}
+
+/** The public board for a scope: rank and level only. Works for guests too. Throws when it cannot be loaded. */
+export async function fetchBoard(scope: BoardScope): Promise<BoardRow[]> {
+  const sb = await client();
+  const { data, error } = await sb.rpc('tracewise_leaderboard', { scope, lim: 50 });
+  if (error) throw error;
+  return parseBoard(data);
 }
 
 /** Pull the cloud copy, merge it with this device, and push the result. Safe to call any time. */
@@ -170,6 +204,15 @@ export async function initAccount(): Promise<void> {
     useAccount.setState({ status: 'signed-out' });
   }
   useApp.subscribe(schedulePush);
+  // opting in or out takes effect straight away, not at the next sync
+  let boardOn = useApp.getState().settings.leaderboard;
+  useApp.subscribe((s) => {
+    if (s.settings.leaderboard === boardOn) return;
+    boardOn = s.settings.leaderboard;
+    if (!userId) return;
+    if (boardOn) void syncNow();
+    else void removeScore();
+  });
   window.addEventListener('online', () => void syncNow());
   document.addEventListener('visibilitychange', () => {
     if (!userId || !ready) return;
@@ -212,8 +255,9 @@ export async function deleteCloudCopy(): Promise<string | null> {
   const uid = userId;
   return serial(async () => {
     const sb = await client();
+    const { error: boardErr } = await sb.from(BOARD_TABLE).delete().eq('user_id', uid);
     const { error } = await sb.from(TABLE).delete().eq('user_id', uid);
-    if (error) return 'Could not delete the cloud copy. Try again.';
+    if (error || boardErr) return 'Could not delete the cloud copy. Try again.';
     lastPushed = '';
     useAccount.setState({ sync: 'idle', lastSynced: null, error: null });
     return null;

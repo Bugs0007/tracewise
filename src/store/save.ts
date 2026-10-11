@@ -79,6 +79,8 @@ export interface Settings {
   assist: boolean;
   /** start step-through visualizations with Predict mode on */
   predict: boolean;
+  /** opt in to appearing (as a level only) on the public leaderboard; needs a signed-in account */
+  leaderboard: boolean;
 }
 
 export interface SaveData {
@@ -100,7 +102,7 @@ export interface SaveData {
   settings: Settings;
 }
 
-export const DEFAULT_SETTINGS: Settings = { theme: 'system', motion: 'system', sound: false, focus: false, speed: 1, fontSize: 14, assist: true, predict: false };
+export const DEFAULT_SETTINGS: Settings = { theme: 'system', motion: 'system', sound: false, focus: false, speed: 1, fontSize: 14, assist: true, predict: false, leaderboard: false };
 
 export function freshSave(): SaveData {
   return {
