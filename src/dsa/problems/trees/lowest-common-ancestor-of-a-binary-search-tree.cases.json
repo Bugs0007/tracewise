@@ -1,0 +1,125 @@
+{
+ "fn": "lowest_common_ancestor",
+ "cases": [
+  {
+   "name": "on both sides of the root",
+   "args": [
+    [
+     6,
+     2,
+     8,
+     0,
+     4,
+     7,
+     9,
+     null,
+     null,
+     3,
+     5
+    ],
+    2,
+    8
+   ],
+   "expected": 6
+  },
+  {
+   "name": "one is an ancestor of the other",
+   "args": [
+    [
+     6,
+     2,
+     8,
+     0,
+     4,
+     7,
+     9,
+     null,
+     null,
+     3,
+     5
+    ],
+    2,
+    4
+   ],
+   "expected": 2
+  },
+  {
+   "name": "deep pair",
+   "args": [
+    [
+     6,
+     2,
+     8,
+     0,
+     4,
+     7,
+     9,
+     null,
+     null,
+     3,
+     5
+    ],
+    3,
+    5
+   ],
+   "expected": 4
+  },
+  {
+   "name": "same node twice",
+   "args": [
+    [
+     6,
+     2,
+     8
+    ],
+    8,
+    8
+   ],
+   "expected": 8
+  },
+  {
+   "name": "two nodes",
+   "args": [
+    [
+     5,
+     3
+    ],
+    3,
+    5
+   ],
+   "expected": 5
+  },
+  {
+   "name": "root and leaf",
+   "args": [
+    [
+     10,
+     5,
+     15,
+     3,
+     7
+    ],
+    10,
+    7
+   ],
+   "expected": 10
+  },
+  {
+   "name": "right side",
+   "args": [
+    [
+     10,
+     5,
+     15,
+     null,
+     null,
+     12,
+     20
+    ],
+    12,
+    20
+   ],
+   "expected": 15
+  }
+ ]
+}

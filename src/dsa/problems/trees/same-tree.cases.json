@@ -1,0 +1,100 @@
+{
+ "fn": "is_same_tree",
+ "cases": [
+  {
+   "name": "identical",
+   "args": [
+    [
+     1,
+     2,
+     3
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "different shape",
+   "args": [
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     null,
+     2
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "different value",
+   "args": [
+    [
+     1,
+     2,
+     1
+    ],
+    [
+     1,
+     1,
+     2
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "both empty",
+   "args": [
+    [],
+    []
+   ],
+   "expected": true
+  },
+  {
+   "name": "one empty",
+   "args": [
+    [
+     1
+    ],
+    []
+   ],
+   "expected": false
+  },
+  {
+   "name": "single equal nodes",
+   "args": [
+    [
+     7
+    ],
+    [
+     7
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "deeper difference",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4
+    ],
+    [
+     1,
+     2,
+     3,
+     5
+    ]
+   ],
+   "expected": false
+  }
+ ]
+}

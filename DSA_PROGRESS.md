@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **45 of 150** problems done.
+Progress: **60 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -77,24 +77,24 @@ Progress: **45 of 150** problems done.
 - [x] 44. Merge K Sorted Lists (`merge-k-sorted-lists`, Hard)
 - [x] 45. Reverse Nodes in K-Group (`reverse-nodes-in-k-group`, Hard)
 
-## Trees (0/15)
+## Trees (15/15)
 
-- [ ] Topic page content (`topics/trees.ts`) and `tests/dsa/test_trees.py`
-- [ ] 46. Invert Binary Tree (`invert-binary-tree`, Easy)
-- [ ] 47. Maximum Depth of Binary Tree (`maximum-depth-of-binary-tree`, Easy)
-- [ ] 48. Diameter of Binary Tree (`diameter-of-binary-tree`, Easy)
-- [ ] 49. Balanced Binary Tree (`balanced-binary-tree`, Easy)
-- [ ] 50. Same Tree (`same-tree`, Easy)
-- [ ] 51. Subtree of Another Tree (`subtree-of-another-tree`, Easy)
-- [ ] 52. Lowest Common Ancestor of a BST (`lowest-common-ancestor-of-a-binary-search-tree`, Medium)
-- [ ] 53. Binary Tree Level Order Traversal (`binary-tree-level-order-traversal`, Medium)
-- [ ] 54. Binary Tree Right Side View (`binary-tree-right-side-view`, Medium)
-- [ ] 55. Count Good Nodes in Binary Tree (`count-good-nodes-in-binary-tree`, Medium)
-- [ ] 56. Validate Binary Search Tree (`validate-binary-search-tree`, Medium)
-- [ ] 57. Kth Smallest Element in a BST (`kth-smallest-element-in-a-bst`, Medium)
-- [ ] 58. Construct Binary Tree from Preorder and Inorder Traversal (`construct-binary-tree-from-preorder-and-inorder-traversal`, Medium)
-- [ ] 59. Binary Tree Maximum Path Sum (`binary-tree-maximum-path-sum`, Hard)
-- [ ] 60. Serialize and Deserialize Binary Tree (`serialize-and-deserialize-binary-tree`, Hard)
+- [x] Topic page content (`topics/trees.ts`) and `tests/dsa/test_trees.py`
+- [x] 46. Invert Binary Tree (`invert-binary-tree`, Easy)
+- [x] 47. Maximum Depth of Binary Tree (`maximum-depth-of-binary-tree`, Easy)
+- [x] 48. Diameter of Binary Tree (`diameter-of-binary-tree`, Easy)
+- [x] 49. Balanced Binary Tree (`balanced-binary-tree`, Easy)
+- [x] 50. Same Tree (`same-tree`, Easy)
+- [x] 51. Subtree of Another Tree (`subtree-of-another-tree`, Easy)
+- [x] 52. Lowest Common Ancestor of a BST (`lowest-common-ancestor-of-a-binary-search-tree`, Medium)
+- [x] 53. Binary Tree Level Order Traversal (`binary-tree-level-order-traversal`, Medium)
+- [x] 54. Binary Tree Right Side View (`binary-tree-right-side-view`, Medium)
+- [x] 55. Count Good Nodes in Binary Tree (`count-good-nodes-in-binary-tree`, Medium)
+- [x] 56. Validate Binary Search Tree (`validate-binary-search-tree`, Medium)
+- [x] 57. Kth Smallest Element in a BST (`kth-smallest-element-in-a-bst`, Medium)
+- [x] 58. Construct Binary Tree from Preorder and Inorder Traversal (`construct-binary-tree-from-preorder-and-inorder-traversal`, Medium)
+- [x] 59. Binary Tree Maximum Path Sum (`binary-tree-maximum-path-sum`, Hard)
+- [x] 60. Serialize and Deserialize Binary Tree (`serialize-and-deserialize-binary-tree`, Hard)
 
 ## Tries (0/3)
 

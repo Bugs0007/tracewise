@@ -1,0 +1,94 @@
+{
+ "fn": "diameter_of_binary_tree",
+ "cases": [
+  {
+   "name": "path through the root",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "single node",
+   "args": [
+    [
+     1
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "longest path avoids the root",
+   "args": [
+    [
+     1,
+     2,
+     null,
+     3,
+     4,
+     5,
+     null,
+     null,
+     null,
+     6
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "two nodes",
+   "args": [
+    [
+     1,
+     2
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "chain",
+   "args": [
+    [
+     1,
+     null,
+     2,
+     null,
+     3,
+     null,
+     4
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "bushy",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   ],
+   "expected": 5
+  }
+ ]
+}

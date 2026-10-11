@@ -1,0 +1,91 @@
+{
+ "fn": "is_balanced",
+ "cases": [
+  {
+   "name": "balanced",
+   "args": [
+    [
+     3,
+     9,
+     20,
+     null,
+     null,
+     15,
+     7
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "unbalanced leaf chain",
+   "args": [
+    [
+     1,
+     2,
+     2,
+     3,
+     3,
+     null,
+     null,
+     4,
+     4
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": true
+  },
+  {
+   "name": "single node",
+   "args": [
+    [
+     1
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "two nodes",
+   "args": [
+    [
+     1,
+     2
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "three-node chain",
+   "args": [
+    [
+     1,
+     2,
+     null,
+     3
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "balanced at root, not below",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     null,
+     null,
+     5,
+     6
+    ]
+   ],
+   "expected": false
+  }
+ ]
+}

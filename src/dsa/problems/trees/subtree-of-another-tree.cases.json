@@ -1,0 +1,122 @@
+{
+ "fn": "is_subtree",
+ "cases": [
+  {
+   "name": "exact subtree",
+   "args": [
+    [
+     3,
+     4,
+     5,
+     1,
+     2
+    ],
+    [
+     4,
+     1,
+     2
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "extra node below breaks the match",
+   "args": [
+    [
+     3,
+     4,
+     5,
+     1,
+     2,
+     null,
+     null,
+     0
+    ],
+    [
+     4,
+     1,
+     2
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "whole tree",
+   "args": [
+    [
+     1,
+     2,
+     3
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "single leaf",
+   "args": [
+    [
+     1,
+     2,
+     3
+    ],
+    [
+     3
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "not present",
+   "args": [
+    [
+     1,
+     2,
+     3
+    ],
+    [
+     2,
+     4
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "matching values but different shape",
+   "args": [
+    [
+     1,
+     1
+    ],
+    [
+     1
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "deeper match",
+   "args": [
+    [
+     5,
+     4,
+     6,
+     3,
+     2,
+     null,
+     null,
+     1
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "expected": true
+  }
+ ]
+}

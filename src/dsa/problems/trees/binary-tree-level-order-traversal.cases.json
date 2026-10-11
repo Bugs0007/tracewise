@@ -1,0 +1,130 @@
+{
+ "fn": "level_order",
+ "cases": [
+  {
+   "name": "three levels",
+   "args": [
+    [
+     3,
+     9,
+     20,
+     null,
+     null,
+     15,
+     7
+    ]
+   ],
+   "expected": [
+    [
+     3
+    ],
+    [
+     9,
+     20
+    ],
+    [
+     15,
+     7
+    ]
+   ]
+  },
+  {
+   "name": "single node",
+   "args": [
+    [
+     1
+    ]
+   ],
+   "expected": [
+    [
+     1
+    ]
+   ]
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": []
+  },
+  {
+   "name": "left chain",
+   "args": [
+    [
+     1,
+     2,
+     null,
+     3
+    ]
+   ],
+   "expected": [
+    [
+     1
+    ],
+    [
+     2
+    ],
+    [
+     3
+    ]
+   ]
+  },
+  {
+   "name": "complete",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ]
+   ],
+   "expected": [
+    [
+     1
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     4,
+     5,
+     6,
+     7
+    ]
+   ]
+  },
+  {
+   "name": "sparse",
+   "args": [
+    [
+     1,
+     null,
+     2,
+     null,
+     3,
+     4
+    ]
+   ],
+   "expected": [
+    [
+     1
+    ],
+    [
+     2
+    ],
+    [
+     3
+    ],
+    [
+     4
+    ]
+   ]
+  }
+ ]
+}

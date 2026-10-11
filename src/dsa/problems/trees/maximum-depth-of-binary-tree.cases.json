@@ -1,0 +1,80 @@
+{
+ "fn": "max_depth",
+ "cases": [
+  {
+   "name": "three levels",
+   "args": [
+    [
+     3,
+     9,
+     20,
+     null,
+     null,
+     15,
+     7
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "single node",
+   "args": [
+    [
+     1
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "long left chain",
+   "args": [
+    [
+     1,
+     2,
+     null,
+     3,
+     null,
+     4,
+     null,
+     5
+    ]
+   ],
+   "expected": 5
+  },
+  {
+   "name": "long right chain",
+   "args": [
+    [
+     1,
+     null,
+     2,
+     null,
+     3
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "balanced",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ]
+   ],
+   "expected": 3
+  }
+ ]
+}
