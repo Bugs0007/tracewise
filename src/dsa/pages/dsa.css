@@ -332,3 +332,10 @@
   padding: 0 8px;
   border-radius: 2px;
 }
+
+/* the problem page gives the editor and the AI helper room on big screens */
+@media (min-width: 1500px) {
+  .dsa-problem-page {
+    max-width: 1400px;
+  }
+}

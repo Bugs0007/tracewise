@@ -5,6 +5,8 @@ import { Icon } from '@/ui/Icon';
 import { Modal } from '@/ui/common';
 import { playSound } from '@/lib/sound';
 import { AccountCard } from '@/account/AccountCard';
+import { AiKeyForm } from '@/ai/AiAssist';
+import { clearAiKey, setAiConfig, useAiConfig } from '@/ai/groq';
 import { accountsConfigured, deleteCloudCopy, useAccount } from '@/account/account';
 
 function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
@@ -32,6 +34,7 @@ export default function SettingsPage() {
   const [confirmReset, setConfirmReset] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const signedIn = useAccount((a) => a.status === 'signed-in');
+  const ai = useAiConfig();
   const set = (p: Partial<Settings>) => setSettings(p);
 
   const doExport = () => {
@@ -98,12 +101,25 @@ export default function SettingsPage() {
 
       <AccountCard />
 
+      <h2 style={{ marginTop: 28 }}>AI help</h2>
+      <div className="card col" style={{ gap: 14 }} data-testid="ai-settings-card">
+        <p className="muted" style={{ margin: 0 }}>
+          Optional. On NeetCode track problems, an AI tutor sits beside the editor and helps when you are stuck. It uses your own Groq API key, so nothing runs through any server of ours. It is the only feature that sends anything off this device, and only when you ask it something: your code, your latest test results and the problem text.
+        </p>
+        <AiKeyForm />
+        {ai.key && (
+          <Row label="Allow full solutions" help="Off by default: the tutor then coaches with hints and questions instead of writing the answer.">
+            <Toggle label="Allow full solutions" on={ai.fullSolutions} onChange={(v) => setAiConfig({ fullSolutions: v })} />
+          </Row>
+        )}
+      </div>
+
       <h2 style={{ marginTop: 28 }}>Your data</h2>
       <div className="card col" style={{ gap: 14 }}>
         <p className="muted" style={{ margin: 0 }}>
           {accountsConfigured
             ? 'Progress, XP, streaks, drafts and settings are saved in this browser. If you sign in, a copy also syncs to your account so it follows you across devices. Export a backup any time.'
-            : 'Everything — progress, XP, streaks, drafts, settings — lives only in this browser. Nothing is sent anywhere. Export a backup to move devices or keep it safe.'}
+            : 'Everything — progress, XP, streaks, drafts, settings — lives only in this browser. Nothing is sent anywhere unless you turn on AI help below. Export a backup to move devices or keep it safe.'}
         </p>
         <div className="row">
           <button className="btn" onClick={doExport} data-testid="export">
@@ -142,12 +158,12 @@ export default function SettingsPage() {
           Tracewise is open source (MIT) and runs entirely in your browser. Python runs in Pyodide (WebAssembly) inside a Web Worker; JavaScript runs in a separate worker; React exercises run in a sandboxed iframe. Every run has a hard timeout.
         </p>
         <p className="muted" style={{ marginBottom: 0 }}>
-          Honesty notes: Django and Next.js can't run in a browser, so those exercises use a small teaching library and labeled simulations that model the real concepts. AI-engineering drills use deterministic mock models. There is no AI assistance anywhere in the app.
+          Honesty notes: Django and Next.js can't run in a browser, so those exercises use a small teaching library and labeled simulations that model the real concepts. AI-engineering drills use deterministic mock models. AI help is optional, off until you add your own key, and offered only on NeetCode track problems (never in the capstone or boss attempts).
         </p>
       </div>
 
       <Modal open={confirmReset} onClose={() => setConfirmReset(false)} title="Reset all progress?">
-        <p>This wipes XP, streaks, unit progress, drafts and settings from this browser{signedIn ? ' and deletes your cloud copy' : ''}. Export first if you might want it back.</p>
+        <p>This wipes XP, streaks, unit progress, drafts, settings and any saved AI key from this browser{signedIn ? ' and deletes your cloud copy' : ''}. Export first if you might want it back.</p>
         <div className="row">
           <span className="spacer" />
           <button className="btn" onClick={() => setConfirmReset(false)}>
@@ -167,6 +183,7 @@ export default function SettingsPage() {
                 }
               }
               resetAll();
+              clearAiKey();
               persistNow();
               setConfirmReset(false);
               setMsg({ tone: 'good', text: 'Everything was reset.' });

@@ -47,7 +47,7 @@ export default function ProblemPage({ slug }: { slug: string }) {
   const next = idx < PROBLEMS.length - 1 ? PROBLEMS[idx + 1] : null;
 
   return (
-    <div className="page dsa-page">
+    <div className="page dsa-page dsa-problem-page">
       <div className="crumbs">
         <a href={href('/dsa')}>NeetCode 150</a>
         <span aria-hidden>/</span>
@@ -325,6 +325,10 @@ function ProblemBody({ slug, content: c }: { slug: string; content: ProblemConte
               draftKey={`dsa:${slug}`}
               minHeight={220}
               onResult={onTests}
+              assist={{
+                chatId: slug,
+                problem: { title: meta.title, fnName: c.task.fnName, summary: c.summary, example: { input: c.example.input, output: c.example.output }, insight: c.explanation.insight, optimal: c.explanation.optimal, hintsOpened: hintsShown },
+              }}
               toolbar={
                 <button
                   className="btn sm ghost"

@@ -1,0 +1,228 @@
+/* AI help panel. Same tokens as the rest of the app: ink on paper, 1px rules, no gradients or shadows. */
+.ai-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-panel);
+  min-width: 0;
+}
+.ai-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border-bottom: 1px solid var(--rule);
+  flex: none;
+}
+.ai-head h3 {
+  margin: 0;
+  font-size: var(--fs-m);
+}
+.ai-model-chip {
+  max-width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ai-body {
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+.ai-key {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ai-key p {
+  margin: 0;
+  max-width: none;
+}
+.ai-key-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ai-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.ai-field .input {
+  width: 100%;
+}
+.ai-keybox {
+  display: flex;
+  gap: 6px;
+}
+.ai-keybox .input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono);
+}
+.ai-note {
+  font-size: var(--fs-s);
+}
+.ai-solutions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+}
+.ai-solutions span {
+  display: flex;
+  flex-direction: column;
+}
+.ai-log {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ai-empty {
+  margin: 0;
+  max-width: none;
+}
+.ai-turn.user {
+  align-self: flex-end;
+  max-width: 88%;
+  padding: 7px 11px;
+  background: var(--panel-3);
+  border-left: 3px solid var(--cobalt);
+}
+.ai-turn.user p {
+  margin: 0;
+  font-weight: 600;
+  font-size: var(--fs-s);
+  overflow-wrap: anywhere;
+}
+.ai-turn.assistant {
+  max-width: 100%;
+  min-width: 0;
+}
+.ai-reply p,
+.ai-reply ul,
+.ai-reply ol {
+  margin: 0 0 8px;
+  max-width: none;
+  font-size: var(--fs-s);
+  line-height: 1.55;
+}
+.ai-reply ul,
+.ai-reply ol {
+  padding-left: 20px;
+}
+.ai-reply .codeview {
+  font-size: var(--fs-xs);
+  margin: 6px 0 10px !important;
+}
+.ai-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 14px 0;
+  flex: none;
+}
+.ai-input {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  padding: 8px 14px;
+  flex: none;
+}
+.ai-input textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: inherit;
+  font-size: var(--fs-s);
+  padding: 8px 10px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-input);
+  background: var(--paper);
+  color: var(--ink);
+}
+.ai-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px 10px;
+  font-size: var(--fs-xs);
+  flex: none;
+}
+
+/* the editor and the helper side by side */
+.task-split {
+  display: block;
+  min-width: 0;
+}
+.task-split.has-dock {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+  gap: 16px;
+  align-items: start;
+}
+.task-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.task-ai {
+  position: sticky;
+  top: 12px;
+  height: min(720px, calc(100dvh - 40px));
+  min-height: 420px;
+}
+.task-full .task-ai {
+  top: 76px;
+  height: calc(100dvh - 100px);
+}
+.ai-nudge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 0 0;
+  color: var(--ink-muted);
+}
+.ai-sheet {
+  max-width: 720px;
+}
+.ai-sheet .ai-panel {
+  border: 0;
+  border-radius: 0;
+  flex: 1;
+}
+@media (max-width: 760px) {
+  .ai-sheet .ai-head {
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  }
+  .ai-sheet .ai-foot {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .ai-input textarea {
+    font-size: 16px;
+  }
+}
+
+/* links inside running text are underlined, so they do not rely on colour alone */
+.ai-key p a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

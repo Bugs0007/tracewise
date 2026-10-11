@@ -6,6 +6,9 @@ import { CodeEditor } from '@/ui/CodeEditor';
 import { Icon } from '@/ui/Icon';
 import { useCodeWrap } from '@/ui/codeWrap';
 import { WrapToggle } from '@/player/CodeView';
+import { useMedia, useStoredFlag } from '@/ui/hooks';
+import { AiAssistPanel, AiSheet, type AssistRequest } from '@/ai/AiAssist';
+import type { AssistAction, ProblemFacts } from '@/ai/prompt';
 import { useApp } from '@/store/store';
 import { playSound } from '@/lib/sound';
 import { blankMatches, fillBlanks, parseBlanks, type Segment } from '@/content/ladder';
@@ -126,9 +129,11 @@ export interface TaskRunnerProps {
   minHeight?: number;
   runLabel?: string;
   disabled?: boolean;
+  /** turn on the AI help beside the editor for this task (not offered for boss attempts) */
+  assist?: { chatId: string; problem: ProblemFacts };
 }
 
-export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeight = 220, runLabel = 'Run tests', disabled }: TaskRunnerProps) {
+export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeight = 220, runLabel = 'Run tests', disabled, assist }: TaskRunnerProps) {
   const drafts = useApp((s) => s.drafts);
   const saveDraft = useApp((s) => s.saveDraft);
   const sound = useApp((s) => s.settings.sound);
@@ -139,6 +144,22 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
   const [result, setResult] = useState<RunResult | null>(null);
   const [wrap] = useCodeWrap();
   const [full, setFull] = useState(false);
+  // AI help: docked beside the editor on wide screens, a full-screen sheet otherwise
+  const wide = useMedia('(min-width: 1100px)');
+  const [dock, setDock] = useStoredFlag('tracewise:ai-dock', true);
+  const [sheet, setSheet] = useState(false);
+  const [aiRequest, setAiRequest] = useState<AssistRequest | null>(null);
+  const requestN = useRef(0);
+  const resultRef = useRef<RunResult | null>(null);
+  resultRef.current = result;
+  const aiOpen = wide ? dock : sheet;
+  const toggleAi = () => (wide ? setDock(!dock) : setSheet(!sheet));
+  const askAi = (action: AssistAction) => {
+    setAiRequest({ id: ++requestN.current, action });
+    if (wide) setDock(true);
+    else setSheet(true);
+  };
+  const getContext = () => ({ problem: assist!.problem, code: codeRef.current, result: resultRef.current });
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
@@ -190,6 +211,11 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
         </span>
         <span className="spacer" />
         {toolbar}
+        {assist && (
+          <button className={`btn sm${aiOpen ? '' : ' ghost'}`} onClick={toggleAi} aria-pressed={aiOpen} aria-label="AI help" title="Ask the AI tutor" data-testid="ai-toggle">
+            <Icon name="sparkle" size={14} /> <span className="hide-xs">AI help</span>
+          </button>
+        )}
         <WrapToggle className="btn sm ghost" />
         <button className="btn sm ghost" onClick={() => setFull((f) => !f)} aria-pressed={full} aria-label={full ? 'Exit full screen' : 'Full screen editor'} title={full ? 'Exit full screen (Esc)' : 'Give the editor the whole screen'} data-testid="editor-full">
           <Icon name={full ? 'collapse' : 'expand'} size={14} /> <span className="hide-xs">{full ? 'Exit' : 'Full screen'}</span>
@@ -201,16 +227,34 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
           {running ? <span className="spin" /> : <Icon name="run" size={14} />} {running ? 'Running…' : runLabel}
         </button>
       </div>
-      {full ? (
-        <details className="task-examples">
-          <summary>Examples</summary>
-          <Examples task={task} />
-        </details>
-      ) : (
-        <Examples task={task} />
-      )}
-      <CodeEditor value={code} onChange={onChange} language={task.language} errorLine={result?.errorLine ?? result?.outcomes.find((o) => o.line)?.line} onRun={run} minHeight={minHeight} wrap={wrap} />
-      <Results result={result} />
+      <div className={`task-split${assist && wide && dock ? ' has-dock' : ''}`}>
+        <div className="task-main">
+          {full ? (
+            <details className="task-examples">
+              <summary>Examples</summary>
+              <Examples task={task} />
+            </details>
+          ) : (
+            <Examples task={task} />
+          )}
+          <CodeEditor value={code} onChange={onChange} language={task.language} errorLine={result?.errorLine ?? result?.outcomes.find((o) => o.line)?.line} onRun={run} minHeight={minHeight} wrap={wrap} />
+          <Results result={result} />
+          {assist && result && result.status !== 'pass' && (
+            <div className="ai-nudge">
+              <span>Stuck on this?</span>
+              <button className="btn sm" onClick={() => askAi('why-failed')} data-testid="ai-nudge">
+                <Icon name="sparkle" size={14} /> Ask AI why it failed
+              </button>
+            </div>
+          )}
+        </div>
+        {assist && wide && dock && (
+          <aside className="task-ai" aria-label="AI help">
+            <AiAssistPanel chatId={assist.chatId} getContext={getContext} request={aiRequest} onRequestConsumed={() => setAiRequest(null)} onClose={() => setDock(false)} hasResult={!!result} />
+          </aside>
+        )}
+      </div>
+      {assist && !wide && sheet && <AiSheet chatId={assist.chatId} getContext={getContext} request={aiRequest} onRequestConsumed={() => setAiRequest(null)} hasResult={!!result} onClose={() => setSheet(false)} />}
     </div>
   );
 }
