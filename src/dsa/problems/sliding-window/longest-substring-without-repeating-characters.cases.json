@@ -1,0 +1,68 @@
+{
+ "fn": "length_of_longest_substring",
+ "cases": [
+  {
+   "name": "window slides past a repeat",
+   "args": [
+    "xyzxyabcd"
+   ],
+   "expected": 7
+  },
+  {
+   "name": "all the same",
+   "args": [
+    "aaaa"
+   ],
+   "expected": 1
+  },
+  {
+   "name": "empty",
+   "args": [
+    ""
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one space",
+   "args": [
+    " "
+   ],
+   "expected": 1
+  },
+  {
+   "name": "repeat inside the window",
+   "args": [
+    "tmmzuxt"
+   ],
+   "expected": 5
+  },
+  {
+   "name": "all distinct",
+   "args": [
+    "abcdefg"
+   ],
+   "expected": 7
+  },
+  {
+   "name": "repeat at the very end",
+   "args": [
+    "abcda"
+   ],
+   "expected": 4
+  },
+  {
+   "name": "two letters alternating",
+   "args": [
+    "ababababab"
+   ],
+   "expected": 2
+  },
+  {
+   "name": "long",
+   "args": [
+    "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij"
+   ],
+   "expected": 10
+  }
+ ]
+}

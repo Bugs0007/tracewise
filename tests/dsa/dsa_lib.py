@@ -87,3 +87,58 @@ def case_params(topic, slugs):
         for i, c in enumerate(load_cases(topic, slug)["cases"]):
             out.append(pytest.param(slug, c, id=f"{slug}[{i}] {c['name']}"))
     return out
+
+
+# ─── topic specs ────────────────────────────────────────────────────────────
+# A topic's spec_<topic>.py describes every problem once:
+#   SPEC[slug] = dict(
+#       fn="function_or_class_name", compare="exact" | "unordered" | "nested" | "float",
+#       brute=lambda *args: expected,        # slow but obviously correct; computes the expected values below
+#       gen=lambda rng: [args...],           # random valid inputs for property tests
+#       cases=[("name", [args...]), ...],    # hand-picked inputs, including edge cases (5+)
+#       check=lambda args, got: bool,        # optional: for problems with several valid answers
+#   )
+# write_cases() turns it into the shared .cases.json files; generic_tests() builds the pytest checks.
+import random as _random
+
+
+def write_cases(topic, spec):
+    for slug, s in spec.items():
+        cases = [{"name": n, "args": a, "expected": _harness._jsonable(s["brute"](*copy.deepcopy(a)))} for n, a in s["cases"]]
+        d = {"fn": s["fn"]}
+        if s.get("compare", "exact") != "exact":
+            d["compare"] = s["compare"]
+        d["cases"] = cases
+        (problem_dir(topic) / f"{slug}.cases.json").write_text(json.dumps(d, indent=1, ensure_ascii=False) + "\n", encoding="utf8")
+
+
+def generic_tests(topic, spec, trials=150, seed=11):
+    """pytest functions: enough cases, shared cases pass, and random inputs agree with the brute force."""
+    slugs = list(spec)
+
+    @pytest.mark.parametrize("slug", slugs)
+    def test_has_enough_cases(slug):
+        assert len(load_cases(topic, slug)["cases"]) >= MIN_CASES
+
+    @pytest.mark.parametrize("slug,case", case_params(topic, slugs))
+    def test_shared_cases(slug, case):
+        meta = load_cases(topic, slug)
+        _, fn, adapter = load_solution(topic, slug)
+        got = call(fn, adapter, case["args"])
+        assert matches(got, case["expected"], meta.get("compare", "exact")), f"got {got!r}, expected {case['expected']!r}"
+
+    @pytest.mark.parametrize("slug", slugs)
+    def test_matches_brute_force(slug):
+        s = spec[slug]
+        _, fn, adapter = load_solution(topic, slug)
+        rng = _random.Random(seed)
+        for _ in range(trials):
+            args = s["gen"](rng)
+            got = call(fn, adapter, args)
+            if "check" in s:
+                assert s["check"](copy.deepcopy(args), got), f"args {args!r} gave {got!r}"
+            else:
+                want = _harness._jsonable(s["brute"](*copy.deepcopy(args)))
+                assert matches(got, want, s.get("compare", "exact")), f"args {args!r}: got {got!r}, want {want!r}"
+
+    return {"test_has_enough_cases": test_has_enough_cases, "test_shared_cases": test_shared_cases, "test_matches_brute_force": test_matches_brute_force}

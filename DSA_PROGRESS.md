@@ -2,13 +2,11 @@
 
 _If a session ends partway: read `DSA_PLAN.md`, then resume at the first unchecked problem below._
 
-A problem is ticked only when all of these hold: its `.py` solution passes `python -m pytest tests/dsa/test_<topic>.py` (5+ cases incl. edge cases), its trace generator matches the Python result (`npx vitest run src/dsa`), and the build, lint and tests are green.
+A problem is ticked only when all of these hold: its `.py` solution passes `python -m pytest tests/dsa/test_<topic>.py` (5+ cases incl. edge cases, brute-force comparison), its trace generator matches the Python result (`npx vitest run src/dsa`), and the build, lint and tests are green.
 
-Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), add `tests/dsa/test_<topic>.py`, run the full suite, then commit once.
+Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **9 of 150** problems done.
-
-Status: **Phase 1 (infrastructure + Arrays & Hashing) is done and waiting for review.** The remaining topics start after approval.
+Progress: **20 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -23,24 +21,24 @@ Status: **Phase 1 (infrastructure + Arrays & Hashing) is done and waiting for re
 - [x] 8. Valid Sudoku (`valid-sudoku`, Medium)
 - [x] 9. Longest Consecutive Sequence (`longest-consecutive-sequence`, Medium)
 
-## Two Pointers (0/5)
+## Two Pointers (5/5)
 
-- [ ] Topic page content (`topics/two-pointers.ts`) and `tests/dsa/test_two_pointers.py`
-- [ ] 10. Valid Palindrome (`valid-palindrome`, Easy)
-- [ ] 11. Two Sum II (`two-sum-ii-input-array-is-sorted`, Medium)
-- [ ] 12. 3Sum (`3sum`, Medium)
-- [ ] 13. Container With Most Water (`container-with-most-water`, Medium)
-- [ ] 14. Trapping Rain Water (`trapping-rain-water`, Hard)
+- [x] Topic page content (`topics/two-pointers.ts`) and `tests/dsa/test_two_pointers.py`
+- [x] 10. Valid Palindrome (`valid-palindrome`, Easy)
+- [x] 11. Two Sum II (`two-sum-ii-input-array-is-sorted`, Medium)
+- [x] 12. 3Sum (`3sum`, Medium)
+- [x] 13. Container With Most Water (`container-with-most-water`, Medium)
+- [x] 14. Trapping Rain Water (`trapping-rain-water`, Hard)
 
-## Sliding Window (0/6)
+## Sliding Window (6/6)
 
-- [ ] Topic page content (`topics/sliding-window.ts`) and `tests/dsa/test_sliding_window.py`
-- [ ] 15. Best Time to Buy and Sell Stock (`best-time-to-buy-and-sell-stock`, Easy)
-- [ ] 16. Longest Substring Without Repeating Characters (`longest-substring-without-repeating-characters`, Medium)
-- [ ] 17. Longest Repeating Character Replacement (`longest-repeating-character-replacement`, Medium)
-- [ ] 18. Permutation in String (`permutation-in-string`, Medium)
-- [ ] 19. Minimum Window Substring (`minimum-window-substring`, Hard)
-- [ ] 20. Sliding Window Maximum (`sliding-window-maximum`, Hard)
+- [x] Topic page content (`topics/sliding-window.ts`) and `tests/dsa/test_sliding_window.py`
+- [x] 15. Best Time to Buy and Sell Stock (`best-time-to-buy-and-sell-stock`, Easy)
+- [x] 16. Longest Substring Without Repeating Characters (`longest-substring-without-repeating-characters`, Medium)
+- [x] 17. Longest Repeating Character Replacement (`longest-repeating-character-replacement`, Medium)
+- [x] 18. Permutation in String (`permutation-in-string`, Medium)
+- [x] 19. Minimum Window Substring (`minimum-window-substring`, Hard)
+- [x] 20. Sliding Window Maximum (`sliding-window-maximum`, Hard)
 
 ## Stack (0/7)
 

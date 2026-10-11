@@ -1,0 +1,75 @@
+{
+ "fn": "is_palindrome",
+ "cases": [
+  {
+   "name": "sentence with punctuation",
+   "args": [
+    "Was it a car or a cat I saw?"
+   ],
+   "expected": true
+  },
+  {
+   "name": "clearly not",
+   "args": [
+    "hello, world"
+   ],
+   "expected": false
+  },
+  {
+   "name": "only punctuation",
+   "args": [
+    ".,! ?"
+   ],
+   "expected": true
+  },
+  {
+   "name": "empty",
+   "args": [
+    ""
+   ],
+   "expected": true
+  },
+  {
+   "name": "digits and letters",
+   "args": [
+    "a1b1a"
+   ],
+   "expected": true
+  },
+  {
+   "name": "mixed case",
+   "args": [
+    "Noon"
+   ],
+   "expected": true
+  },
+  {
+   "name": "single character",
+   "args": [
+    "x"
+   ],
+   "expected": true
+  },
+  {
+   "name": "almost a palindrome",
+   "args": [
+    "abca"
+   ],
+   "expected": false
+  },
+  {
+   "name": "digit mismatch",
+   "args": [
+    "1a2"
+   ],
+   "expected": false
+  },
+  {
+   "name": "long with spaces",
+   "args": [
+    "no lemon, no melon no lemon, no melon no lemon, no melon no lemon, no melon no lemon, no melon x nolem on ,nomel on nolem on ,nomel on nolem on ,nomel on nolem on ,nomel on nolem on ,nomel on"
+   ],
+   "expected": true
+  }
+ ]
+}

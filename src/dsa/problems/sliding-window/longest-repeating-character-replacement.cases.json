@@ -1,0 +1,69 @@
+{
+ "fn": "character_replacement",
+ "cases": [
+  {
+   "name": "one swap fixes it",
+   "args": [
+    "QQQRQQQ",
+    1
+   ],
+   "expected": 7
+  },
+  {
+   "name": "no replacements allowed",
+   "args": [
+    "AABBBCC",
+    0
+   ],
+   "expected": 3
+  },
+  {
+   "name": "replace everything",
+   "args": [
+    "XYZ",
+    5
+   ],
+   "expected": 3
+  },
+  {
+   "name": "empty",
+   "args": [
+    "",
+    3
+   ],
+   "expected": 0
+  },
+  {
+   "name": "single letter",
+   "args": [
+    "A",
+    0
+   ],
+   "expected": 1
+  },
+  {
+   "name": "two letters, two swaps",
+   "args": [
+    "XYXYXZ",
+    2
+   ],
+   "expected": 5
+  },
+  {
+   "name": "already uniform",
+   "args": [
+    "KKKK",
+    2
+   ],
+   "expected": 4
+  },
+  {
+   "name": "long",
+   "args": [
+    "ABCABCABCABCABCABC",
+    3
+   ],
+   "expected": 5
+  }
+ ]
+}

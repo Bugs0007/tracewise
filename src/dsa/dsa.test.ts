@@ -87,7 +87,7 @@ describe('problems', () => {
         expect(c.explanation.whyItWorks.length).toBeGreaterThan(0);
         expect(c.complexity.time.big).toMatch(/^O\(/);
         expect(c.complexity.space.big).toMatch(/^O\(/);
-        expect(c.task.signature).toContain(`def ${c.task.fnName}(`);
+        expect(/(^|\n)(def|class) /.test(c.task.signature) && c.task.signature.includes(c.task.fnName), 'signature defines the function or class under test').toBe(true);
         // the visualizer's code is the solution itself
         expect(c.viz.code).toBe(c.solution);
         expect(Object.keys(parseAnchors(c.solution).anchors).length).toBeGreaterThan(3);

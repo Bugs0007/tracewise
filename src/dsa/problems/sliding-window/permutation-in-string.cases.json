@@ -1,0 +1,77 @@
+{
+ "fn": "check_inclusion",
+ "cases": [
+  {
+   "name": "hidden at the end",
+   "args": [
+    "abc",
+    "xxbcax"
+   ],
+   "expected": true
+  },
+  {
+   "name": "not present",
+   "args": [
+    "abc",
+    "aabbcc"
+   ],
+   "expected": false
+  },
+  {
+   "name": "same string",
+   "args": [
+    "rain",
+    "rain"
+   ],
+   "expected": true
+  },
+  {
+   "name": "pattern longer than text",
+   "args": [
+    "abcd",
+    "abc"
+   ],
+   "expected": false
+  },
+  {
+   "name": "single letter",
+   "args": [
+    "z",
+    "abzc"
+   ],
+   "expected": true
+  },
+  {
+   "name": "repeated letters matter",
+   "args": [
+    "aab",
+    "abababab"
+   ],
+   "expected": true
+  },
+  {
+   "name": "repeated letters absent",
+   "args": [
+    "aab",
+    "abcabcabc"
+   ],
+   "expected": false
+  },
+  {
+   "name": "empty text",
+   "args": [
+    "a",
+    ""
+   ],
+   "expected": false
+  },
+  {
+   "name": "long",
+   "args": [
+    "abcde",
+    "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzedcbayyyyyyyyyy"
+   ],
+   "expected": true
+  }
+ ]
+}

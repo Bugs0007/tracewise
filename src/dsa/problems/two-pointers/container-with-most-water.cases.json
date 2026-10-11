@@ -1,0 +1,143 @@
+{
+ "fn": "max_area",
+ "cases": [
+  {
+   "name": "a tall pair far apart",
+   "args": [
+    [
+     2,
+     9,
+     4,
+     3,
+     8,
+     3,
+     7
+    ]
+   ],
+   "expected": 35
+  },
+  {
+   "name": "two bars",
+   "args": [
+    [
+     5,
+     5
+    ]
+   ],
+   "expected": 5
+  },
+  {
+   "name": "zeros at the ends",
+   "args": [
+    [
+     0,
+     6,
+     2,
+     6,
+     0
+    ]
+   ],
+   "expected": 12
+  },
+  {
+   "name": "increasing",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ]
+   ],
+   "expected": 9
+  },
+  {
+   "name": "decreasing",
+   "args": [
+    [
+     6,
+     5,
+     4,
+     3,
+     2,
+     1
+    ]
+   ],
+   "expected": 9
+  },
+  {
+   "name": "all zero",
+   "args": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one tall wall in the middle",
+   "args": [
+    [
+     1,
+     1,
+     20,
+     1,
+     1
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "larger",
+   "args": [
+    [
+     0,
+     7,
+     3,
+     10,
+     6,
+     2,
+     9,
+     5,
+     1,
+     8,
+     4,
+     0,
+     7,
+     3,
+     10,
+     6,
+     2,
+     9,
+     5,
+     1,
+     8,
+     4,
+     0,
+     7,
+     3,
+     10,
+     6,
+     2,
+     9,
+     5,
+     1,
+     8,
+     4,
+     0,
+     7,
+     3,
+     10,
+     6,
+     2,
+     9
+    ]
+   ],
+   "expected": 330
+  }
+ ]
+}

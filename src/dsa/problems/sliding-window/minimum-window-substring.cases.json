@@ -1,0 +1,77 @@
+{
+ "fn": "min_window",
+ "cases": [
+  {
+   "name": "window in the middle",
+   "args": [
+    "xaybzcxabc",
+    "abc"
+   ],
+   "expected": "abc"
+  },
+  {
+   "name": "impossible",
+   "args": [
+    "abc",
+    "abd"
+   ],
+   "expected": ""
+  },
+  {
+   "name": "whole string",
+   "args": [
+    "abc",
+    "abc"
+   ],
+   "expected": "abc"
+  },
+  {
+   "name": "repeated needs",
+   "args": [
+    "aabbbc",
+    "abb"
+   ],
+   "expected": "abb"
+  },
+  {
+   "name": "single letter",
+   "args": [
+    "xyzx",
+    "z"
+   ],
+   "expected": "z"
+  },
+  {
+   "name": "pattern longer than text",
+   "args": [
+    "ab",
+    "abc"
+   ],
+   "expected": ""
+  },
+  {
+   "name": "empty text",
+   "args": [
+    "",
+    "a"
+   ],
+   "expected": ""
+  },
+  {
+   "name": "leftmost wins ties",
+   "args": [
+    "abxcab",
+    "abc"
+   ],
+   "expected": "cab"
+  },
+  {
+   "name": "long",
+   "args": [
+    "xxxxxxxxxxxxxxxxxxxxabbcyyyyyyyyyyyyyyyyyyyycab",
+    "abc"
+   ],
+   "expected": "cab"
+  }
+ ]
+}

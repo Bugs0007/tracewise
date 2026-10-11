@@ -1,0 +1,145 @@
+{
+ "fn": "trap",
+ "cases": [
+  {
+   "name": "two basins",
+   "args": [
+    [
+     3,
+     0,
+     2,
+     0,
+     4,
+     1,
+     0,
+     2
+    ]
+   ],
+   "expected": 10
+  },
+  {
+   "name": "single basin",
+   "args": [
+    [
+     4,
+     1,
+     1,
+     4
+    ]
+   ],
+   "expected": 6
+  },
+  {
+   "name": "flat",
+   "args": [
+    [
+     2,
+     2,
+     2
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one bar",
+   "args": [
+    [
+     7
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "ascending staircase",
+   "args": [
+    [
+     0,
+     1,
+     2,
+     3,
+     4
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "valley with plateau",
+   "args": [
+    [
+     5,
+     2,
+     2,
+     2,
+     5
+    ]
+   ],
+   "expected": 9
+  },
+  {
+   "name": "zeros",
+   "args": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "larger",
+   "args": [
+    [
+     0,
+     5,
+     1,
+     6,
+     2,
+     7,
+     3,
+     8,
+     4,
+     0,
+     5,
+     1,
+     6,
+     2,
+     7,
+     3,
+     8,
+     4,
+     0,
+     5,
+     1,
+     6,
+     2,
+     7,
+     3,
+     8,
+     4,
+     0,
+     5,
+     1,
+     6,
+     2,
+     7,
+     3,
+     8,
+     4,
+     0,
+     5,
+     1,
+     6
+    ]
+   ],
+   "expected": 134
+  }
+ ]
+}
