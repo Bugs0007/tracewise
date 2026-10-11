@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **143 of 150** problems done.
+Progress: **150 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -219,13 +219,13 @@ Progress: **143 of 150** problems done.
 - [x] 142. Multiply Strings (`multiply-strings`, Medium)
 - [x] 143. Detect Squares (`detect-squares`, Medium)
 
-## Bit Manipulation (0/7)
+## Bit Manipulation (7/7)
 
-- [ ] Topic page content (`topics/bit-manipulation.ts`) and `tests/dsa/test_bit_manipulation.py`
-- [ ] 144. Single Number (`single-number`, Easy)
-- [ ] 145. Number of 1 Bits (`number-of-1-bits`, Easy)
-- [ ] 146. Counting Bits (`counting-bits`, Easy)
-- [ ] 147. Reverse Bits (`reverse-bits`, Easy)
-- [ ] 148. Missing Number (`missing-number`, Easy)
-- [ ] 149. Sum of Two Integers (`sum-of-two-integers`, Medium)
-- [ ] 150. Reverse Integer (`reverse-integer`, Medium)
+- [x] Topic page content (`topics/bit-manipulation.ts`) and `tests/dsa/test_bit_manipulation.py`
+- [x] 144. Single Number (`single-number`, Easy)
+- [x] 145. Number of 1 Bits (`number-of-1-bits`, Easy)
+- [x] 146. Counting Bits (`counting-bits`, Easy)
+- [x] 147. Reverse Bits (`reverse-bits`, Easy)
+- [x] 148. Missing Number (`missing-number`, Easy)
+- [x] 149. Sum of Two Integers (`sum-of-two-integers`, Medium)
+- [x] 150. Reverse Integer (`reverse-integer`, Medium)

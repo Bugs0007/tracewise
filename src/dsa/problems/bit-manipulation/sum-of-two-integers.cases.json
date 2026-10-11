@@ -1,0 +1,69 @@
+{
+ "fn": "get_sum",
+ "cases": [
+  {
+   "name": "small",
+   "args": [
+    5,
+    7
+   ],
+   "expected": 12
+  },
+  {
+   "name": "with zero",
+   "args": [
+    0,
+    9
+   ],
+   "expected": 9
+  },
+  {
+   "name": "negative result",
+   "args": [
+    -4,
+    -9
+   ],
+   "expected": -13
+  },
+  {
+   "name": "cancel out",
+   "args": [
+    6,
+    -6
+   ],
+   "expected": 0
+  },
+  {
+   "name": "carry chain",
+   "args": [
+    255,
+    1
+   ],
+   "expected": 256
+  },
+  {
+   "name": "mixed signs",
+   "args": [
+    -3,
+    10
+   ],
+   "expected": 7
+  },
+  {
+   "name": "large",
+   "args": [
+    123456,
+    654321
+   ],
+   "expected": 777777
+  },
+  {
+   "name": "both negative",
+   "args": [
+    -100,
+    -200
+   ],
+   "expected": -300
+  }
+ ]
+}

@@ -1,0 +1,61 @@
+{
+ "fn": "hamming_weight",
+ "cases": [
+  {
+   "name": "eleven",
+   "args": [
+    11
+   ],
+   "expected": 3
+  },
+  {
+   "name": "zero",
+   "args": [
+    0
+   ],
+   "expected": 0
+  },
+  {
+   "name": "power of two",
+   "args": [
+    64
+   ],
+   "expected": 1
+  },
+  {
+   "name": "all ones in a byte",
+   "args": [
+    255
+   ],
+   "expected": 8
+  },
+  {
+   "name": "alternating",
+   "args": [
+    170
+   ],
+   "expected": 4
+  },
+  {
+   "name": "max 32 bit",
+   "args": [
+    4294967295
+   ],
+   "expected": 32
+  },
+  {
+   "name": "single high bit",
+   "args": [
+    2147483648
+   ],
+   "expected": 1
+  },
+  {
+   "name": "one",
+   "args": [
+    1
+   ],
+   "expected": 1
+  }
+ ]
+}

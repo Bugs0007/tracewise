@@ -1,0 +1,61 @@
+{
+ "fn": "reverse",
+ "cases": [
+  {
+   "name": "simple",
+   "args": [
+    3457
+   ],
+   "expected": 7543
+  },
+  {
+   "name": "negative",
+   "args": [
+    -908
+   ],
+   "expected": -809
+  },
+  {
+   "name": "trailing zeros vanish",
+   "args": [
+    1200
+   ],
+   "expected": 21
+  },
+  {
+   "name": "zero",
+   "args": [
+    0
+   ],
+   "expected": 0
+  },
+  {
+   "name": "single digit",
+   "args": [
+    7
+   ],
+   "expected": 7
+  },
+  {
+   "name": "overflow gives zero",
+   "args": [
+    1999999999
+   ],
+   "expected": 0
+  },
+  {
+   "name": "negative overflow",
+   "args": [
+    -1999999999
+   ],
+   "expected": 0
+  },
+  {
+   "name": "palindrome",
+   "args": [
+    1221
+   ],
+   "expected": 1221
+  }
+ ]
+}

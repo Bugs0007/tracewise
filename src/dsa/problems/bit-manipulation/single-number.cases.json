@@ -1,0 +1,88 @@
+{
+ "fn": "single_number",
+ "cases": [
+  {
+   "name": "one odd one out",
+   "args": [
+    [
+     4,
+     7,
+     4,
+     9,
+     7
+    ]
+   ],
+   "expected": 9
+  },
+  {
+   "name": "single element",
+   "args": [
+    [
+     11
+    ]
+   ],
+   "expected": 11
+  },
+  {
+   "name": "negative numbers",
+   "args": [
+    [
+     -3,
+     5,
+     -3
+    ]
+   ],
+   "expected": 5
+  },
+  {
+   "name": "zero is the loner",
+   "args": [
+    [
+     0,
+     6,
+     6
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "many pairs",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     2,
+     1,
+     5,
+     3
+    ]
+   ],
+   "expected": 5
+  },
+  {
+   "name": "large values",
+   "args": [
+    [
+     100000,
+     7,
+     100000
+    ]
+   ],
+   "expected": 7
+  },
+  {
+   "name": "pairs far apart",
+   "args": [
+    [
+     8,
+     1,
+     2,
+     1,
+     2
+    ]
+   ],
+   "expected": 8
+  }
+ ]
+}
