@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **20 of 150** problems done.
+Progress: **27 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -40,16 +40,16 @@ Progress: **20 of 150** problems done.
 - [x] 19. Minimum Window Substring (`minimum-window-substring`, Hard)
 - [x] 20. Sliding Window Maximum (`sliding-window-maximum`, Hard)
 
-## Stack (0/7)
+## Stack (7/7)
 
-- [ ] Topic page content (`topics/stack.ts`) and `tests/dsa/test_stack.py`
-- [ ] 21. Valid Parentheses (`valid-parentheses`, Easy)
-- [ ] 22. Min Stack (`min-stack`, Medium)
-- [ ] 23. Evaluate Reverse Polish Notation (`evaluate-reverse-polish-notation`, Medium)
-- [ ] 24. Generate Parentheses (`generate-parentheses`, Medium)
-- [ ] 25. Daily Temperatures (`daily-temperatures`, Medium)
-- [ ] 26. Car Fleet (`car-fleet`, Medium)
-- [ ] 27. Largest Rectangle in Histogram (`largest-rectangle-in-histogram`, Hard)
+- [x] Topic page content (`topics/stack.ts`) and `tests/dsa/test_stack.py`
+- [x] 21. Valid Parentheses (`valid-parentheses`, Easy)
+- [x] 22. Min Stack (`min-stack`, Medium)
+- [x] 23. Evaluate Reverse Polish Notation (`evaluate-reverse-polish-notation`, Medium)
+- [x] 24. Generate Parentheses (`generate-parentheses`, Medium)
+- [x] 25. Daily Temperatures (`daily-temperatures`, Medium)
+- [x] 26. Car Fleet (`car-fleet`, Medium)
+- [x] 27. Largest Rectangle in Histogram (`largest-rectangle-in-histogram`, Hard)
 
 ## Binary Search (0/7)
 

@@ -1,0 +1,147 @@
+{
+ "fn": "car_fleet",
+ "cases": [
+  {
+   "name": "cars merge into fleets",
+   "args": [
+    20,
+    [
+     4,
+     2,
+     12,
+     8,
+     14
+    ],
+    [
+     3,
+     5,
+     1,
+     4,
+     2
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "single car",
+   "args": [
+    10,
+    [
+     3
+    ],
+    [
+     2
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "no cars",
+   "args": [
+    10,
+    [],
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "faster car behind catches up",
+   "args": [
+    12,
+    [
+     0,
+     6
+    ],
+    [
+     4,
+     1
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "identical arrival times join",
+   "args": [
+    12,
+    [
+     2,
+     4,
+     6
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "all separate",
+   "args": [
+    30,
+    [
+     10,
+     20,
+     28
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "everyone slows to the front car",
+   "args": [
+    100,
+    [
+     10,
+     20,
+     30,
+     40
+    ],
+    [
+     9,
+     8,
+     7,
+     1
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "many cars",
+   "args": [
+    60,
+    [
+     0,
+     5,
+     10,
+     15,
+     20,
+     25,
+     30,
+     35,
+     40,
+     45
+    ],
+    [
+     1,
+     4,
+     7,
+     3,
+     6,
+     2,
+     5,
+     1,
+     4,
+     7
+    ]
+   ],
+   "expected": 4
+  }
+ ]
+}

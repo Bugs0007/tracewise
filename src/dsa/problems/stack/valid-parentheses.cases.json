@@ -1,0 +1,75 @@
+{
+ "fn": "is_valid",
+ "cases": [
+  {
+   "name": "nested pairs",
+   "args": [
+    "{[()()]}"
+   ],
+   "expected": true
+  },
+  {
+   "name": "wrong closer",
+   "args": [
+    "([)]"
+   ],
+   "expected": false
+  },
+  {
+   "name": "unclosed opener",
+   "args": [
+    "(("
+   ],
+   "expected": false
+  },
+  {
+   "name": "closer first",
+   "args": [
+    ")("
+   ],
+   "expected": false
+  },
+  {
+   "name": "empty",
+   "args": [
+    ""
+   ],
+   "expected": true
+  },
+  {
+   "name": "side by side",
+   "args": [
+    "()[]{}"
+   ],
+   "expected": true
+  },
+  {
+   "name": "single opener",
+   "args": [
+    "["
+   ],
+   "expected": false
+  },
+  {
+   "name": "single closer",
+   "args": [
+    "}"
+   ],
+   "expected": false
+  },
+  {
+   "name": "deep",
+   "args": [
+    "(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))"
+   ],
+   "expected": true
+  },
+  {
+   "name": "deep but one off",
+   "args": [
+    "(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))]"
+   ],
+   "expected": false
+  }
+ ]
+}

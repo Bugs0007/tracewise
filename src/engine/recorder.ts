@@ -32,6 +32,11 @@ export class Recorder {
     this.anchors = parseAnchors(code).anchors;
   }
 
+  /** true once the frame cap is reached: later steps are dropped, so heavy generators can skip building panels */
+  get full(): boolean {
+    return this.frames.length >= MAX_FRAMES;
+  }
+
   /** count an elementary operation (comparison, write, visit) */
   op(n = 1): void {
     this.ops += n;
