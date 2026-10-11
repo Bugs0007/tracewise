@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **27 of 150** problems done.
+Progress: **34 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -51,16 +51,16 @@ Progress: **27 of 150** problems done.
 - [x] 26. Car Fleet (`car-fleet`, Medium)
 - [x] 27. Largest Rectangle in Histogram (`largest-rectangle-in-histogram`, Hard)
 
-## Binary Search (0/7)
+## Binary Search (7/7)
 
-- [ ] Topic page content (`topics/binary-search.ts`) and `tests/dsa/test_binary_search.py`
-- [ ] 28. Binary Search (`binary-search`, Easy)
-- [ ] 29. Search a 2D Matrix (`search-a-2d-matrix`, Medium)
-- [ ] 30. Koko Eating Bananas (`koko-eating-bananas`, Medium)
-- [ ] 31. Find Minimum in Rotated Sorted Array (`find-minimum-in-rotated-sorted-array`, Medium)
-- [ ] 32. Search in Rotated Sorted Array (`search-in-rotated-sorted-array`, Medium)
-- [ ] 33. Time Based Key-Value Store (`time-based-key-value-store`, Medium)
-- [ ] 34. Median of Two Sorted Arrays (`median-of-two-sorted-arrays`, Hard)
+- [x] Topic page content (`topics/binary-search.ts`) and `tests/dsa/test_binary_search.py`
+- [x] 28. Binary Search (`binary-search`, Easy)
+- [x] 29. Search a 2D Matrix (`search-a-2d-matrix`, Medium)
+- [x] 30. Koko Eating Bananas (`koko-eating-bananas`, Medium)
+- [x] 31. Find Minimum in Rotated Sorted Array (`find-minimum-in-rotated-sorted-array`, Medium)
+- [x] 32. Search in Rotated Sorted Array (`search-in-rotated-sorted-array`, Medium)
+- [x] 33. Time Based Key-Value Store (`time-based-key-value-store`, Medium)
+- [x] 34. Median of Two Sorted Arrays (`median-of-two-sorted-arrays`, Hard)
 
 ## Linked List (0/11)
 

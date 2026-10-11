@@ -1,0 +1,101 @@
+{
+ "fn": "min_eating_speed",
+ "cases": [
+  {
+   "name": "moderate speed",
+   "args": [
+    [
+     4,
+     9,
+     7,
+     12
+    ],
+    8
+   ],
+   "expected": 5
+  },
+  {
+   "name": "one hour per pile",
+   "args": [
+    [
+     3,
+     6,
+     9
+    ],
+    3
+   ],
+   "expected": 9
+  },
+  {
+   "name": "lots of time",
+   "args": [
+    [
+     10,
+     20,
+     30
+    ],
+    60
+   ],
+   "expected": 1
+  },
+  {
+   "name": "single pile",
+   "args": [
+    [
+     17
+    ],
+    5
+   ],
+   "expected": 4
+  },
+  {
+   "name": "single pile, one hour",
+   "args": [
+    [
+     17
+    ],
+    1
+   ],
+   "expected": 17
+  },
+  {
+   "name": "tight",
+   "args": [
+    [
+     30,
+     11,
+     23,
+     4,
+     20
+    ],
+    6
+   ],
+   "expected": 23
+  },
+  {
+   "name": "equal piles",
+   "args": [
+    [
+     8,
+     8,
+     8,
+     8
+    ],
+    8
+   ],
+   "expected": 4
+  },
+  {
+   "name": "big piles",
+   "args": [
+    [
+     1000,
+     2000,
+     3000
+    ],
+    10
+   ],
+   "expected": 667
+  }
+ ]
+}

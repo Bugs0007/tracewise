@@ -27,7 +27,7 @@ const viz = vizOf<{ n: number }>({
       chipsView(res, { title: 'finished strings', emptyText: 'none yet', tones: Object.fromEntries(res.map((_, i) => [i, 'found' as Tone])) }),
     ];
     const label = (cur: string) => (cur === '' ? '·' : cur.length > 6 ? `…${cur.slice(-5)}` : cur);
-    let asked = new Set<string>();
+    const asked = new Set<string>();
     r.step('init', `Build every well-formed string of ${n} pair${n === 1 ? '' : 's'}, one character at a time.`, view(), { n });
     const build = (cur: string, opened: number, closed: number, id: string) => {
       if (nodes[id]) nodes[id].tone = 'active';
