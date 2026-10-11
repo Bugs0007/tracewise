@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **135 of 150** problems done.
+Progress: **143 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -207,17 +207,17 @@ Progress: **135 of 150** problems done.
 - [x] 134. Meeting Rooms II (`meeting-rooms-ii`, Medium)
 - [x] 135. Minimum Interval to Include Each Query (`minimum-interval-to-include-each-query`, Hard)
 
-## Math & Geometry (0/8)
+## Math & Geometry (8/8)
 
-- [ ] Topic page content (`topics/math-geometry.ts`) and `tests/dsa/test_math_geometry.py`
-- [ ] 136. Rotate Image (`rotate-image`, Medium)
-- [ ] 137. Spiral Matrix (`spiral-matrix`, Medium)
-- [ ] 138. Set Matrix Zeroes (`set-matrix-zeroes`, Medium)
-- [ ] 139. Happy Number (`happy-number`, Easy)
-- [ ] 140. Plus One (`plus-one`, Easy)
-- [ ] 141. Pow(x, n) (`powx-n`, Medium)
-- [ ] 142. Multiply Strings (`multiply-strings`, Medium)
-- [ ] 143. Detect Squares (`detect-squares`, Medium)
+- [x] Topic page content (`topics/math-geometry.ts`) and `tests/dsa/test_math_geometry.py`
+- [x] 136. Rotate Image (`rotate-image`, Medium)
+- [x] 137. Spiral Matrix (`spiral-matrix`, Medium)
+- [x] 138. Set Matrix Zeroes (`set-matrix-zeroes`, Medium)
+- [x] 139. Happy Number (`happy-number`, Easy)
+- [x] 140. Plus One (`plus-one`, Easy)
+- [x] 141. Pow(x, n) (`powx-n`, Medium)
+- [x] 142. Multiply Strings (`multiply-strings`, Medium)
+- [x] 143. Detect Squares (`detect-squares`, Medium)
 
 ## Bit Manipulation (0/7)
 

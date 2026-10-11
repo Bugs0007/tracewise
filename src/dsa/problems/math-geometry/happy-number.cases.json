@@ -1,0 +1,61 @@
+{
+ "fn": "is_happy",
+ "cases": [
+  {
+   "name": "happy",
+   "args": [
+    19
+   ],
+   "expected": true
+  },
+  {
+   "name": "unhappy",
+   "args": [
+    2
+   ],
+   "expected": false
+  },
+  {
+   "name": "one",
+   "args": [
+    1
+   ],
+   "expected": true
+  },
+  {
+   "name": "ten",
+   "args": [
+    10
+   ],
+   "expected": true
+  },
+  {
+   "name": "seven",
+   "args": [
+    7
+   ],
+   "expected": true
+  },
+  {
+   "name": "four loops",
+   "args": [
+    4
+   ],
+   "expected": false
+  },
+  {
+   "name": "big",
+   "args": [
+    999
+   ],
+   "expected": false
+  },
+  {
+   "name": "hundred",
+   "args": [
+    100
+   ],
+   "expected": true
+  }
+ ]
+}

@@ -1,0 +1,70 @@
+{
+ "fn": "my_pow",
+ "compare": "float",
+ "cases": [
+  {
+   "name": "two to the ten",
+   "args": [
+    2,
+    10
+   ],
+   "expected": 1024.0
+  },
+  {
+   "name": "negative exponent",
+   "args": [
+    2,
+    -3
+   ],
+   "expected": 0.125
+  },
+  {
+   "name": "zero exponent",
+   "args": [
+    5,
+    0
+   ],
+   "expected": 1.0
+  },
+  {
+   "name": "negative base odd",
+   "args": [
+    -2,
+    3
+   ],
+   "expected": -8.0
+  },
+  {
+   "name": "negative base even",
+   "args": [
+    -2,
+    4
+   ],
+   "expected": 16.0
+  },
+  {
+   "name": "fraction",
+   "args": [
+    0.5,
+    4
+   ],
+   "expected": 0.0625
+  },
+  {
+   "name": "one",
+   "args": [
+    1,
+    1000
+   ],
+   "expected": 1.0
+  },
+  {
+   "name": "minus one",
+   "args": [
+    -1,
+    7
+   ],
+   "expected": -1.0
+  }
+ ]
+}

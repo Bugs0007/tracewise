@@ -1,0 +1,61 @@
+{
+ "fn": "multiply",
+ "cases": [
+  {
+   "name": "two by two digits",
+   "args": [
+    "12",
+    "34"
+   ],
+   "expected": "408"
+  },
+  {
+   "name": "zero",
+   "args": [
+    "0",
+    "999"
+   ],
+   "expected": "0"
+  },
+  {
+   "name": "single digits",
+   "args": [
+    "7",
+    "8"
+   ],
+   "expected": "56"
+  },
+  {
+   "name": "carries",
+   "args": [
+    "99",
+    "99"
+   ],
+   "expected": "9801"
+  },
+  {
+   "name": "different lengths",
+   "args": [
+    "1234",
+    "5"
+   ],
+   "expected": "6170"
+  },
+  {
+   "name": "power of ten",
+   "args": [
+    "100",
+    "100"
+   ],
+   "expected": "10000"
+  },
+  {
+   "name": "big",
+   "args": [
+    "987654",
+    "321"
+   ],
+   "expected": "317036934"
+  }
+ ]
+}
