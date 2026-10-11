@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **70 of 150** problems done.
+Progress: **79 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -114,18 +114,18 @@ Progress: **70 of 150** problems done.
 - [x] 69. Design Twitter (`design-twitter`, Medium)
 - [x] 70. Find Median from Data Stream (`find-median-from-data-stream`, Hard)
 
-## Backtracking (0/9)
+## Backtracking (9/9)
 
-- [ ] Topic page content (`topics/backtracking.ts`) and `tests/dsa/test_backtracking.py`
-- [ ] 71. Subsets (`subsets`, Medium)
-- [ ] 72. Combination Sum (`combination-sum`, Medium)
-- [ ] 73. Combination Sum II (`combination-sum-ii`, Medium)
-- [ ] 74. Permutations (`permutations`, Medium)
-- [ ] 75. Subsets II (`subsets-ii`, Medium)
-- [ ] 76. Word Search (`word-search`, Medium)
-- [ ] 77. Palindrome Partitioning (`palindrome-partitioning`, Medium)
-- [ ] 78. Letter Combinations of a Phone Number (`letter-combinations-of-a-phone-number`, Medium)
-- [ ] 79. N-Queens (`n-queens`, Hard)
+- [x] Topic page content (`topics/backtracking.ts`) and `tests/dsa/test_backtracking.py`
+- [x] 71. Subsets (`subsets`, Medium)
+- [x] 72. Combination Sum (`combination-sum`, Medium)
+- [x] 73. Combination Sum II (`combination-sum-ii`, Medium)
+- [x] 74. Permutations (`permutations`, Medium)
+- [x] 75. Subsets II (`subsets-ii`, Medium)
+- [x] 76. Word Search (`word-search`, Medium)
+- [x] 77. Palindrome Partitioning (`palindrome-partitioning`, Medium)
+- [x] 78. Letter Combinations of a Phone Number (`letter-combinations-of-a-phone-number`, Medium)
+- [x] 79. N-Queens (`n-queens`, Hard)
 
 ## Graphs (0/13)
 

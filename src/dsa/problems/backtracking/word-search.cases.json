@@ -1,0 +1,174 @@
+{
+ "fn": "exist",
+ "cases": [
+  {
+   "name": "path exists",
+   "args": [
+    [
+     [
+      "a",
+      "b",
+      "c",
+      "e"
+     ],
+     [
+      "s",
+      "f",
+      "c",
+      "s"
+     ],
+     [
+      "a",
+      "d",
+      "e",
+      "e"
+     ]
+    ],
+    "abcced"
+   ],
+   "expected": true
+  },
+  {
+   "name": "whole word along the bottom",
+   "args": [
+    [
+     [
+      "a",
+      "b",
+      "c",
+      "e"
+     ],
+     [
+      "s",
+      "f",
+      "c",
+      "s"
+     ],
+     [
+      "a",
+      "d",
+      "e",
+      "e"
+     ]
+    ],
+    "see"
+   ],
+   "expected": true
+  },
+  {
+   "name": "cell reuse is not allowed",
+   "args": [
+    [
+     [
+      "a",
+      "b",
+      "c",
+      "e"
+     ],
+     [
+      "s",
+      "f",
+      "c",
+      "s"
+     ],
+     [
+      "a",
+      "d",
+      "e",
+      "e"
+     ]
+    ],
+    "abcb"
+   ],
+   "expected": false
+  },
+  {
+   "name": "single cell match",
+   "args": [
+    [
+     [
+      "z"
+     ]
+    ],
+    "z"
+   ],
+   "expected": true
+  },
+  {
+   "name": "single cell mismatch",
+   "args": [
+    [
+     [
+      "z"
+     ]
+    ],
+    "y"
+   ],
+   "expected": false
+  },
+  {
+   "name": "word longer than the board",
+   "args": [
+    [
+     [
+      "a",
+      "a"
+     ]
+    ],
+    "aaa"
+   ],
+   "expected": false
+  },
+  {
+   "name": "snake through the board",
+   "args": [
+    [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "d",
+      "c"
+     ]
+    ],
+    "abcd"
+   ],
+   "expected": true
+  },
+  {
+   "name": "first letter missing",
+   "args": [
+    [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c",
+      "d"
+     ]
+    ],
+    "xa"
+   ],
+   "expected": false
+  },
+  {
+   "name": "repeated letter needs separate cells",
+   "args": [
+    [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c",
+      "a"
+     ]
+    ],
+    "aa"
+   ],
+   "expected": false
+  }
+ ]
+}

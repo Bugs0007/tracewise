@@ -1,0 +1,129 @@
+{
+ "fn": "letter_combinations",
+ "compare": "unordered",
+ "cases": [
+  {
+   "name": "two digits",
+   "args": [
+    "23"
+   ],
+   "expected": [
+    "ad",
+    "ae",
+    "af",
+    "bd",
+    "be",
+    "bf",
+    "cd",
+    "ce",
+    "cf"
+   ]
+  },
+  {
+   "name": "empty",
+   "args": [
+    ""
+   ],
+   "expected": []
+  },
+  {
+   "name": "single digit",
+   "args": [
+    "2"
+   ],
+   "expected": [
+    "a",
+    "b",
+    "c"
+   ]
+  },
+  {
+   "name": "digit with four letters",
+   "args": [
+    "7"
+   ],
+   "expected": [
+    "p",
+    "q",
+    "r",
+    "s"
+   ]
+  },
+  {
+   "name": "three digits",
+   "args": [
+    "234"
+   ],
+   "expected": [
+    "adg",
+    "adh",
+    "adi",
+    "aeg",
+    "aeh",
+    "aei",
+    "afg",
+    "afh",
+    "afi",
+    "bdg",
+    "bdh",
+    "bdi",
+    "beg",
+    "beh",
+    "bei",
+    "bfg",
+    "bfh",
+    "bfi",
+    "cdg",
+    "cdh",
+    "cdi",
+    "ceg",
+    "ceh",
+    "cei",
+    "cfg",
+    "cfh",
+    "cfi"
+   ]
+  },
+  {
+   "name": "repeated digit",
+   "args": [
+    "22"
+   ],
+   "expected": [
+    "aa",
+    "ab",
+    "ac",
+    "ba",
+    "bb",
+    "bc",
+    "ca",
+    "cb",
+    "cc"
+   ]
+  },
+  {
+   "name": "two four-letter digits",
+   "args": [
+    "79"
+   ],
+   "expected": [
+    "pw",
+    "px",
+    "py",
+    "pz",
+    "qw",
+    "qx",
+    "qy",
+    "qz",
+    "rw",
+    "rx",
+    "ry",
+    "rz",
+    "sw",
+    "sx",
+    "sy",
+    "sz"
+   ]
+  }
+ ]
+}

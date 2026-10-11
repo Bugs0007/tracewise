@@ -1,0 +1,137 @@
+{
+ "fn": "partition",
+ "compare": "unordered",
+ "cases": [
+  {
+   "name": "aab",
+   "args": [
+    "aab"
+   ],
+   "expected": [
+    [
+     "aa",
+     "b"
+    ],
+    [
+     "a",
+     "a",
+     "b"
+    ]
+   ]
+  },
+  {
+   "name": "single letter",
+   "args": [
+    "a"
+   ],
+   "expected": [
+    [
+     "a"
+    ]
+   ]
+  },
+  {
+   "name": "all same",
+   "args": [
+    "aaa"
+   ],
+   "expected": [
+    [
+     "aaa"
+    ],
+    [
+     "a",
+     "aa"
+    ],
+    [
+     "aa",
+     "a"
+    ],
+    [
+     "a",
+     "a",
+     "a"
+    ]
+   ]
+  },
+  {
+   "name": "no repeats",
+   "args": [
+    "abc"
+   ],
+   "expected": [
+    [
+     "a",
+     "b",
+     "c"
+    ]
+   ]
+  },
+  {
+   "name": "whole string is a palindrome",
+   "args": [
+    "racecar"
+   ],
+   "expected": [
+    [
+     "racecar"
+    ],
+    [
+     "r",
+     "aceca",
+     "r"
+    ],
+    [
+     "r",
+     "a",
+     "cec",
+     "a",
+     "r"
+    ],
+    [
+     "r",
+     "a",
+     "c",
+     "e",
+     "c",
+     "a",
+     "r"
+    ]
+   ]
+  },
+  {
+   "name": "two letters",
+   "args": [
+    "ab"
+   ],
+   "expected": [
+    [
+     "a",
+     "b"
+    ]
+   ]
+  },
+  {
+   "name": "alternating",
+   "args": [
+    "abab"
+   ],
+   "expected": [
+    [
+     "a",
+     "bab"
+    ],
+    [
+     "aba",
+     "b"
+    ],
+    [
+     "a",
+     "b",
+     "a",
+     "b"
+    ]
+   ]
+  }
+ ]
+}

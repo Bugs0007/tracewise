@@ -1,0 +1,154 @@
+{
+ "fn": "combination_sum_2",
+ "compare": "nested",
+ "cases": [
+  {
+   "name": "duplicates must not repeat results",
+   "args": [
+    [
+     10,
+     1,
+     2,
+     7,
+     6,
+     1,
+     5
+    ],
+    8
+   ],
+   "expected": [
+    [
+     1,
+     7
+    ],
+    [
+     2,
+     6
+    ],
+    [
+     1,
+     2,
+     5
+    ],
+    [
+     1,
+     1,
+     6
+    ]
+   ]
+  },
+  {
+   "name": "all equal",
+   "args": [
+    [
+     2,
+     2,
+     2,
+     2
+    ],
+    4
+   ],
+   "expected": [
+    [
+     2,
+     2
+    ]
+   ]
+  },
+  {
+   "name": "no way",
+   "args": [
+    [
+     3,
+     4,
+     5
+    ],
+    2
+   ],
+   "expected": []
+  },
+  {
+   "name": "single number fits",
+   "args": [
+    [
+     6
+    ],
+    6
+   ],
+   "expected": [
+    [
+     6
+    ]
+   ]
+  },
+  {
+   "name": "single number does not fit",
+   "args": [
+    [
+     6
+    ],
+    7
+   ],
+   "expected": []
+  },
+  {
+   "name": "each number once",
+   "args": [
+    [
+     2,
+     5,
+     2,
+     1,
+     2
+    ],
+    5
+   ],
+   "expected": [
+    [
+     1,
+     2,
+     2
+    ],
+    [
+     5
+    ]
+   ]
+  },
+  {
+   "name": "duplicates at the end",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     3,
+     3
+    ],
+    6
+   ],
+   "expected": [
+    [
+     3,
+     3
+    ],
+    [
+     1,
+     2,
+     3
+    ]
+   ]
+  },
+  {
+   "name": "larger target than sum",
+   "args": [
+    [
+     1,
+     1,
+     1
+    ],
+    10
+   ],
+   "expected": []
+  }
+ ]
+}
