@@ -1,0 +1,126 @@
+{
+ "fn": "least_interval",
+ "cases": [
+  {
+   "name": "cooldown forces idle time",
+   "args": [
+    [
+     "A",
+     "A",
+     "A",
+     "B",
+     "B",
+     "B"
+    ],
+    2
+   ],
+   "expected": 8
+  },
+  {
+   "name": "no cooldown",
+   "args": [
+    [
+     "A",
+     "A",
+     "A",
+     "B",
+     "B",
+     "B"
+    ],
+    0
+   ],
+   "expected": 6
+  },
+  {
+   "name": "many kinds fill the gaps",
+   "args": [
+    [
+     "A",
+     "A",
+     "B",
+     "C",
+     "D",
+     "E"
+    ],
+    2
+   ],
+   "expected": 6
+  },
+  {
+   "name": "one task type",
+   "args": [
+    [
+     "A",
+     "A",
+     "A",
+     "A"
+    ],
+    3
+   ],
+   "expected": 13
+  },
+  {
+   "name": "single task",
+   "args": [
+    [
+     "A"
+    ],
+    5
+   ],
+   "expected": 1
+  },
+  {
+   "name": "no tasks",
+   "args": [
+    [],
+    2
+   ],
+   "expected": 0
+  },
+  {
+   "name": "tie for most frequent",
+   "args": [
+    [
+     "A",
+     "A",
+     "A",
+     "B",
+     "B",
+     "B",
+     "C",
+     "C"
+    ],
+    3
+   ],
+   "expected": 10
+  },
+  {
+   "name": "enough variety hides the cooldown",
+   "args": [
+    [
+     "A",
+     "A",
+     "B",
+     "B",
+     "C",
+     "C"
+    ],
+    1
+   ],
+   "expected": 6
+  },
+  {
+   "name": "long cooldown",
+   "args": [
+    [
+     "A",
+     "A",
+     "B",
+     "B"
+    ],
+    6
+   ],
+   "expected": 9
+  }
+ ]
+}

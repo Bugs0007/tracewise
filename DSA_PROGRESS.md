@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **63 of 150** problems done.
+Progress: **70 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -103,16 +103,16 @@ Progress: **63 of 150** problems done.
 - [x] 62. Design Add and Search Words Data Structure (`design-add-and-search-words-data-structure`, Medium)
 - [x] 63. Word Search II (`word-search-ii`, Hard)
 
-## Heap / Priority Queue (0/7)
+## Heap / Priority Queue (7/7)
 
-- [ ] Topic page content (`topics/heap.ts`) and `tests/dsa/test_heap.py`
-- [ ] 64. Kth Largest Element in a Stream (`kth-largest-element-in-a-stream`, Easy)
-- [ ] 65. Last Stone Weight (`last-stone-weight`, Easy)
-- [ ] 66. K Closest Points to Origin (`k-closest-points-to-origin`, Medium)
-- [ ] 67. Kth Largest Element in an Array (`kth-largest-element-in-an-array`, Medium)
-- [ ] 68. Task Scheduler (`task-scheduler`, Medium)
-- [ ] 69. Design Twitter (`design-twitter`, Medium)
-- [ ] 70. Find Median from Data Stream (`find-median-from-data-stream`, Hard)
+- [x] Topic page content (`topics/heap.ts`) and `tests/dsa/test_heap.py`
+- [x] 64. Kth Largest Element in a Stream (`kth-largest-element-in-a-stream`, Easy)
+- [x] 65. Last Stone Weight (`last-stone-weight`, Easy)
+- [x] 66. K Closest Points to Origin (`k-closest-points-to-origin`, Medium)
+- [x] 67. Kth Largest Element in an Array (`kth-largest-element-in-an-array`, Medium)
+- [x] 68. Task Scheduler (`task-scheduler`, Medium)
+- [x] 69. Design Twitter (`design-twitter`, Medium)
+- [x] 70. Find Median from Data Stream (`find-median-from-data-stream`, Hard)
 
 ## Backtracking (0/9)
 
