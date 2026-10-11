@@ -1,0 +1,97 @@
+{
+ "fn": "max_profit",
+ "cases": [
+  {
+   "name": "cooldown blocks the quick re-buy",
+   "args": [
+    [
+     2,
+     6,
+     1,
+     5,
+     3,
+     8
+    ]
+   ],
+   "expected": 9
+  },
+  {
+   "name": "one day",
+   "args": [
+    [
+     5
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "falling prices",
+   "args": [
+    [
+     9,
+     7,
+     4,
+     1
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "rising prices",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "flat",
+   "args": [
+    [
+     3,
+     3,
+     3
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "two peaks",
+   "args": [
+    [
+     1,
+     5,
+     1,
+     5,
+     1,
+     5
+    ]
+   ],
+   "expected": 8
+  },
+  {
+   "name": "sell then wait",
+   "args": [
+    [
+     3,
+     8,
+     2,
+     9
+    ]
+   ],
+   "expected": 7
+  }
+ ]
+}

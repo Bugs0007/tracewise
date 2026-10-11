@@ -1,0 +1,77 @@
+{
+ "fn": "is_match",
+ "cases": [
+  {
+   "name": "star repeats",
+   "args": [
+    "aaab",
+    "a*b"
+   ],
+   "expected": true
+  },
+  {
+   "name": "star can be zero",
+   "args": [
+    "b",
+    "a*b"
+   ],
+   "expected": true
+  },
+  {
+   "name": "dot star matches anything",
+   "args": [
+    "abcd",
+    ".*"
+   ],
+   "expected": true
+  },
+  {
+   "name": "must match all",
+   "args": [
+    "abc",
+    "ab"
+   ],
+   "expected": false
+  },
+  {
+   "name": "empty text",
+   "args": [
+    "",
+    "a*"
+   ],
+   "expected": true
+  },
+  {
+   "name": "empty pattern",
+   "args": [
+    "a",
+    ""
+   ],
+   "expected": false
+  },
+  {
+   "name": "dot matches one",
+   "args": [
+    "ab",
+    "a."
+   ],
+   "expected": true
+  },
+  {
+   "name": "star then letter",
+   "args": [
+    "aab",
+    "c*a*b"
+   ],
+   "expected": true
+  },
+  {
+   "name": "too short",
+   "args": [
+    "a",
+    "ab*c"
+   ],
+   "expected": false
+  }
+ ]
+}

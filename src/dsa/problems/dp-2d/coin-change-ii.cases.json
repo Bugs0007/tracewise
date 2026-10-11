@@ -1,0 +1,80 @@
+{
+ "fn": "change",
+ "cases": [
+  {
+   "name": "combinations not orders",
+   "args": [
+    6,
+    [
+     1,
+     2,
+     3
+    ]
+   ],
+   "expected": 7
+  },
+  {
+   "name": "zero amount",
+   "args": [
+    0,
+    [
+     2
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "no way",
+   "args": [
+    3,
+    [
+     2
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "single coin fits",
+   "args": [
+    10,
+    [
+     5
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "many ways",
+   "args": [
+    10,
+    [
+     1,
+     2,
+     5
+    ]
+   ],
+   "expected": 10
+  },
+  {
+   "name": "coin larger than amount",
+   "args": [
+    4,
+    [
+     7
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "two coins",
+   "args": [
+    9,
+    [
+     3,
+     4
+    ]
+   ],
+   "expected": 1
+  }
+ ]
+}

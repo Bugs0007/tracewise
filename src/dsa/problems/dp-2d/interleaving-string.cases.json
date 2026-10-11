@@ -1,0 +1,77 @@
+{
+ "fn": "is_interleave",
+ "cases": [
+  {
+   "name": "interleaved",
+   "args": [
+    "abc",
+    "xy",
+    "axbyc"
+   ],
+   "expected": true
+  },
+  {
+   "name": "wrong order",
+   "args": [
+    "abc",
+    "xy",
+    "yaxbc"
+   ],
+   "expected": false
+  },
+  {
+   "name": "both empty",
+   "args": [
+    "",
+    "",
+    ""
+   ],
+   "expected": true
+  },
+  {
+   "name": "length mismatch",
+   "args": [
+    "a",
+    "b",
+    "abc"
+   ],
+   "expected": false
+  },
+  {
+   "name": "one string empty",
+   "args": [
+    "abc",
+    "",
+    "abc"
+   ],
+   "expected": true
+  },
+  {
+   "name": "ambiguous start",
+   "args": [
+    "aab",
+    "aac",
+    "aaaabc"
+   ],
+   "expected": true
+  },
+  {
+   "name": "letters reused",
+   "args": [
+    "ab",
+    "ab",
+    "abab"
+   ],
+   "expected": true
+  },
+  {
+   "name": "swapped letters",
+   "args": [
+    "ab",
+    "cd",
+    "acbd"
+   ],
+   "expected": true
+  }
+ ]
+}

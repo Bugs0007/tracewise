@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **110 of 150** problems done.
+Progress: **121 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -170,20 +170,20 @@ Progress: **110 of 150** problems done.
 - [x] 109. Longest Increasing Subsequence (`longest-increasing-subsequence`, Medium)
 - [x] 110. Partition Equal Subset Sum (`partition-equal-subset-sum`, Medium)
 
-## 2-D Dynamic Programming (0/11)
+## 2-D Dynamic Programming (11/11)
 
-- [ ] Topic page content (`topics/dp-2d.ts`) and `tests/dsa/test_dp_2d.py`
-- [ ] 111. Unique Paths (`unique-paths`, Medium)
-- [ ] 112. Longest Common Subsequence (`longest-common-subsequence`, Medium)
-- [ ] 113. Best Time to Buy and Sell Stock with Cooldown (`best-time-to-buy-and-sell-stock-with-cooldown`, Medium)
-- [ ] 114. Coin Change II (`coin-change-ii`, Medium)
-- [ ] 115. Target Sum (`target-sum`, Medium)
-- [ ] 116. Interleaving String (`interleaving-string`, Medium)
-- [ ] 117. Longest Increasing Path in a Matrix (`longest-increasing-path-in-a-matrix`, Hard)
-- [ ] 118. Distinct Subsequences (`distinct-subsequences`, Hard)
-- [ ] 119. Edit Distance (`edit-distance`, Medium)
-- [ ] 120. Burst Balloons (`burst-balloons`, Hard)
-- [ ] 121. Regular Expression Matching (`regular-expression-matching`, Hard)
+- [x] Topic page content (`topics/dp-2d.ts`) and `tests/dsa/test_dp_2d.py`
+- [x] 111. Unique Paths (`unique-paths`, Medium)
+- [x] 112. Longest Common Subsequence (`longest-common-subsequence`, Medium)
+- [x] 113. Best Time to Buy and Sell Stock with Cooldown (`best-time-to-buy-and-sell-stock-with-cooldown`, Medium)
+- [x] 114. Coin Change II (`coin-change-ii`, Medium)
+- [x] 115. Target Sum (`target-sum`, Medium)
+- [x] 116. Interleaving String (`interleaving-string`, Medium)
+- [x] 117. Longest Increasing Path in a Matrix (`longest-increasing-path-in-a-matrix`, Hard)
+- [x] 118. Distinct Subsequences (`distinct-subsequences`, Hard)
+- [x] 119. Edit Distance (`edit-distance`, Medium)
+- [x] 120. Burst Balloons (`burst-balloons`, Hard)
+- [x] 121. Regular Expression Matching (`regular-expression-matching`, Hard)
 
 ## Greedy (0/8)
 

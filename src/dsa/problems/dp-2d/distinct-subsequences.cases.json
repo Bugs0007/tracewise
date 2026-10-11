@@ -1,0 +1,61 @@
+{
+ "fn": "num_distinct",
+ "cases": [
+  {
+   "name": "choose which b",
+   "args": [
+    "abbc",
+    "abc"
+   ],
+   "expected": 2
+  },
+  {
+   "name": "repeated target",
+   "args": [
+    "aaaa",
+    "aa"
+   ],
+   "expected": 6
+  },
+  {
+   "name": "target longer",
+   "args": [
+    "ab",
+    "abc"
+   ],
+   "expected": 0
+  },
+  {
+   "name": "empty target",
+   "args": [
+    "abc",
+    ""
+   ],
+   "expected": 1
+  },
+  {
+   "name": "equal strings",
+   "args": [
+    "xyz",
+    "xyz"
+   ],
+   "expected": 1
+  },
+  {
+   "name": "no match",
+   "args": [
+    "abc",
+    "d"
+   ],
+   "expected": 0
+  },
+  {
+   "name": "interleaved matches",
+   "args": [
+    "axbxcx",
+    "abc"
+   ],
+   "expected": 1
+  }
+ ]
+}

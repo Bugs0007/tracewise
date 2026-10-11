@@ -1,0 +1,61 @@
+{
+ "fn": "unique_paths",
+ "cases": [
+  {
+   "name": "small grid",
+   "args": [
+    2,
+    3
+   ],
+   "expected": 3
+  },
+  {
+   "name": "single cell",
+   "args": [
+    1,
+    1
+   ],
+   "expected": 1
+  },
+  {
+   "name": "one row",
+   "args": [
+    1,
+    6
+   ],
+   "expected": 1
+  },
+  {
+   "name": "one column",
+   "args": [
+    5,
+    1
+   ],
+   "expected": 1
+  },
+  {
+   "name": "square",
+   "args": [
+    4,
+    4
+   ],
+   "expected": 20
+  },
+  {
+   "name": "wide",
+   "args": [
+    3,
+    7
+   ],
+   "expected": 28
+  },
+  {
+   "name": "tall",
+   "args": [
+    7,
+    3
+   ],
+   "expected": 28
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "fn": "min_distance",
+ "cases": [
+  {
+   "name": "two replacements",
+   "args": [
+    "rapid",
+    "tepid"
+   ],
+   "expected": 2
+  },
+  {
+   "name": "equal",
+   "args": [
+    "same",
+    "same"
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one empty",
+   "args": [
+    "abc",
+    ""
+   ],
+   "expected": 3
+  },
+  {
+   "name": "both empty",
+   "args": [
+    "",
+    ""
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one replace",
+   "args": [
+    "cat",
+    "cut"
+   ],
+   "expected": 1
+  },
+  {
+   "name": "insert at the end",
+   "args": [
+    "go",
+    "gone"
+   ],
+   "expected": 2
+  },
+  {
+   "name": "completely different",
+   "args": [
+    "abc",
+    "xyz"
+   ],
+   "expected": 3
+  },
+  {
+   "name": "delete in the middle",
+   "args": [
+    "abxc",
+    "abc"
+   ],
+   "expected": 1
+  }
+ ]
+}
