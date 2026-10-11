@@ -11,12 +11,12 @@ const viz = vizOf<{ nums: number[]; k: number }>({
   title: 'Kth Largest Element in an Array',
   solution,
   inputs: [
-    { key: 'nums', label: 'numbers', kind: 'numbers', default: [3, 2, 1, 5, 6, 4], maxItems: 12 },
+    { key: 'nums', label: 'numbers', kind: 'numbers', default: [7, 1, 5, 9, 2, 6], maxItems: 12 },
     { key: 'k', label: 'k', kind: 'number', default: 3 },
   ],
   presets: [
-    { label: 'Third largest', input: { nums: [3, 2, 1, 5, 6, 4], k: 3 } },
-    { label: 'Duplicates', input: { nums: [3, 2, 3, 1, 2, 4, 5, 5, 6], k: 4 } },
+    { label: 'Third largest', input: { nums: [7, 1, 5, 9, 2, 6], k: 3 } },
+    { label: 'Duplicates', input: { nums: [4, 8, 2, 8, 5, 1, 5, 9, 3], k: 4 } },
     { label: 'Smallest', input: { nums: [7, 2, 9, 4], k: 4 } },
   ],
   validate: ({ nums, k }) => {

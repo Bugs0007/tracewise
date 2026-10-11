@@ -11,9 +11,9 @@ const viz = vizOf<{ level: Level }>({
   id: 'binary-tree-level-order-traversal',
   title: 'Binary Tree Level Order Traversal',
   solution,
-  inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [3, 9, 20, null, null, 15, 7, 1], maxItems: 15 }],
+  inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [8, 3, 12, null, null, 10, 15, 1], maxItems: 15 }],
   presets: [
-    { label: 'Uneven', input: { level: [3, 9, 20, null, null, 15, 7, 1] } },
+    { label: 'Uneven', input: { level: [8, 3, 12, null, null, 10, 15, 1] } },
     { label: 'Complete', input: { level: [1, 2, 3, 4, 5, 6, 7] } },
     { label: 'Chain', input: { level: [1, 2, null, 3] } },
     { label: 'Empty', input: { level: [] } },

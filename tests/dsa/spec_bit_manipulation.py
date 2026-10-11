@@ -90,7 +90,7 @@ SPEC = {
             ("single zero present", [[0]]),
             ("single one present", [[1]]),
             ("unsorted", [[4, 2, 0, 1]]),
-            ("longer", [[9, 6, 4, 2, 3, 5, 7, 0, 1]]),
+            ("longer", [[5, 8, 2, 7, 0, 3, 1, 6]]),
         ],
     ),
     "sum-of-two-integers": dict(

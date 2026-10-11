@@ -159,7 +159,7 @@ SPEC = {
     "combination-sum": dict(
         fn="combination_sum", compare="nested", brute=comb_brute, gen=comb_gen,
         cases=[
-            ("reuse allowed", [[2, 3, 6, 7], 7]),
+            ("reuse allowed", [[3, 4, 7, 9], 11]),
             ("several ways", [[2, 3, 5], 8]),
             ("no way", [[3, 5], 2]),
             ("single candidate fits", [[4], 8]),
@@ -172,7 +172,7 @@ SPEC = {
     "combination-sum-ii": dict(
         fn="combination_sum_2", compare="nested", brute=comb2_brute, gen=comb2_gen,
         cases=[
-            ("duplicates must not repeat results", [[10, 1, 2, 7, 6, 1, 5], 8]),
+            ("duplicates must not repeat results", [[9, 2, 1, 6, 3, 2, 5], 9]),
             ("all equal", [[2, 2, 2, 2], 4]),
             ("no way", [[3, 4, 5], 2]),
             ("single number fits", [[6], 6]),

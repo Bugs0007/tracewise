@@ -13,11 +13,11 @@ const viz = vizOf<{ k: number; nums: number[]; adds: number[] }>({
   solution,
   inputs: [
     { key: 'k', label: 'k', kind: 'number', default: 3 },
-    { key: 'nums', label: 'starting numbers', kind: 'numbers', default: [4, 5, 8, 2], maxItems: 8 },
-    { key: 'adds', label: 'numbers added one by one', kind: 'numbers', default: [3, 5, 10, 9, 4], maxItems: 8 },
+    { key: 'nums', label: 'starting numbers', kind: 'numbers', default: [6, 1, 9, 3], maxItems: 8 },
+    { key: 'adds', label: 'numbers added one by one', kind: 'numbers', default: [7, 2, 11, 8, 5], maxItems: 8 },
   ],
   presets: [
-    { label: 'Classic', input: { k: 3, nums: [4, 5, 8, 2], adds: [3, 5, 10, 9, 4] } },
+    { label: 'Classic', input: { k: 3, nums: [6, 1, 9, 3], adds: [7, 2, 11, 8, 5] } },
     { label: 'Starts empty', input: { k: 1, nums: [], adds: [-3, -2, -4, 0] } },
     { label: 'Small values ignored', input: { k: 2, nums: [10, 20], adds: [1, 2, 3, 30] } },
   ],

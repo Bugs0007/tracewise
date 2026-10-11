@@ -63,7 +63,7 @@ const viz = vizOf<{ nums: number[] }>({
 
 export default problem({
   summary: 'Every number in a list appears exactly twice except one number, which appears once. Find that single number, using constant extra space.',
-  example: ['[4, 1, 2, 1, 2]', '4', 'Pairs cancel: 1, 1 and 2, 2 disappear, leaving 4.'],
+  example: ['[6, 3, 8, 3, 8]', '6', 'Pairs cancel: 3, 3 and 8, 8 disappear, leaving 6.'],
   pattern: ['bit-xor', ['bit-xor', 'hash-lookup', 'sorting', 'bit-ops'], 'XOR of two equal numbers is 0 and XOR with 0 changes nothing. XOR-ing the whole list makes every pair vanish and leaves the single number, in O(1) space.', {
     'hash-lookup': 'A set or counter works but uses O(n) extra space.',
     sorting: 'Sorting works in O(n log n) and can compare neighbours.',

@@ -245,7 +245,7 @@ SPEC = {
     "add-two-numbers": dict(
         fn="add_two_numbers", brute=add_brute, gen=lambda r: [digits(r), digits(r)],
         cases=[
-            ("with carries", [[2, 4, 3], [5, 6, 4]]),
+            ("with carries", [[7, 1, 6], [5, 9, 2]]),
             ("zeros", [[0], [0]]),
             ("different lengths", [[9, 9, 9, 9], [1]]),
             ("final carry adds a digit", [[9, 9], [1]]),
@@ -257,7 +257,7 @@ SPEC = {
     "linked-list-cycle": dict(
         fn="has_cycle", brute=cyc_brute, gen=cyc_gen,
         cases=[
-            ("tail loops to the middle", [[3, 2, 0, -4], 1]),
+            ("tail loops to the middle", [[8, 5, 1, -3], 1]),
             ("tail loops to the head", [[1, 2], 0]),
             ("no cycle", [[1, 2, 3], -1]),
             ("single node, no cycle", [[1], -1]),

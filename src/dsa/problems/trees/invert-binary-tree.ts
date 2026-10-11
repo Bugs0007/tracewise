@@ -10,9 +10,9 @@ const viz = vizOf<{ level: Level }>({
   id: 'invert-binary-tree',
   title: 'Invert Binary Tree',
   solution,
-  inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [4, 2, 7, 1, 3, 6, 9], maxItems: 15 }],
+  inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [6, 3, 9, 2, 5, 8, 10], maxItems: 15 }],
   presets: [
-    { label: 'Full tree', input: { level: [4, 2, 7, 1, 3, 6, 9] } },
+    { label: 'Full tree', input: { level: [6, 3, 9, 2, 5, 8, 10] } },
     { label: 'Skewed', input: { level: [5, 3, null, 2, null, 1] } },
     { label: 'Single node', input: { level: [8] } },
     { label: 'Empty', input: { level: [] } },

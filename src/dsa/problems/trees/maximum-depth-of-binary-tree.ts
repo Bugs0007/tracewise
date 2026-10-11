@@ -10,9 +10,9 @@ const viz = vizOf<{ level: Level }>({
   id: 'maximum-depth-of-binary-tree',
   title: 'Maximum Depth of Binary Tree',
   solution,
-  inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [3, 9, 20, null, null, 15, 7, 4], maxItems: 15 }],
+  inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [8, 3, 12, null, null, 10, 15, 4], maxItems: 15 }],
   presets: [
-    { label: 'Uneven', input: { level: [3, 9, 20, null, null, 15, 7, 4] } },
+    { label: 'Uneven', input: { level: [8, 3, 12, null, null, 10, 15, 4] } },
     { label: 'Left chain', input: { level: [1, 2, null, 3, null, 4, null, 5] } },
     { label: 'Complete', input: { level: [1, 2, 3, 4, 5, 6, 7] } },
     { label: 'Empty', input: { level: [] } },

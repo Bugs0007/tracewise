@@ -11,11 +11,11 @@ const viz = vizOf<{ values: number[]; pos: number }>({
   title: 'Linked List Cycle',
   solution,
   inputs: [
-    { key: 'values', label: 'list values', kind: 'numbers', default: [3, 2, 0, -4, 6], maxItems: 9 },
+    { key: 'values', label: 'list values', kind: 'numbers', default: [8, 5, 1, -3, 6], maxItems: 9 },
     { key: 'pos', label: 'tail connects back to position (−1 = no cycle)', kind: 'number', default: 1 },
   ],
   presets: [
-    { label: 'Cycle', input: { values: [3, 2, 0, -4, 6], pos: 1 } },
+    { label: 'Cycle', input: { values: [8, 5, 1, -3, 6], pos: 1 } },
     { label: 'No cycle', input: { values: [1, 2, 3, 4], pos: -1 } },
     { label: 'Loops to head', input: { values: [1, 2], pos: 0 } },
     { label: 'Self loop', input: { values: [5], pos: 0 } },

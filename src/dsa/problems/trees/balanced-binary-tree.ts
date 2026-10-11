@@ -13,7 +13,7 @@ const viz = vizOf<{ level: Level }>({
   inputs: [{ key: 'level', label: 'tree (level order, null = missing)', kind: 'numbers', default: [1, 2, 2, 3, 3, null, null, 4, 4], maxItems: 15 }],
   presets: [
     { label: 'Unbalanced', input: { level: [1, 2, 2, 3, 3, null, null, 4, 4] } },
-    { label: 'Balanced', input: { level: [3, 9, 20, null, null, 15, 7] } },
+    { label: 'Balanced', input: { level: [8, 3, 12, null, null, 10, 15] } },
     { label: 'Three-node chain', input: { level: [1, 2, null, 3] } },
     { label: 'Empty', input: { level: [] } },
   ],

@@ -178,7 +178,7 @@ SPEC = {
     "kth-largest-element-in-a-stream": dict(
         fn="KthLargest", brute=replay(NaiveKth), gen=kth_stream_gen,
         cases=[
-            ("k-th as numbers arrive", script("KthLargest", [3, [4, 5, 8, 2]], ("add", 3), ("add", 5), ("add", 10), ("add", 9), ("add", 4))),
+            ("k-th as numbers arrive", script("KthLargest", [3, [6, 1, 9, 3]], ("add", 7), ("add", 2), ("add", 11), ("add", 8), ("add", 5))),
             ("starts empty", script("KthLargest", [1, []], ("add", -3), ("add", -2), ("add", -4), ("add", 0))),
             ("k equals current size", script("KthLargest", [2, [7]], ("add", 3), ("add", 11), ("add", 5))),
             ("duplicates", script("KthLargest", [2, [5, 5, 5]], ("add", 5), ("add", 6), ("add", 1))),
@@ -190,7 +190,7 @@ SPEC = {
     "last-stone-weight": dict(
         fn="last_stone_weight", brute=stones_brute, gen=stones_gen,
         cases=[
-            ("classic smash", [[2, 7, 4, 1, 8, 1]]),
+            ("classic smash", [[3, 9, 5, 2, 7, 1]]),
             ("single stone", [[5]]),
             ("everything cancels", [[3, 3]]),
             ("no stones", [[]]),
@@ -217,10 +217,10 @@ SPEC = {
     "kth-largest-element-in-an-array": dict(
         fn="find_kth_largest", brute=kth_arr_brute, gen=kth_arr_gen,
         cases=[
-            ("third largest", [[3, 2, 1, 5, 6, 4], 3]),
+            ("third largest", [[7, 1, 5, 9, 2, 6], 3]),
             ("largest", [[7, 2, 9, 4], 1]),
             ("smallest", [[7, 2, 9, 4], 4]),
-            ("duplicates count separately", [[3, 2, 3, 1, 2, 4, 5, 5, 6], 4]),
+            ("duplicates count separately", [[4, 8, 2, 8, 5, 1, 5, 9, 3], 4]),
             ("single element", [[8], 1]),
             ("negatives", [[-4, -1, -7, -3], 2]),
             ("all equal", [[5, 5, 5, 5], 3]),

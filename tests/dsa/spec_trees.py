@@ -312,7 +312,7 @@ SPEC = {
     "invert-binary-tree": dict(
         fn="invert_tree", brute=invert_brute, gen=lambda r: [rand_level(r)],
         cases=[
-            ("full tree", [[4, 2, 7, 1, 3, 6, 9]]),
+            ("full tree", [[6, 3, 9, 2, 5, 8, 10]]),
             ("skewed left", [[5, 3, None, 2, None, 1]]),
             ("single node", [[8]]),
             ("empty", [[]]),
@@ -323,7 +323,7 @@ SPEC = {
     "maximum-depth-of-binary-tree": dict(
         fn="max_depth", brute=depth_brute, gen=lambda r: [rand_level(r)],
         cases=[
-            ("three levels", [[3, 9, 20, None, None, 15, 7]]),
+            ("three levels", [[8, 3, 12, None, None, 10, 15]]),
             ("single node", [[1]]),
             ("empty", [[]]),
             ("long left chain", [[1, 2, None, 3, None, 4, None, 5]]),
@@ -346,7 +346,7 @@ SPEC = {
     "balanced-binary-tree": dict(
         fn="is_balanced", brute=balanced_brute, gen=lambda r: [rand_level(r, 10)],
         cases=[
-            ("balanced", [[3, 9, 20, None, None, 15, 7]]),
+            ("balanced", [[8, 3, 12, None, None, 10, 15]]),
             ("unbalanced leaf chain", [[1, 2, 2, 3, 3, None, None, 4, 4]]),
             ("empty", [[]]),
             ("single node", [[1]]),
@@ -370,8 +370,8 @@ SPEC = {
     "subtree-of-another-tree": dict(
         fn="is_subtree", brute=subtree_brute, gen=subtree_gen,
         cases=[
-            ("exact subtree", [[3, 4, 5, 1, 2], [4, 1, 2]]),
-            ("extra node below breaks the match", [[3, 4, 5, 1, 2, None, None, 0], [4, 1, 2]]),
+            ("exact subtree", [[7, 2, 9, 1, 4], [2, 1, 4]]),
+            ("extra node below breaks the match", [[7, 2, 9, 1, 4, None, None, 0], [2, 1, 4]]),
             ("whole tree", [[1, 2, 3], [1, 2, 3]]),
             ("single leaf", [[1, 2, 3], [3]]),
             ("not present", [[1, 2, 3], [2, 4]]),
@@ -394,7 +394,7 @@ SPEC = {
     "binary-tree-level-order-traversal": dict(
         fn="level_order", brute=levels_brute, gen=lambda r: [rand_level(r)],
         cases=[
-            ("three levels", [[3, 9, 20, None, None, 15, 7]]),
+            ("three levels", [[8, 3, 12, None, None, 10, 15]]),
             ("single node", [[1]]),
             ("empty", [[]]),
             ("left chain", [[1, 2, None, 3]]),

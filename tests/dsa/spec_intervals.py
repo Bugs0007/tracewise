@@ -92,7 +92,7 @@ SPEC = {
     "insert-interval": dict(
         fn="insert", brute=insert_brute, gen=insert_gen,
         cases=[
-            ("swallows two intervals", [[[1, 3], [6, 9], [11, 13]], [5, 12]]),
+            ("swallows two intervals", [[[1, 2], [6, 9], [11, 13]], [5, 12]]),
             ("fits in a gap", [[[1, 2], [8, 9]], [4, 5]]),
             ("empty list", [[], [3, 4]]),
             ("before everything", [[[5, 6], [8, 9]], [1, 2]]),

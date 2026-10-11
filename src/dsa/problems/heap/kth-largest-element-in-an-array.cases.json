@@ -5,16 +5,16 @@
    "name": "third largest",
    "args": [
     [
-     3,
-     2,
+     7,
      1,
      5,
-     6,
-     4
+     9,
+     2,
+     6
     ],
     3
    ],
-   "expected": 4
+   "expected": 6
   },
   {
    "name": "largest",
@@ -46,19 +46,19 @@
    "name": "duplicates count separately",
    "args": [
     [
-     3,
-     2,
-     3,
-     1,
-     2,
      4,
+     8,
+     2,
+     8,
      5,
+     1,
      5,
-     6
+     9,
+     3
     ],
     4
    ],
-   "expected": 4
+   "expected": 5
   },
   {
    "name": "single element",

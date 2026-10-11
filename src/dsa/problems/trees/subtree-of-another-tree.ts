@@ -25,13 +25,13 @@ const viz = vizOf<{ root: Level; sub: Level }>({
   title: 'Subtree of Another Tree',
   solution,
   inputs: [
-    { key: 'root', label: 'big tree (level order)', kind: 'numbers', default: [3, 4, 5, 1, 2, null, null, 0], maxItems: 12 },
-    { key: 'sub', label: 'candidate subtree (level order)', kind: 'numbers', default: [4, 1, 2], maxItems: 8 },
+    { key: 'root', label: 'big tree (level order)', kind: 'numbers', default: [7, 2, 9, 1, 4, null, null, 0], maxItems: 12 },
+    { key: 'sub', label: 'candidate subtree (level order)', kind: 'numbers', default: [2, 1, 4], maxItems: 8 },
   ],
   presets: [
-    { label: 'Extra node breaks it', input: { root: [3, 4, 5, 1, 2, null, null, 0], sub: [4, 1, 2] } },
-    { label: 'Exact match', input: { root: [3, 4, 5, 1, 2], sub: [4, 1, 2] } },
-    { label: 'Single leaf', input: { root: [3, 4, 5, 1, 2], sub: [2] } },
+    { label: 'Extra node breaks it', input: { root: [7, 2, 9, 1, 4, null, null, 0], sub: [2, 1, 4] } },
+    { label: 'Exact match', input: { root: [7, 2, 9, 1, 4], sub: [2, 1, 4] } },
+    { label: 'Single leaf', input: { root: [7, 2, 9, 1, 4], sub: [4] } },
     { label: 'Not present', input: { root: [1, 2, 3], sub: [3, 4] } },
   ],
   validate: ({ root, sub }) => levelProblem(root) ?? levelProblem(sub),
@@ -107,7 +107,7 @@ const viz = vizOf<{ root: Level; sub: Level }>({
 
 export default problem({
   summary: 'Given a big binary tree and a smaller one, decide whether the big tree contains a node whose entire subtree (shape and values, all the way down) is identical to the smaller tree.',
-  example: ['big: 3 with children 4, 5 and 4 has children 1, 2; small: 4 with children 1, 2', 'true', 'The subtree under the 4 matches exactly. If the 1 had an extra child it would not.'],
+  example: ['big: 7 with children 2, 9 and 2 has children 1, 4; small: 2 with children 1, 4', 'true', 'The subtree under the 4 matches exactly. If the 1 had an extra child it would not.'],
   pattern: ['dfs', ['dfs', 'bfs', 'hash-lookup', 'divide-conquer'], 'Visit every node of the big tree as a possible starting point, and at each one run the "same tree" comparison. Both parts are depth-first recursions.', {
     bfs: 'You could try nodes in level order, but the recursion is shorter.',
     'hash-lookup': 'Serialising the trees to strings and checking containment is possible but needs null markers to be correct.',

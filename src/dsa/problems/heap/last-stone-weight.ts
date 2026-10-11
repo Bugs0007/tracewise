@@ -10,9 +10,9 @@ const viz = vizOf<{ stones: number[] }>({
   id: 'last-stone-weight',
   title: 'Last Stone Weight',
   solution,
-  inputs: [{ key: 'stones', label: 'stone weights', kind: 'numbers', default: [2, 7, 4, 1, 8, 1], maxItems: 9 }],
+  inputs: [{ key: 'stones', label: 'stone weights', kind: 'numbers', default: [3, 9, 5, 2, 7, 1], maxItems: 9 }],
   presets: [
-    { label: 'Classic', input: { stones: [2, 7, 4, 1, 8, 1] } },
+    { label: 'Classic', input: { stones: [3, 9, 5, 2, 7, 1] } },
     { label: 'Everything cancels', input: { stones: [3, 3, 5, 5] } },
     { label: 'Single stone', input: { stones: [5] } },
     { label: 'Empty', input: { stones: [] } },

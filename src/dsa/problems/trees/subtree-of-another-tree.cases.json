@@ -5,16 +5,16 @@
    "name": "exact subtree",
    "args": [
     [
-     3,
-     4,
-     5,
+     7,
+     2,
+     9,
      1,
-     2
+     4
     ],
     [
-     4,
+     2,
      1,
-     2
+     4
     ]
    ],
    "expected": true
@@ -23,19 +23,19 @@
    "name": "extra node below breaks the match",
    "args": [
     [
-     3,
-     4,
-     5,
-     1,
+     7,
      2,
+     9,
+     1,
+     4,
      null,
      null,
      0
     ],
     [
-     4,
+     2,
      1,
-     2
+     4
     ]
    ],
    "expected": false

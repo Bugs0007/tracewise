@@ -5,13 +5,13 @@
    "name": "balanced",
    "args": [
     [
+     8,
      3,
-     9,
-     20,
+     12,
      null,
      null,
-     15,
-     7
+     10,
+     15
     ]
    ],
    "expected": true
