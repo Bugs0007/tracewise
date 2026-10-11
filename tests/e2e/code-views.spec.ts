@@ -8,7 +8,6 @@ const sudoku = '/dsa/arrays-hashing/valid-sudoku';
 async function open(page: Page, route = sudoku) {
   await freshStart(page, route);
   await page.getByTestId('skip-pattern').click();
-  await page.getByTestId('predict-toggle').click(); // no prediction pauses while stepping
 }
 
 const sideways = (page: Page, sel: string) => page.locator(sel).first().evaluate((e) => e.scrollWidth - e.clientWidth);
@@ -58,6 +57,7 @@ test('expand opens the code full size; stepping inside follows the trace; Escape
 test('a prediction checkpoint closes the expanded sheet so it can be answered', async ({ page }) => {
   await freshStart(page, '/dsa/arrays-hashing/two-sum');
   await page.getByTestId('skip-pattern').click();
+  await page.getByTestId('predict-toggle').click();
   await page.getByTestId('code-expand').click();
   await expect(page.getByTestId('code-sheet')).toBeVisible();
   await page.getByTestId('sheet-step').click();

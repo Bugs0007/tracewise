@@ -308,7 +308,6 @@ function ProblemBody({ slug, content: c }: { slug: string; content: ProblemConte
             <Player
               key={slug}
               viz={c.viz}
-              quizDefault
               predictMode="authored"
               onQuizAnswer={(ok) => {
                 const st = useApp.getState().dsa.problems[slug];

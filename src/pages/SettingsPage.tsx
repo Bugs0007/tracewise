@@ -78,6 +78,9 @@ export default function SettingsPage() {
             }}
           />
         </Row>
+        <Row label="Predict mode by default" help="Step-through visualizations pause at key moments and ask what happens next. Off by default; you can still switch it on per visualization.">
+          <Toggle label="Predict mode by default" on={settings.predict} onChange={(v) => set({ predict: v })} />
+        </Row>
         <Row label="Focus mode" help="Hide navigation and keep only the current task on screen.">
           <Toggle label="Focus mode" on={settings.focus} onChange={(v) => set({ focus: v })} />
         </Row>

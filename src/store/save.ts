@@ -77,6 +77,8 @@ export interface Settings {
   fontSize: number;
   /** word autocomplete and auto-closing brackets in code editors */
   assist: boolean;
+  /** start step-through visualizations with Predict mode on */
+  predict: boolean;
 }
 
 export interface SaveData {
@@ -98,7 +100,7 @@ export interface SaveData {
   settings: Settings;
 }
 
-export const DEFAULT_SETTINGS: Settings = { theme: 'system', motion: 'system', sound: false, focus: false, speed: 1, fontSize: 14, assist: true };
+export const DEFAULT_SETTINGS: Settings = { theme: 'system', motion: 'system', sound: false, focus: false, speed: 1, fontSize: 14, assist: true, predict: false };
 
 export function freshSave(): SaveData {
   return {

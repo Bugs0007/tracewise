@@ -77,7 +77,7 @@ function checkpoints(n: number): Set<number> {
   return out;
 }
 
-export function Player({ viz, initialInput, frames: given, onComplete, quizDefault = false, onQuizAnswer, compact, hideInputs, predictMode = 'generic' }: PlayerProps) {
+export function Player({ viz, initialInput, frames: given, onComplete, quizDefault, onQuizAnswer, compact, hideInputs, predictMode = 'generic' }: PlayerProps) {
   const sound = useApp((s) => s.settings.sound);
   const speedPref = useApp((s) => s.settings.speed);
   const setSettings = useApp((s) => s.setSettings);
@@ -86,7 +86,8 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [quizOn, setQuizOn] = useState(quizDefault);
+  const predictPref = useApp((s) => s.settings.predict);
+  const [quizOn, setQuizOn] = useState(quizDefault ?? predictPref);
   const [quiz, setQuiz] = useState<QuizState | null>(null);
   const [asked, setAsked] = useState<Set<number>>(new Set());
   const [codeOpen, setCodeOpen] = useState(false);

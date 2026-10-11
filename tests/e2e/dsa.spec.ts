@@ -60,8 +60,10 @@ test('problem page flow: pattern gate, hints, predict checkpoint, reveal, mark s
   await expect(page.locator('.dsa-hints li')).toHaveCount(3);
   await expect(page.getByTestId('show-hint')).toHaveCount(0);
 
-  // predict mode is on and pauses at an authored checkpoint under the stage
+  // predict mode is off by default; switching it on pauses at an authored checkpoint under the stage
   const predict = page.getByRole('dialog', { name: 'Predict the next step' });
+  await expect(page.getByTestId('predict-toggle')).toHaveAttribute('aria-checked', 'false');
+  await page.getByTestId('predict-toggle').click();
   await expect(page.getByTestId('predict-toggle')).toHaveAttribute('aria-checked', 'true');
   await page.getByTestId('step').click(); // frame 2 ('loop')
   await page.getByTestId('step').click(); // checkpoint asks before the next frame
@@ -117,12 +119,21 @@ test('editing the visualizer input re-runs the trace, and bad input is rejected'
   const input = page.locator('.inputs-bar input').first();
   await input.fill('5, 6, 5');
   await input.blur();
-  await page.getByTestId('predict-toggle').click();
   await page.getByTestId('end').click();
   await expect(page.getByTestId('caption')).toContainText('5 appeared before');
   await input.fill('1, x');
   await input.blur();
   await expect(page.locator('.inputs-bar')).toContainText('not a number');
+});
+
+test('the Predict mode default can be switched on in settings', async ({ page }) => {
+  await freshStart(page, '/settings');
+  const toggle = page.getByRole('switch', { name: 'Predict mode by default' });
+  await expect(toggle).toHaveAttribute('aria-checked', 'false');
+  await toggle.click();
+  await page.goto(`./#/dsa/${TOPIC}/two-sum`);
+  await unlock(page);
+  await expect(page.getByTestId('predict-toggle')).toHaveAttribute('aria-checked', 'true');
 });
 
 test('topic page: guide, problem list and boss quiz', async ({ page }) => {
