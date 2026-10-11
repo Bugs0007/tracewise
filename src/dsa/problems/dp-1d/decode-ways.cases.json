@@ -1,0 +1,77 @@
+{
+ "fn": "num_decodings",
+ "cases": [
+  {
+   "name": "two readings",
+   "args": [
+    [
+     "1215"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "single digit",
+   "args": [
+    [
+     "7"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "starts with zero",
+   "args": [
+    [
+     "012"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "lone zero in the middle",
+   "args": [
+    [
+     "1305"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "ten and twenty",
+   "args": [
+    [
+     "1020"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "too large pair",
+   "args": [
+    [
+     "2799"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "all ones",
+   "args": [
+    [
+     "11111"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "zero after thirty",
+   "args": [
+    [
+     "30"
+    ]
+   ],
+   "expected": 1
+  }
+ ]
+}

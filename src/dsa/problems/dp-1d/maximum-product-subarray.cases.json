@@ -1,0 +1,95 @@
+{
+ "fn": "max_product",
+ "cases": [
+  {
+   "name": "a negative flips twice",
+   "args": [
+    [
+     3,
+     -2,
+     4,
+     -1
+    ]
+   ],
+   "expected": 24
+  },
+  {
+   "name": "single negative",
+   "args": [
+    [
+     -5
+    ]
+   ],
+   "expected": -5
+  },
+  {
+   "name": "zero splits the array",
+   "args": [
+    [
+     2,
+     0,
+     5,
+     3
+    ]
+   ],
+   "expected": 15
+  },
+  {
+   "name": "all negative",
+   "args": [
+    [
+     -1,
+     -2,
+     -3
+    ]
+   ],
+   "expected": 6
+  },
+  {
+   "name": "all positive",
+   "args": [
+    [
+     1,
+     2,
+     3,
+     4
+    ]
+   ],
+   "expected": 24
+  },
+  {
+   "name": "two negatives apart",
+   "args": [
+    [
+     -2,
+     3,
+     -4,
+     1
+    ]
+   ],
+   "expected": 24
+  },
+  {
+   "name": "zeros only",
+   "args": [
+    [
+     0,
+     0
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "ones and a negative",
+   "args": [
+    [
+     1,
+     -1,
+     1,
+     1
+    ]
+   ],
+   "expected": 1
+  }
+ ]
+}

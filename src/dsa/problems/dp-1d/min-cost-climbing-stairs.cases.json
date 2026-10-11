@@ -1,0 +1,95 @@
+{
+ "fn": "min_cost_climbing_stairs",
+ "cases": [
+  {
+   "name": "skip the expensive steps",
+   "args": [
+    [
+     4,
+     9,
+     2,
+     8,
+     1,
+     7
+    ]
+   ],
+   "expected": 7
+  },
+  {
+   "name": "two steps",
+   "args": [
+    [
+     5,
+     3
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "start on the second step",
+   "args": [
+    [
+     10,
+     1,
+     10,
+     1,
+     10
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "all zero",
+   "args": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "zig zag",
+   "args": [
+    [
+     1,
+     100,
+     1,
+     1,
+     1,
+     100,
+     1,
+     1,
+     100,
+     1
+    ]
+   ],
+   "expected": 6
+  },
+  {
+   "name": "three steps",
+   "args": [
+    [
+     3,
+     8,
+     2
+    ]
+   ],
+   "expected": 5
+  },
+  {
+   "name": "equal costs",
+   "args": [
+    [
+     5,
+     5,
+     5,
+     5,
+     5
+    ]
+   ],
+   "expected": 10
+  }
+ ]
+}

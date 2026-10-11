@@ -1,0 +1,101 @@
+{
+ "fn": "can_partition",
+ "cases": [
+  {
+   "name": "splits evenly",
+   "args": [
+    [
+     3,
+     5,
+     8,
+     2,
+     4,
+     2
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "odd total",
+   "args": [
+    [
+     1,
+     2,
+     4
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "single number",
+   "args": [
+    [
+     6
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "two equal",
+   "args": [
+    [
+     7,
+     7
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "even total but no split",
+   "args": [
+    [
+     1,
+     5,
+     5,
+     9
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "many ones",
+   "args": [
+    [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "one big number",
+   "args": [
+    [
+     10,
+     3,
+     3,
+     4
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "zero total gap",
+   "args": [
+    [
+     2,
+     2,
+     3,
+     3,
+     4,
+     4
+    ]
+   ],
+   "expected": true
+  }
+ ]
+}

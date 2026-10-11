@@ -1,0 +1,93 @@
+{
+ "fn": "coin_change",
+ "cases": [
+  {
+   "name": "greedy fails",
+   "args": [
+    [
+     1,
+     6,
+     7
+    ],
+    12
+   ],
+   "expected": 2
+  },
+  {
+   "name": "no way",
+   "args": [
+    [
+     5,
+     10
+    ],
+    3
+   ],
+   "expected": -1
+  },
+  {
+   "name": "zero amount",
+   "args": [
+    [
+     2
+    ],
+    0
+   ],
+   "expected": 0
+  },
+  {
+   "name": "single coin fits",
+   "args": [
+    [
+     4
+    ],
+    12
+   ],
+   "expected": 3
+  },
+  {
+   "name": "single coin does not fit",
+   "args": [
+    [
+     4
+    ],
+    10
+   ],
+   "expected": -1
+  },
+  {
+   "name": "several coins",
+   "args": [
+    [
+     2,
+     5,
+     10
+    ],
+    27
+   ],
+   "expected": 4
+  },
+  {
+   "name": "one coin is enough",
+   "args": [
+    [
+     3,
+     8
+    ],
+    8
+   ],
+   "expected": 1
+  },
+  {
+   "name": "big amount",
+   "args": [
+    [
+     1,
+     4,
+     9
+    ],
+    18
+   ],
+   "expected": 2
+  }
+ ]
+}

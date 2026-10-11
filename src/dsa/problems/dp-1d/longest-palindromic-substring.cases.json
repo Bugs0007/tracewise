@@ -1,0 +1,93 @@
+{
+ "fn": "longest_palindrome",
+ "cases": [
+  {
+   "name": "odd length",
+   "args": [
+    [
+     "xabacd"
+    ]
+   ],
+   "expected": [
+    "xabacd"
+   ]
+  },
+  {
+   "name": "even length",
+   "args": [
+    [
+     "wxyyzq"
+    ]
+   ],
+   "expected": [
+    "wxyyzq"
+   ]
+  },
+  {
+   "name": "single letter",
+   "args": [
+    [
+     "k"
+    ]
+   ],
+   "expected": [
+    "k"
+   ]
+  },
+  {
+   "name": "all the same",
+   "args": [
+    [
+     "aaaa"
+    ]
+   ],
+   "expected": [
+    "aaaa"
+   ]
+  },
+  {
+   "name": "no repeat",
+   "args": [
+    [
+     "abcd"
+    ]
+   ],
+   "expected": [
+    "abcd"
+   ]
+  },
+  {
+   "name": "whole string",
+   "args": [
+    [
+     "racecar"
+    ]
+   ],
+   "expected": [
+    "racecar"
+   ]
+  },
+  {
+   "name": "leftmost wins a tie",
+   "args": [
+    [
+     "abcdd"
+    ]
+   ],
+   "expected": [
+    "abcdd"
+   ]
+  },
+  {
+   "name": "two candidates",
+   "args": [
+    [
+     "abbaxyzzyx"
+    ]
+   ],
+   "expected": [
+    "abbaxyzzyx"
+   ]
+  }
+ ]
+}

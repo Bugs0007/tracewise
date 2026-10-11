@@ -1,0 +1,97 @@
+{
+ "fn": "word_break",
+ "cases": [
+  {
+   "name": "splits into two words",
+   "args": [
+    "catsup",
+    [
+     "cat",
+     "sup",
+     "up"
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "reuse a word",
+   "args": [
+    "abab",
+    [
+     "ab"
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "no split",
+   "args": [
+    "abc",
+    [
+     "a",
+     "bd"
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "one word",
+   "args": [
+    "dog",
+    [
+     "dog"
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "greedy prefix is a trap",
+   "args": [
+    "aaab",
+    [
+     "a",
+     "aa",
+     "aab"
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "overlapping options",
+   "args": [
+    "pineapplepen",
+    [
+     "apple",
+     "pen",
+     "pine",
+     "pineapple"
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "single letters",
+   "args": [
+    "xyz",
+    [
+     "x",
+     "y",
+     "z"
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "missing letter",
+   "args": [
+    "xyzw",
+    [
+     "x",
+     "y",
+     "z"
+    ]
+   ],
+   "expected": false
+  }
+ ]
+}

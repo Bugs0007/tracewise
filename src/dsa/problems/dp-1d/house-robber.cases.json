@@ -1,0 +1,92 @@
+{
+ "fn": "rob",
+ "cases": [
+  {
+   "name": "skip a neighbour",
+   "args": [
+    [
+     3,
+     8,
+     5,
+     2,
+     9
+    ]
+   ],
+   "expected": 17
+  },
+  {
+   "name": "single house",
+   "args": [
+    [
+     7
+    ]
+   ],
+   "expected": 7
+  },
+  {
+   "name": "two houses",
+   "args": [
+    [
+     4,
+     11
+    ]
+   ],
+   "expected": 11
+  },
+  {
+   "name": "all equal",
+   "args": [
+    [
+     5,
+     5,
+     5,
+     5
+    ]
+   ],
+   "expected": 10
+  },
+  {
+   "name": "take the outer ones",
+   "args": [
+    [
+     10,
+     1,
+     1,
+     10
+    ]
+   ],
+   "expected": 20
+  },
+  {
+   "name": "empty street",
+   "args": [
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "take every other",
+   "args": [
+    [
+     2,
+     1,
+     2,
+     1,
+     2
+    ]
+   ],
+   "expected": 6
+  },
+  {
+   "name": "zeros",
+   "args": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "expected": 0
+  }
+ ]
+}

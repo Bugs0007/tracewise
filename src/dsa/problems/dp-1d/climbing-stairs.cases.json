@@ -1,0 +1,54 @@
+{
+ "fn": "climb_stairs",
+ "cases": [
+  {
+   "name": "one step",
+   "args": [
+    1
+   ],
+   "expected": 1
+  },
+  {
+   "name": "two steps",
+   "args": [
+    2
+   ],
+   "expected": 2
+  },
+  {
+   "name": "three steps",
+   "args": [
+    3
+   ],
+   "expected": 3
+  },
+  {
+   "name": "six steps",
+   "args": [
+    6
+   ],
+   "expected": 13
+  },
+  {
+   "name": "ten steps",
+   "args": [
+    10
+   ],
+   "expected": 89
+  },
+  {
+   "name": "fifteen steps",
+   "args": [
+    15
+   ],
+   "expected": 987
+  },
+  {
+   "name": "four steps",
+   "args": [
+    4
+   ],
+   "expected": 5
+  }
+ ]
+}

@@ -1,0 +1,88 @@
+{
+ "fn": "rob_circle",
+ "cases": [
+  {
+   "name": "first and last are neighbours",
+   "args": [
+    [
+     4,
+     9,
+     3,
+     6
+    ]
+   ],
+   "expected": 15
+  },
+  {
+   "name": "single house",
+   "args": [
+    [
+     8
+    ]
+   ],
+   "expected": 8
+  },
+  {
+   "name": "two houses",
+   "args": [
+    [
+     3,
+     5
+    ]
+   ],
+   "expected": 5
+  },
+  {
+   "name": "three houses",
+   "args": [
+    [
+     2,
+     7,
+     3
+    ]
+   ],
+   "expected": 7
+  },
+  {
+   "name": "best skips the first",
+   "args": [
+    [
+     1,
+     6,
+     2,
+     9,
+     1
+    ]
+   ],
+   "expected": 15
+  },
+  {
+   "name": "all equal",
+   "args": [
+    [
+     4,
+     4,
+     4,
+     4,
+     4
+    ]
+   ],
+   "expected": 8
+  },
+  {
+   "name": "long street",
+   "args": [
+    [
+     5,
+     1,
+     1,
+     5,
+     1,
+     1,
+     5
+    ]
+   ],
+   "expected": 11
+  }
+ ]
+}

@@ -1,0 +1,68 @@
+{
+ "fn": "count_substrings",
+ "cases": [
+  {
+   "name": "single letter",
+   "args": [
+    [
+     "a"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "no repeat",
+   "args": [
+    [
+     "abc"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "all the same",
+   "args": [
+    [
+     "aaa"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "mixed",
+   "args": [
+    [
+     "abab"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "two equal",
+   "args": [
+    [
+     "xx"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "longer",
+   "args": [
+    [
+     "abacaba"
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "even only",
+   "args": [
+    [
+     "abba"
+    ]
+   ],
+   "expected": 1
+  }
+ ]
+}

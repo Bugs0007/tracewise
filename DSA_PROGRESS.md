@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **98 of 150** problems done.
+Progress: **110 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -154,21 +154,21 @@ Progress: **98 of 150** problems done.
 - [x] 97. Alien Dictionary (`alien-dictionary`, Hard)
 - [x] 98. Cheapest Flights Within K Stops (`cheapest-flights-within-k-stops`, Medium)
 
-## 1-D Dynamic Programming (0/12)
+## 1-D Dynamic Programming (12/12)
 
-- [ ] Topic page content (`topics/dp-1d.ts`) and `tests/dsa/test_dp_1d.py`
-- [ ] 99. Climbing Stairs (`climbing-stairs`, Easy)
-- [ ] 100. Min Cost Climbing Stairs (`min-cost-climbing-stairs`, Easy)
-- [ ] 101. House Robber (`house-robber`, Medium)
-- [ ] 102. House Robber II (`house-robber-ii`, Medium)
-- [ ] 103. Longest Palindromic Substring (`longest-palindromic-substring`, Medium)
-- [ ] 104. Palindromic Substrings (`palindromic-substrings`, Medium)
-- [ ] 105. Decode Ways (`decode-ways`, Medium)
-- [ ] 106. Coin Change (`coin-change`, Medium)
-- [ ] 107. Maximum Product Subarray (`maximum-product-subarray`, Medium)
-- [ ] 108. Word Break (`word-break`, Medium)
-- [ ] 109. Longest Increasing Subsequence (`longest-increasing-subsequence`, Medium)
-- [ ] 110. Partition Equal Subset Sum (`partition-equal-subset-sum`, Medium)
+- [x] Topic page content (`topics/dp-1d.ts`) and `tests/dsa/test_dp_1d.py`
+- [x] 99. Climbing Stairs (`climbing-stairs`, Easy)
+- [x] 100. Min Cost Climbing Stairs (`min-cost-climbing-stairs`, Easy)
+- [x] 101. House Robber (`house-robber`, Medium)
+- [x] 102. House Robber II (`house-robber-ii`, Medium)
+- [x] 103. Longest Palindromic Substring (`longest-palindromic-substring`, Medium)
+- [x] 104. Palindromic Substrings (`palindromic-substrings`, Medium)
+- [x] 105. Decode Ways (`decode-ways`, Medium)
+- [x] 106. Coin Change (`coin-change`, Medium)
+- [x] 107. Maximum Product Subarray (`maximum-product-subarray`, Medium)
+- [x] 108. Word Break (`word-break`, Medium)
+- [x] 109. Longest Increasing Subsequence (`longest-increasing-subsequence`, Medium)
+- [x] 110. Partition Equal Subset Sum (`partition-equal-subset-sum`, Medium)
 
 ## 2-D Dynamic Programming (0/11)
 
