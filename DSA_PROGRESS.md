@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **129 of 150** problems done.
+Progress: **135 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -197,15 +197,15 @@ Progress: **129 of 150** problems done.
 - [x] 128. Partition Labels (`partition-labels`, Medium)
 - [x] 129. Valid Parenthesis String (`valid-parenthesis-string`, Medium)
 
-## Intervals (0/6)
+## Intervals (6/6)
 
-- [ ] Topic page content (`topics/intervals.ts`) and `tests/dsa/test_intervals.py`
-- [ ] 130. Insert Interval (`insert-interval`, Medium)
-- [ ] 131. Merge Intervals (`merge-intervals`, Medium)
-- [ ] 132. Non-overlapping Intervals (`non-overlapping-intervals`, Medium)
-- [ ] 133. Meeting Rooms (`meeting-rooms`, Easy)
-- [ ] 134. Meeting Rooms II (`meeting-rooms-ii`, Medium)
-- [ ] 135. Minimum Interval to Include Each Query (`minimum-interval-to-include-each-query`, Hard)
+- [x] Topic page content (`topics/intervals.ts`) and `tests/dsa/test_intervals.py`
+- [x] 130. Insert Interval (`insert-interval`, Medium)
+- [x] 131. Merge Intervals (`merge-intervals`, Medium)
+- [x] 132. Non-overlapping Intervals (`non-overlapping-intervals`, Medium)
+- [x] 133. Meeting Rooms (`meeting-rooms`, Easy)
+- [x] 134. Meeting Rooms II (`meeting-rooms-ii`, Medium)
+- [x] 135. Minimum Interval to Include Each Query (`minimum-interval-to-include-each-query`, Hard)
 
 ## Math & Geometry (0/8)
 

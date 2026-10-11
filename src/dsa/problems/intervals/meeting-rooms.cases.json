@@ -1,0 +1,116 @@
+{
+ "fn": "can_attend_meetings",
+ "cases": [
+  {
+   "name": "overlap",
+   "args": [
+    [
+     [
+      2,
+      40
+     ],
+     [
+      6,
+      12
+     ],
+     [
+      18,
+      24
+     ]
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "back to back is fine",
+   "args": [
+    [
+     [
+      1,
+      3
+     ],
+     [
+      3,
+      5
+     ],
+     [
+      5,
+      7
+     ]
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": true
+  },
+  {
+   "name": "single",
+   "args": [
+    [
+     [
+      4,
+      9
+     ]
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "unsorted and clear",
+   "args": [
+    [
+     [
+      9,
+      10
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      4,
+      5
+     ]
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "tiny overlap",
+   "args": [
+    [
+     [
+      1,
+      4
+     ],
+     [
+      3,
+      6
+     ]
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "identical",
+   "args": [
+    [
+     [
+      2,
+      5
+     ],
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   "expected": false
+  }
+ ]
+}

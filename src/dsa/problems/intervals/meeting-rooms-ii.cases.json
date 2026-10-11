@@ -1,0 +1,152 @@
+{
+ "fn": "min_meeting_rooms",
+ "cases": [
+  {
+   "name": "two at once",
+   "args": [
+    [
+     [
+      2,
+      40
+     ],
+     [
+      6,
+      12
+     ],
+     [
+      18,
+      24
+     ]
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "sequential",
+   "args": [
+    [
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "all together",
+   "args": [
+    [
+     [
+      1,
+      5
+     ],
+     [
+      2,
+      6
+     ],
+     [
+      3,
+      7
+     ],
+     [
+      4,
+      8
+     ]
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": 0
+  },
+  {
+   "name": "single",
+   "args": [
+    [
+     [
+      3,
+      9
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "reuse a room",
+   "args": [
+    [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      5
+     ],
+     [
+      4,
+      6
+     ]
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "late burst",
+   "args": [
+    [
+     [
+      0,
+      2
+     ],
+     [
+      5,
+      9
+     ],
+     [
+      6,
+      8
+     ],
+     [
+      7,
+      10
+     ]
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "nested",
+   "args": [
+    [
+     [
+      1,
+      10
+     ],
+     [
+      2,
+      9
+     ],
+     [
+      3,
+      8
+     ]
+    ]
+   ],
+   "expected": 3
+  }
+ ]
+}
