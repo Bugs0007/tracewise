@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **79 of 150** problems done.
+Progress: **92 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -127,22 +127,22 @@ Progress: **79 of 150** problems done.
 - [x] 78. Letter Combinations of a Phone Number (`letter-combinations-of-a-phone-number`, Medium)
 - [x] 79. N-Queens (`n-queens`, Hard)
 
-## Graphs (0/13)
+## Graphs (13/13)
 
-- [ ] Topic page content (`topics/graphs.ts`) and `tests/dsa/test_graphs.py`
-- [ ] 80. Number of Islands (`number-of-islands`, Medium)
-- [ ] 81. Max Area of Island (`max-area-of-island`, Medium)
-- [ ] 82. Clone Graph (`clone-graph`, Medium)
-- [ ] 83. Walls and Gates (`walls-and-gates`, Medium)
-- [ ] 84. Rotting Oranges (`rotting-oranges`, Medium)
-- [ ] 85. Pacific Atlantic Water Flow (`pacific-atlantic-water-flow`, Medium)
-- [ ] 86. Surrounded Regions (`surrounded-regions`, Medium)
-- [ ] 87. Course Schedule (`course-schedule`, Medium)
-- [ ] 88. Course Schedule II (`course-schedule-ii`, Medium)
-- [ ] 89. Graph Valid Tree (`graph-valid-tree`, Medium)
-- [ ] 90. Number of Connected Components in an Undirected Graph (`number-of-connected-components-in-an-undirected-graph`, Medium)
-- [ ] 91. Redundant Connection (`redundant-connection`, Medium)
-- [ ] 92. Word Ladder (`word-ladder`, Hard)
+- [x] Topic page content (`topics/graphs.ts`) and `tests/dsa/test_graphs.py`
+- [x] 80. Number of Islands (`number-of-islands`, Medium)
+- [x] 81. Max Area of Island (`max-area-of-island`, Medium)
+- [x] 82. Clone Graph (`clone-graph`, Medium)
+- [x] 83. Walls and Gates (`walls-and-gates`, Medium)
+- [x] 84. Rotting Oranges (`rotting-oranges`, Medium)
+- [x] 85. Pacific Atlantic Water Flow (`pacific-atlantic-water-flow`, Medium)
+- [x] 86. Surrounded Regions (`surrounded-regions`, Medium)
+- [x] 87. Course Schedule (`course-schedule`, Medium)
+- [x] 88. Course Schedule II (`course-schedule-ii`, Medium)
+- [x] 89. Graph Valid Tree (`graph-valid-tree`, Medium)
+- [x] 90. Number of Connected Components in an Undirected Graph (`number-of-connected-components-in-an-undirected-graph`, Medium)
+- [x] 91. Redundant Connection (`redundant-connection`, Medium)
+- [x] 92. Word Ladder (`word-ladder`, Hard)
 
 ## Advanced Graphs (0/6)
 

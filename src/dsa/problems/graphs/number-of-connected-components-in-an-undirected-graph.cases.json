@@ -1,0 +1,143 @@
+{
+ "fn": "count_components",
+ "cases": [
+  {
+   "name": "two groups",
+   "args": [
+    5,
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "one group",
+   "args": [
+    5,
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      4
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "no edges",
+   "args": [
+    4,
+    []
+   ],
+   "expected": 4
+  },
+  {
+   "name": "single node",
+   "args": [
+    1,
+    []
+   ],
+   "expected": 1
+  },
+  {
+   "name": "cycle counts once",
+   "args": [
+    3,
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      0
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "isolated nodes plus a pair",
+   "args": [
+    5,
+    [
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "repeated edge",
+   "args": [
+    3,
+    [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      1
+     ]
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "star",
+   "args": [
+    5,
+    [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "expected": 1
+  }
+ ]
+}

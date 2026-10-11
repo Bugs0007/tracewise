@@ -1,0 +1,113 @@
+{
+ "fn": "ladder_length",
+ "cases": [
+  {
+   "name": "five words long",
+   "args": [
+    "cat",
+    "dog",
+    [
+     "cot",
+     "cog",
+     "dog",
+     "bog"
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "end word missing",
+   "args": [
+    "cat",
+    "dog",
+    [
+     "cot",
+     "cog",
+     "bog"
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "one step",
+   "args": [
+    "aa",
+    "ab",
+    [
+     "ab"
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "no route",
+   "args": [
+    "aaa",
+    "bbb",
+    [
+     "aab",
+     "bbb"
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "two changes",
+   "args": [
+    "cat",
+    "dog",
+    [
+     "cot",
+     "dot",
+     "dog"
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "shortest of two routes",
+   "args": [
+    "abc",
+    "xyz",
+    [
+     "abz",
+     "ayz",
+     "xyz",
+     "xbc",
+     "xyc"
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "begin word not in the list",
+   "args": [
+    "ham",
+    "sky",
+    [
+     "hat",
+     "sat",
+     "sky",
+     "ham",
+     "sam",
+     "say",
+     "sly"
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "single letter words",
+   "args": [
+    "a",
+    "c",
+    [
+     "a",
+     "b",
+     "c"
+    ]
+   ],
+   "expected": 2
+  }
+ ]
+}

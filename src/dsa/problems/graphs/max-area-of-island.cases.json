@@ -1,0 +1,167 @@
+{
+ "fn": "max_area_of_island",
+ "cases": [
+  {
+   "name": "largest of several",
+   "args": [
+    [
+     [
+      1,
+      1,
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      1,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      1,
+      0,
+      1
+     ]
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "whole grid",
+   "args": [
+    [
+     [
+      1,
+      1
+     ],
+     [
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": 4
+  },
+  {
+   "name": "no land",
+   "args": [
+    [
+     [
+      0,
+      0
+     ]
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "diagonal land",
+   "args": [
+    [
+     [
+      1,
+      0
+     ],
+     [
+      0,
+      1
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "single cell",
+   "args": [
+    [
+     [
+      1
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "snake",
+   "args": [
+    [
+     [
+      1,
+      1,
+      1
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": 7
+  },
+  {
+   "name": "two equal islands",
+   "args": [
+    [
+     [
+      1,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      1
+     ]
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "ring",
+   "args": [
+    [
+     [
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      0,
+      1
+     ],
+     [
+      1,
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": 8
+  }
+ ]
+}

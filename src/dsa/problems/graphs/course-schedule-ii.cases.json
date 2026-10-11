@@ -1,0 +1,150 @@
+{
+ "fn": "find_order",
+ "cases": [
+  {
+   "name": "chain has one order",
+   "args": [
+    4,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ]
+   ],
+   "expected": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "name": "two courses",
+   "args": [
+    2,
+    [
+     [
+      1,
+      0
+     ]
+    ]
+   ],
+   "expected": [
+    0,
+    1
+   ]
+  },
+  {
+   "name": "cycle gives nothing",
+   "args": [
+    2,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      0,
+      1
+     ]
+    ]
+   ],
+   "expected": []
+  },
+  {
+   "name": "single course",
+   "args": [
+    1,
+    []
+   ],
+   "expected": [
+    0
+   ]
+  },
+  {
+   "name": "reverse chain",
+   "args": [
+    3,
+    [
+     [
+      0,
+      1
+     ],
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   "expected": [
+    2,
+    1,
+    0
+   ]
+  },
+  {
+   "name": "pairs listed out of order",
+   "args": [
+    3,
+    [
+     [
+      2,
+      1
+     ],
+     [
+      1,
+      0
+     ]
+    ]
+   ],
+   "expected": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "name": "cycle behind a start",
+   "args": [
+    3,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   "expected": []
+  },
+  {
+   "name": "self loop",
+   "args": [
+    2,
+    [
+     [
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": []
+  }
+ ]
+}

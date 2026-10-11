@@ -1,0 +1,135 @@
+{
+ "fn": "oranges_rotting",
+ "cases": [
+  {
+   "name": "spreads in four minutes",
+   "args": [
+    [
+     [
+      2,
+      1,
+      0,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": -1
+  },
+  {
+   "name": "cut off by an empty cell",
+   "args": [
+    [
+     [
+      2,
+      1,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": -1
+  },
+  {
+   "name": "nothing fresh",
+   "args": [
+    [
+     [
+      0,
+      2
+     ]
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "nothing rotten",
+   "args": [
+    [
+     [
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": -1
+  },
+  {
+   "name": "empty grid of zeros",
+   "args": [
+    [
+     [
+      0,
+      0
+     ]
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "two sources",
+   "args": [
+    [
+     [
+      2,
+      1,
+      1,
+      1,
+      2
+     ]
+    ]
+   ],
+   "expected": 2
+  },
+  {
+   "name": "single fresh next to rotten",
+   "args": [
+    [
+     [
+      2
+     ],
+     [
+      1
+     ]
+    ]
+   ],
+   "expected": 1
+  },
+  {
+   "name": "long line",
+   "args": [
+    [
+     [
+      2,
+      1,
+      1,
+      1,
+      1,
+      1
+     ]
+    ]
+   ],
+   "expected": 5
+  }
+ ]
+}

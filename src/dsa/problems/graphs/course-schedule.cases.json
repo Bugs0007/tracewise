@@ -1,0 +1,135 @@
+{
+ "fn": "can_finish",
+ "cases": [
+  {
+   "name": "simple chain",
+   "args": [
+    2,
+    [
+     [
+      1,
+      0
+     ]
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "two-course cycle",
+   "args": [
+    2,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      0,
+      1
+     ]
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "no prerequisites",
+   "args": [
+    3,
+    []
+   ],
+   "expected": true
+  },
+  {
+   "name": "diamond",
+   "args": [
+    4,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ]
+   ],
+   "expected": true
+  },
+  {
+   "name": "long cycle",
+   "args": [
+    4,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "self loop",
+   "args": [
+    1,
+    [
+     [
+      0,
+      0
+     ]
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "cycle hidden behind a good course",
+   "args": [
+    4,
+    [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      2
+     ]
+    ]
+   ],
+   "expected": false
+  },
+  {
+   "name": "single course",
+   "args": [
+    1,
+    []
+   ],
+   "expected": true
+  }
+ ]
+}
