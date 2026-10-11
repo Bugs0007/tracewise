@@ -1,6 +1,6 @@
 -- Tracewise leaderboard (opt-in). A player who turns on "Show my level on the leaderboard" in Settings gets one row here.
--- Privacy: the table can only be read by its owner. Everyone else sees the board ONLY through the two functions
--- below, which return a rank and a level and nothing else: no name, email, id or XP.
+-- Privacy: the table can only be read by its owner. Everyone else sees the board ONLY through the function
+-- below, which returns a rank and a level and nothing else: no name, email, id or XP.
 create table if not exists public.tracewise_leaderboard (
   user_id uuid primary key references auth.users (id) on delete cascade,
   level integer not null default 1,
