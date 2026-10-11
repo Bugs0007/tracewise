@@ -118,9 +118,11 @@ export interface CodeEditorProps {
   minHeight?: number;
   ariaLabel?: string;
   autoFocus?: boolean;
+  /** wrap long lines instead of scrolling sideways (default on) */
+  wrap?: boolean;
 }
 
-export function CodeEditor({ value, onChange, language, errorLine, readOnly, onRun, minHeight = 180, ariaLabel = 'Code editor', autoFocus }: CodeEditorProps) {
+export function CodeEditor({ value, onChange, language, errorLine, readOnly, onRun, minHeight = 180, ariaLabel = 'Code editor', autoFocus, wrap = true }: CodeEditorProps) {
   const host = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const cbs = useRef({ onChange, onRun });
@@ -128,6 +130,7 @@ export function CodeEditor({ value, onChange, language, errorLine, readOnly, onR
   const langComp = useRef(new Compartment());
   const roComp = useRef(new Compartment());
   const assistComp = useRef(new Compartment());
+  const wrapComp = useRef(new Compartment());
   const assist = useApp((s) => s.settings.assist);
 
   useEffect(() => {
@@ -152,6 +155,7 @@ export function CodeEditor({ value, onChange, language, errorLine, readOnly, onR
         ]),
         langComp.current.of(langExt(language)),
         roComp.current.of([EditorState.readOnly.of(!!readOnly), EditorView.editable.of(!readOnly)]),
+        wrapComp.current.of(wrap ? EditorView.lineWrapping : []),
         errorField,
         theme,
         EditorView.contentAttributes.of({ 'aria-label': ariaLabel, spellcheck: 'false', autocapitalize: 'off', autocorrect: 'off' }),
@@ -181,6 +185,10 @@ export function CodeEditor({ value, onChange, language, errorLine, readOnly, onR
   useEffect(() => {
     view.current?.dispatch({ effects: roComp.current.reconfigure([EditorState.readOnly.of(!!readOnly), EditorView.editable.of(!readOnly)]) });
   }, [readOnly]);
+
+  useEffect(() => {
+    view.current?.dispatch({ effects: wrapComp.current.reconfigure(wrap ? EditorView.lineWrapping : []) });
+  }, [wrap]);
 
   useEffect(() => {
     view.current?.dispatch({ effects: setErrorLine.of(errorLine ?? null) });

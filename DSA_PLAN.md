@@ -168,10 +168,6 @@ CI installs pytest and runs `npm run test:py` (the Python setup step was already
 5. Arrays & Hashing (9 problems) as the proof. **Stop for review.**
 6. After approval: one topic at a time in NeetCode order, one commit per topic.
 
-## Known issue outside this track
-
-At 390px wide every page of the app (home and the old unit pages too) scrolls sideways by about 95px because of the top bar's Google "Sign in" chip. The track's e2e test measures the content area instead. Fixing the top bar is a separate change.
-
 ## Decisions worth flagging
 
 - Test cases live in `.cases.json`, not inline in the pytest file, so the browser's "Type it yourself" runner and pytest use identical cases. The pytest file per topic still lists the topic's problems and adds hand-written property tests (brute-force comparisons) where useful.

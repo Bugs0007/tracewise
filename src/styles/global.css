@@ -583,6 +583,8 @@ label.field {
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* phones: the visible height, not the height behind the collapsing browser bars */
+  height: 100dvh;
 }
 .shell.focus .topnav,
 .shell.focus .tabbar {
@@ -917,5 +919,147 @@ label.field {
   }
   .acct-chip {
     padding: 0 3px;
+  }
+}
+
+/* ─────────────────────────── Phones and touch ───────────────────────────
+   Tap targets of 40-44px, 16px form text (anything smaller makes iOS zoom the page on focus),
+   and a top bar that fits 320px: icon-only brand and sign-in, no overflow. */
+@media (max-width: 760px) {
+  .topbar {
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .topbar .spacer {
+    min-width: 0;
+  }
+  .brand-name {
+    display: none;
+  }
+  .brand {
+    min-width: 40px;
+    min-height: 40px;
+    justify-content: center;
+  }
+  .topbar .btn.icon.sm,
+  .signin-chip {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+  .signin-label {
+    display: none;
+  }
+  .acct-chip {
+    height: 40px;
+    min-width: 40px;
+    justify-content: center;
+  }
+  .xpbox .seg-bar {
+    flex: none;
+  }
+}
+@media (max-width: 480px) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+@media (max-width: 760px), (pointer: coarse) {
+  .btn {
+    height: 44px;
+  }
+  .btn.sm {
+    height: 40px;
+  }
+  .btn.icon {
+    width: 44px;
+  }
+  .btn.icon.sm {
+    width: 40px;
+  }
+  .input,
+  select.input,
+  textarea.input,
+  input.input {
+    height: 44px;
+    font-size: 16px;
+  }
+  textarea.input {
+    height: auto;
+    min-height: 44px;
+  }
+  .cm-editor .cm-content,
+  .cm-editor .cm-gutters {
+    font-size: 16px !important;
+  }
+  .seg button {
+    min-height: 40px;
+    padding: 9px 14px;
+  }
+  .crumbs a,
+  a.dim,
+  .dsa-pager a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+  .opt {
+    min-height: 48px;
+  }
+  .toggle {
+    position: relative;
+  }
+  /* the toggle stays visually small; its tap area grows */
+  .toggle::before {
+    content: '';
+    position: absolute;
+    inset: -11px -6px;
+  }
+}
+
+/* more phone and touch tap areas: visualizer scrubber and colour key, typing ladder, blanks, interview counts */
+@media (max-width: 760px), (pointer: coarse) {
+  .timeline {
+    height: 44px;
+  }
+  .ticks-strip i.now {
+    height: 40px;
+  }
+  .legend summary {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+  }
+  /* task.css loads later with equal specificity, so these are qualified by element */
+  button.rung {
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+  }
+  input.blank {
+    height: 32px;
+    font-size: 16px;
+  }
+  .seg button {
+    min-width: 40px;
+  }
+}
+
+/* phones: respect the notch and home indicator; toasts clear the tab bar */
+@media (max-width: 760px) {
+  .topbar {
+    height: calc(var(--top-h) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .tabbar {
+    height: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .toasts {
+    left: 12px;
+    right: 12px;
+    bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px) + 12px);
+    align-items: flex-end;
   }
 }

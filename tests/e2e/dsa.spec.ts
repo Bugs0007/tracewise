@@ -179,12 +179,8 @@ test.describe('phone width', () => {
         expect(box!.height).toBeGreaterThanOrEqual(40);
       }
       await page.waitForTimeout(500);
-      // measured on the content area: the shared top bar's sign-in chip overflows at 390px on every page of the app, which is outside this track
-      const overflow = await page.evaluate(() => {
-        const m = document.getElementById('main')!;
-        return m.scrollWidth - m.clientWidth;
-      });
-      expect(overflow, 'content scrolls sideways').toBeLessThanOrEqual(1);
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow, 'page scrolls sideways').toBeLessThanOrEqual(0);
     });
   }
 });

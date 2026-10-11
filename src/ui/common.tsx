@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Icon } from './Icon';
-import { highlightLine } from '@/player/highlight';
+import { CodeLines } from '@/player/CodeView';
+import { useCodeWrap } from './codeWrap';
 
 export function ProgressRing({ value, size = 44, stroke = 4, children, color = 'var(--accent)' }: { value: number; size?: number; stroke?: number; children?: ReactNode; color?: string }) {
   const r = (size - stroke) / 2;
@@ -38,14 +39,10 @@ export function Collapsible({ title, children, defaultOpen = false, icon = 'book
 }
 
 export function CodeBlock({ code, lang = 'python' }: { code: string; lang?: string }) {
+  const [wrap] = useCodeWrap();
   return (
-    <pre className="codeview" style={{ margin: '8px 0', padding: '10px 0', maxHeight: 360 }}>
-      {code.split('\n').map((l, i) => (
-        <div key={i} className="ln">
-          <span className="no">{i + 1}</span>
-          <span>{highlightLine(l, lang)}</span>
-        </div>
-      ))}
+    <pre className={`codeview${wrap ? ' wrap' : ''}`} style={{ margin: '8px 0', padding: '10px 0' }}>
+      <CodeLines code={code} language={lang} />
     </pre>
   );
 }

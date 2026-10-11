@@ -89,6 +89,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
   const [quizOn, setQuizOn] = useState(quizDefault);
   const [quiz, setQuiz] = useState<QuizState | null>(null);
   const [asked, setAsked] = useState<Set<number>>(new Set());
+  const [codeOpen, setCodeOpen] = useState(false);
   const completed = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -152,6 +153,11 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
     const t = setTimeout(forward, 900 / speed);
     return () => clearTimeout(t);
   }, [playing, forward, speed, idx]);
+
+  // a prediction needs the stage, which the expanded code sheet covers
+  useEffect(() => {
+    if (quiz) setCodeOpen(false);
+  }, [quiz]);
 
   const answerQuiz = (i: number) => {
     if (!quiz || quiz.chosen !== null) return;
@@ -413,7 +419,40 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
 
       {!compact && (
         <div className="side">
-          <CodeView code={code} language={viz.language} line={frame?.line} />
+          <CodeView
+            code={code}
+            language={viz.language}
+            line={frame?.line}
+            open={codeOpen}
+            onOpenChange={setCodeOpen}
+            sheetFooter={
+              <div className="sheet-steps">
+                <div className="row" style={{ gap: 8, flexWrap: 'nowrap' }}>
+                  <button className="btn icon" onClick={() => setIdx((i) => Math.max(0, i - 1))} disabled={idx === 0} aria-label="Step back">
+                    <Icon name="prev" />
+                  </button>
+                  <button className="btn primary icon" onClick={forward} disabled={idx >= last} aria-label="Step forward" data-testid="sheet-step">
+                    <Icon name="next" />
+                  </button>
+                  <span className="stepno mono">
+                    {frames.length ? idx + 1 : 0} of {frames.length}
+                  </span>
+                  <span className="spacer" />
+                  <button className="btn icon" onClick={() => setIdx(0)} aria-label="Reset to start">
+                    <Icon name="reset" />
+                  </button>
+                </div>
+                {frame && <p className="caption">{frame.caption}</p>}
+                {frame && Object.keys(frame.vars).length > 0 && (
+                  <p className="sheet-vars mono">
+                    {Object.entries(frame.vars)
+                      .map(([k, v]) => `${k} = ${v === null ? 'None' : String(v)}`)
+                      .join('   ')}
+                  </p>
+                )}
+              </div>
+            }
+          />
           <VarsView vars={frame?.vars ?? {}} prev={prevFrame?.vars} />
           {hasOps && (
             <div className="vars opcount">

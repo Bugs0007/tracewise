@@ -67,7 +67,7 @@ function TopBar() {
     <header className="topbar">
       <a className="brand" href={href('/')} aria-label="Tracewise home">
         <Logo />
-        <span>Tracewise</span>
+        <span className="brand-name">Tracewise</span>
       </a>
       <nav className="topnav" aria-label="Main">
         {NAV.filter((n) => n.top).map((n) => (
@@ -96,7 +96,7 @@ function TopBar() {
           {xp} XP
         </span>
       </div>
-      <button className={`btn icon sm ${focus ? '' : 'ghost'}`} onClick={() => setSettings({ focus: !focus })} aria-pressed={focus} aria-label="Focus mode" title="Focus mode: hide everything but the task">
+      <button className={`btn icon sm hide-xs ${focus ? '' : 'ghost'}`} onClick={() => setSettings({ focus: !focus })} aria-pressed={focus} aria-label="Focus mode" title="Focus mode: hide everything but the task">
         <Icon name="focus" size={17} />
       </button>
       <button className="btn icon sm ghost" onClick={() => setSettings({ theme: dark ? 'light' : 'dark' })} aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'} title={dark ? 'Switch to light theme' : 'Switch to dark theme'} data-testid="theme-toggle">

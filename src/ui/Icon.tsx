@@ -51,6 +51,9 @@ const P: Record<string, string> = {
   server: 'M4 4h16v6H4zM4 14h16v6H4zM8 7h.01M8 17h.01',
   window: 'M3 5h18v14H3zM3 9h18M6 7h.01M9 7h.01',
   graph: 'M6 6a2 2 0 1 0 0 .01M18 6a2 2 0 1 0 0 .01M12 18a2 2 0 1 0 0 .01M7.5 7.5l3.5 9M16.5 7.5l-3.5 9M8 6h8',
+  expand: 'M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5',
+  collapse: 'M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5',
+  wrap: 'M3 6h18M3 12h13a3 3 0 0 1 0 6h-4M14 15l-2 3 2 3M3 18h5',
   certificate: 'M4 4h16v12H4zM8 8h8M8 11h5M15 16l-1 5 2.5-1.5L19 21l-1-5',
 };
 

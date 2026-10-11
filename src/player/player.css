@@ -267,7 +267,8 @@
   font: var(--fs-s) / 1.65 var(--font-mono);
   overflow: auto;
   padding: 8px 0;
-  max-height: 440px;
+  /* tall enough for a whole solution; never more than most of the screen */
+  max-height: min(72vh, 680px);
 }
 .codeview .ln {
   display: flex;
@@ -838,4 +839,133 @@
   height: 38px;
   padding: 0 4px;
   font-size: var(--fs-s);
+}
+
+/* ─── code panels: wrapping, header tools, and the expanded sheet ─── */
+.code-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.code-head .pnl-title {
+  margin: 0;
+}
+.code-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-btn);
+  background: transparent;
+  color: var(--ink-muted);
+  font: 600 var(--fs-xs) var(--font-ui);
+  cursor: pointer;
+}
+.code-tool:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.code-tool[aria-pressed='true'] {
+  color: var(--ink);
+  background: var(--panel-3);
+  border-color: var(--ink);
+}
+.hero-trace .code-head {
+  margin-left: 14px;
+}
+/* wrapped lines continue indented under the line's own indentation (--ind = its leading spaces) */
+.codeview.wrap .ln > .ln-t {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding-left: calc((var(--ind, 0) + 4) * 1ch);
+  text-indent: calc((var(--ind, 0) + 4) * -1ch);
+}
+.code-sheet-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+}
+.code-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1180px;
+  height: 100%;
+  max-height: 940px;
+  background: var(--surface);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+}
+.code-sheet header,
+.code-sheet footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  flex: none;
+}
+.code-sheet header {
+  border-bottom: 1px solid var(--rule);
+}
+.code-sheet header h2 {
+  margin: 0;
+  font-size: var(--fs-m);
+}
+.code-sheet footer {
+  display: block;
+  border-top: 1px solid var(--rule);
+}
+.code-sheet .codeview.sheet {
+  flex: 1;
+  max-height: none;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  font-size: var(--fs-m);
+  padding: 12px 0;
+}
+.sheet-steps .caption {
+  margin: 8px 0 0;
+}
+.sheet-vars {
+  margin: 4px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-muted);
+  max-width: none;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  .code-sheet-bg {
+    padding: 0;
+  }
+  .code-sheet {
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .code-sheet header {
+    padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  }
+  .code-sheet footer {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .code-tool {
+    min-height: 40px;
+    min-width: 40px;
+    justify-content: center;
+  }
+  .code-tool span {
+    display: none;
+  }
 }

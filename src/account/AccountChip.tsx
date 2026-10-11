@@ -19,7 +19,8 @@ export function AccountChip() {
   if (a.status === 'signed-out') {
     return (
       <button
-        className="btn sm"
+        className="btn sm signin-chip"
+        aria-label="Sign in with Google"
         disabled={busy}
         data-testid="topbar-signin"
         title="Sign in with Google to keep your progress on every device"
@@ -30,7 +31,7 @@ export function AccountChip() {
         }}
       >
         <GoogleG />
-        <span>Sign in</span>
+        <span className="signin-label">Sign in</span>
       </button>
     );
   }

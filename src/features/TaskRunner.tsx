@@ -4,6 +4,8 @@ import { onPyStatus, preloadPython, runTask, type PyStatus, type RunResult } fro
 import { show } from '@/runner/compare';
 import { CodeEditor } from '@/ui/CodeEditor';
 import { Icon } from '@/ui/Icon';
+import { useCodeWrap } from '@/ui/codeWrap';
+import { WrapToggle } from '@/player/CodeView';
 import { useApp } from '@/store/store';
 import { playSound } from '@/lib/sound';
 import { blankMatches, fillBlanks, parseBlanks, type Segment } from '@/content/ladder';
@@ -135,6 +137,8 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
   codeRef.current = code;
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<RunResult | null>(null);
+  const [wrap] = useCodeWrap();
+  const [full, setFull] = useState(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
@@ -156,6 +160,16 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
     }
   };
 
+  // full screen: Escape leaves it (except while typing, where Escape belongs to the editor)
+  useEffect(() => {
+    if (!full) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !(e.target as HTMLElement).closest('.cm-editor')) setFull(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [full]);
+
   const run = async () => {
     if (running || disabled) return;
     setRunning(true);
@@ -168,23 +182,34 @@ export function TaskRunner({ task, starter, draftKey, onResult, toolbar, minHeig
   };
 
   return (
-    <div className="col" style={{ gap: 12 }}>
-      <div className="row">
+    <div className={`col task-runner${full ? ' task-full' : ''}`} style={{ gap: 12 }}>
+      <div className="row task-bar">
         <PyBadge lang={task.language} />
-        <span className="dim" style={{ fontSize: 13 }}>
+        <span className="dim hide-sm" style={{ fontSize: 13 }}>
           <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs the tests. <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves the editor.
         </span>
         <span className="spacer" />
         {toolbar}
+        <WrapToggle className="btn sm ghost" />
+        <button className="btn sm ghost" onClick={() => setFull((f) => !f)} aria-pressed={full} aria-label={full ? 'Exit full screen' : 'Full screen editor'} title={full ? 'Exit full screen (Esc)' : 'Give the editor the whole screen'} data-testid="editor-full">
+          <Icon name={full ? 'collapse' : 'expand'} size={14} /> <span className="hide-xs">{full ? 'Exit' : 'Full screen'}</span>
+        </button>
         <button className="btn sm ghost" onClick={() => onChange(starter)} title="Reset to the starting code">
-          <Icon name="reset" size={14} /> Reset
+          <Icon name="reset" size={14} /> <span className="hide-xs">Reset</span>
         </button>
         <button className="btn primary" onClick={run} disabled={running || disabled} data-testid="run">
           {running ? <span className="spin" /> : <Icon name="run" size={14} />} {running ? 'Running…' : runLabel}
         </button>
       </div>
-      <Examples task={task} />
-      <CodeEditor value={code} onChange={onChange} language={task.language} errorLine={result?.errorLine ?? result?.outcomes.find((o) => o.line)?.line} onRun={run} minHeight={minHeight} />
+      {full ? (
+        <details className="task-examples">
+          <summary>Examples</summary>
+          <Examples task={task} />
+        </details>
+      ) : (
+        <Examples task={task} />
+      )}
+      <CodeEditor value={code} onChange={onChange} language={task.language} errorLine={result?.errorLine ?? result?.outcomes.find((o) => o.line)?.line} onRun={run} minHeight={minHeight} wrap={wrap} />
       <Results result={result} />
     </div>
   );
