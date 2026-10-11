@@ -1,0 +1,258 @@
+{
+ "fn": "WordDictionary",
+ "cases": [
+  {
+   "name": "single wildcard",
+   "args": [
+    [
+     "WordDictionary",
+     "add_word",
+     "add_word",
+     "add_word",
+     "search",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "bad"
+     ],
+     [
+      "dad"
+     ],
+     [
+      "mad"
+     ],
+     [
+      "pad"
+     ],
+     [
+      "bad"
+     ],
+     [
+      ".ad"
+     ],
+     [
+      "b.."
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    null,
+    false,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "name": "wrong length",
+   "args": [
+    [
+     "WordDictionary",
+     "add_word",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "cat"
+     ],
+     [
+      "ca"
+     ],
+     [
+      "cats"
+     ],
+     [
+      "..."
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    false,
+    false,
+    true
+   ]
+  },
+  {
+   "name": "only wildcards",
+   "args": [
+    [
+     "WordDictionary",
+     "add_word",
+     "add_word",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "a"
+     ],
+     [
+      "bc"
+     ],
+     [
+      "."
+     ],
+     [
+      ".."
+     ],
+     [
+      "..."
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    true,
+    true,
+    false
+   ]
+  },
+  {
+   "name": "empty dictionary",
+   "args": [
+    [
+     "WordDictionary",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "a"
+     ],
+     [
+      "."
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    false,
+    false
+   ]
+  },
+  {
+   "name": "wildcard in the middle needs backtracking",
+   "args": [
+    [
+     "WordDictionary",
+     "add_word",
+     "add_word",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "abcd"
+     ],
+     [
+      "axcz"
+     ],
+     [
+      "a.cz"
+     ],
+     [
+      "a.cd"
+     ],
+     [
+      "a.ce"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    true,
+    true,
+    false
+   ]
+  },
+  {
+   "name": "prefix only",
+   "args": [
+    [
+     "WordDictionary",
+     "add_word",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "apple"
+     ],
+     [
+      "app"
+     ],
+     [
+      "app.."
+     ],
+     [
+      "appl."
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    false,
+    true,
+    true
+   ]
+  },
+  {
+   "name": "duplicates",
+   "args": [
+    [
+     "WordDictionary",
+     "add_word",
+     "add_word",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "go"
+     ],
+     [
+      "go"
+     ],
+     [
+      "g."
+     ],
+     [
+      ".o"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    true,
+    true
+   ]
+  }
+ ]
+}

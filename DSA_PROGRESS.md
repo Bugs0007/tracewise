@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **60 of 150** problems done.
+Progress: **63 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -96,12 +96,12 @@ Progress: **60 of 150** problems done.
 - [x] 59. Binary Tree Maximum Path Sum (`binary-tree-maximum-path-sum`, Hard)
 - [x] 60. Serialize and Deserialize Binary Tree (`serialize-and-deserialize-binary-tree`, Hard)
 
-## Tries (0/3)
+## Tries (3/3)
 
-- [ ] Topic page content (`topics/tries.ts`) and `tests/dsa/test_tries.py`
-- [ ] 61. Implement Trie (`implement-trie-prefix-tree`, Medium)
-- [ ] 62. Design Add and Search Words Data Structure (`design-add-and-search-words-data-structure`, Medium)
-- [ ] 63. Word Search II (`word-search-ii`, Hard)
+- [x] Topic page content (`topics/tries.ts`) and `tests/dsa/test_tries.py`
+- [x] 61. Implement Trie (`implement-trie-prefix-tree`, Medium)
+- [x] 62. Design Add and Search Words Data Structure (`design-add-and-search-words-data-structure`, Medium)
+- [x] 63. Word Search II (`word-search-ii`, Hard)
 
 ## Heap / Priority Queue (0/7)
 

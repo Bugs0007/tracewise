@@ -1,0 +1,246 @@
+{
+ "fn": "find_words",
+ "compare": "unordered",
+ "cases": [
+  {
+   "name": "two of four",
+   "args": [
+    [
+     [
+      "o",
+      "a",
+      "a",
+      "n"
+     ],
+     [
+      "e",
+      "t",
+      "a",
+      "e"
+     ],
+     [
+      "i",
+      "h",
+      "k",
+      "r"
+     ],
+     [
+      "i",
+      "f",
+      "l",
+      "v"
+     ]
+    ],
+    [
+     "oath",
+     "pea",
+     "eat",
+     "rain"
+    ]
+   ],
+   "expected": [
+    "eat",
+    "oath"
+   ]
+  },
+  {
+   "name": "cannot reuse a cell",
+   "args": [
+    [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c",
+      "d"
+     ]
+    ],
+    [
+     "abcb",
+     "abdc"
+    ]
+   ],
+   "expected": [
+    "abdc"
+   ]
+  },
+  {
+   "name": "single cell",
+   "args": [
+    [
+     [
+      "a"
+     ]
+    ],
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "expected": [
+    "a"
+   ]
+  },
+  {
+   "name": "one row",
+   "args": [
+    [
+     [
+      "c",
+      "a",
+      "t"
+     ]
+    ],
+    [
+     "cat",
+     "tac",
+     "act",
+     "ca"
+    ]
+   ],
+   "expected": [
+    "ca",
+    "cat",
+    "tac"
+   ]
+  },
+  {
+   "name": "one column",
+   "args": [
+    [
+     [
+      "d"
+     ],
+     [
+      "o"
+     ],
+     [
+      "g"
+     ]
+    ],
+    [
+     "dog",
+     "god",
+     "do"
+    ]
+   ],
+   "expected": [
+    "do",
+    "dog",
+    "god"
+   ]
+  },
+  {
+   "name": "word is a prefix of another",
+   "args": [
+    [
+     [
+      "t",
+      "e",
+      "a"
+     ],
+     [
+      "x",
+      "x",
+      "m"
+     ]
+    ],
+    [
+     "tea",
+     "team",
+     "te"
+    ]
+   ],
+   "expected": [
+    "te",
+    "tea",
+    "team"
+   ]
+  },
+  {
+   "name": "nothing found",
+   "args": [
+    [
+     [
+      "a",
+      "b"
+     ],
+     [
+      "c",
+      "d"
+     ]
+    ],
+    [
+     "xyz",
+     "ac",
+     "bd",
+     "abdca"
+    ]
+   ],
+   "expected": [
+    "ac",
+    "bd"
+   ]
+  },
+  {
+   "name": "same letters, long snake",
+   "args": [
+    [
+     [
+      "a",
+      "b",
+      "c"
+     ],
+     [
+      "f",
+      "e",
+      "d"
+     ],
+     [
+      "g",
+      "h",
+      "i"
+     ]
+    ],
+    [
+     "abcdefghi",
+     "abcdefghia",
+     "adg",
+     "cfi"
+    ]
+   ],
+   "expected": [
+    "abcdefghi"
+   ]
+  },
+  {
+   "name": "many words share a prefix",
+   "args": [
+    [
+     [
+      "a",
+      "a"
+     ],
+     [
+      "a",
+      "a"
+     ]
+    ],
+    [
+     "a",
+     "aa",
+     "aaa",
+     "aaaa",
+     "aaaaa"
+    ]
+   ],
+   "expected": [
+    "a",
+    "aa",
+    "aaa",
+    "aaaa"
+   ]
+  }
+ ]
+}

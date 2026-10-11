@@ -1,0 +1,243 @@
+{
+ "fn": "Trie",
+ "cases": [
+  {
+   "name": "prefix is not a word",
+   "args": [
+    [
+     "Trie",
+     "insert",
+     "search",
+     "search",
+     "starts_with"
+    ],
+    [
+     [],
+     [
+      "apple"
+     ],
+     [
+      "apple"
+     ],
+     [
+      "app"
+     ],
+     [
+      "app"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    true,
+    false,
+    true
+   ]
+  },
+  {
+   "name": "word and its prefix",
+   "args": [
+    [
+     "Trie",
+     "insert",
+     "insert",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "app"
+     ],
+     [
+      "apple"
+     ],
+     [
+      "app"
+     ],
+     [
+      "apple"
+     ],
+     [
+      "apples"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    true,
+    true,
+    false
+   ]
+  },
+  {
+   "name": "never inserted",
+   "args": [
+    [
+     "Trie",
+     "search",
+     "starts_with"
+    ],
+    [
+     [],
+     [
+      "a"
+     ],
+     [
+      "a"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    false,
+    false
+   ]
+  },
+  {
+   "name": "diverging words",
+   "args": [
+    [
+     "Trie",
+     "insert",
+     "insert",
+     "starts_with",
+     "search",
+     "search",
+     "search"
+    ],
+    [
+     [],
+     [
+      "car"
+     ],
+     [
+      "cat"
+     ],
+     [
+      "ca"
+     ],
+     [
+      "ca"
+     ],
+     [
+      "cat"
+     ],
+     [
+      "cap"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    true,
+    false,
+    true,
+    false
+   ]
+  },
+  {
+   "name": "single letters",
+   "args": [
+    [
+     "Trie",
+     "insert",
+     "search",
+     "starts_with",
+     "starts_with"
+    ],
+    [
+     [],
+     [
+      "a"
+     ],
+     [
+      "a"
+     ],
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    true,
+    true,
+    false
+   ]
+  },
+  {
+   "name": "inserting twice",
+   "args": [
+    [
+     "Trie",
+     "insert",
+     "insert",
+     "search",
+     "starts_with"
+    ],
+    [
+     [],
+     [
+      "tea"
+     ],
+     [
+      "tea"
+     ],
+     [
+      "tea"
+     ],
+     [
+      "te"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    null,
+    true,
+    true
+   ]
+  },
+  {
+   "name": "longer than anything stored",
+   "args": [
+    [
+     "Trie",
+     "insert",
+     "starts_with",
+     "search"
+    ],
+    [
+     [],
+     [
+      "go"
+     ],
+     [
+      "gone"
+     ],
+     [
+      "gone"
+     ]
+    ]
+   ],
+   "expected": [
+    null,
+    null,
+    false,
+    false
+   ]
+  }
+ ]
+}

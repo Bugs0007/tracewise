@@ -156,18 +156,22 @@ export function treeView(root: BTNode | null, decor: TreeDecor = {}): GraphPanel
 }
 
 /** A trie built from `words`. `walk` highlights the nodes along a prefix; words that end at a node get a check badge. */
-export function trieView(words: readonly string[], o: { title?: string; walk?: string; walkTone?: Tone; failedAt?: number } = {}): GraphPanel {
+export function trieView(words: readonly string[], o: { title?: string; walk?: string; walkTone?: Tone; failedAt?: number; partial?: string; tones?: Record<string, Tone> } = {}): GraphPanel {
   const nodes: Record<string, NTreeNode> = { '': { id: '', label: '·', children: [] } };
-  for (const w of words) {
+  // `partial` is a word still being inserted: its letters exist as nodes but carry no "end" badge yet
+  const add = (w: string, ends: boolean) => {
     for (let i = 1; i <= w.length; i++) {
       const id = w.slice(0, i);
       if (!nodes[id]) {
         nodes[id] = { id, label: w[i - 1], children: [] };
         nodes[w.slice(0, i - 1)].children.push(id);
       }
-      if (i === w.length) nodes[id].badge = 'end';
+      if (ends && i === w.length) nodes[id].badge = 'end';
     }
-  }
+  };
+  for (const w of words) add(w, true);
+  if (o.partial) add(o.partial, false);
+  for (const [id, tone] of Object.entries(o.tones ?? {})) if (nodes[id]) nodes[id].tone = tone;
   for (const n of Object.values(nodes)) n.children.sort();
   if (o.walk !== undefined) {
     for (let i = 0; i <= o.walk.length; i++) {
