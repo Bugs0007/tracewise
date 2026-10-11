@@ -1,0 +1,164 @@
+{
+ "fn": "network_delay_time",
+ "cases": [
+  {
+   "name": "slowest node decides",
+   "args": [
+    [
+     [
+      1,
+      2,
+      4
+     ],
+     [
+      1,
+      3,
+      1
+     ],
+     [
+      3,
+      2,
+      2
+     ],
+     [
+      2,
+      4,
+      3
+     ]
+    ],
+    4,
+    1
+   ],
+   "expected": 6
+  },
+  {
+   "name": "unreachable node",
+   "args": [
+    [
+     [
+      1,
+      2,
+      5
+     ]
+    ],
+    3,
+    1
+   ],
+   "expected": -1
+  },
+  {
+   "name": "single node",
+   "args": [
+    [],
+    1,
+    1
+   ],
+   "expected": 0
+  },
+  {
+   "name": "two nodes",
+   "args": [
+    [
+     [
+      1,
+      2,
+      7
+     ]
+    ],
+    2,
+    1
+   ],
+   "expected": 7
+  },
+  {
+   "name": "wrong direction",
+   "args": [
+    [
+     [
+      2,
+      1,
+      3
+     ]
+    ],
+    2,
+    1
+   ],
+   "expected": -1
+  },
+  {
+   "name": "a shortcut beats a direct edge",
+   "args": [
+    [
+     [
+      1,
+      2,
+      10
+     ],
+     [
+      1,
+      3,
+      2
+     ],
+     [
+      3,
+      2,
+      3
+     ]
+    ],
+    3,
+    1
+   ],
+   "expected": 5
+  },
+  {
+   "name": "a cycle",
+   "args": [
+    [
+     [
+      1,
+      2,
+      1
+     ],
+     [
+      2,
+      3,
+      1
+     ],
+     [
+      3,
+      1,
+      1
+     ]
+    ],
+    3,
+    2
+   ],
+   "expected": 2
+  },
+  {
+   "name": "start in the middle",
+   "args": [
+    [
+     [
+      2,
+      1,
+      2
+     ],
+     [
+      2,
+      3,
+      6
+     ],
+     [
+      3,
+      4,
+      1
+     ]
+    ],
+    4,
+    2
+   ],
+   "expected": 7
+  }
+ ]
+}

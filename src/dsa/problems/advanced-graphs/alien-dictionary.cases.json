@@ -1,0 +1,87 @@
+{
+ "fn": "alien_order",
+ "cases": [
+  {
+   "name": "a chain of letters",
+   "args": [
+    [
+     "ab",
+     "ac",
+     "bc"
+    ]
+   ],
+   "expected": "abc"
+  },
+  {
+   "name": "contradiction",
+   "args": [
+    [
+     "ab",
+     "ba",
+     "ab"
+    ]
+   ],
+   "expected": ""
+  },
+  {
+   "name": "a longer word before its prefix",
+   "args": [
+    [
+     "abc",
+     "ab"
+    ]
+   ],
+   "expected": ""
+  },
+  {
+   "name": "two letters",
+   "args": [
+    [
+     "ba",
+     "bb"
+    ]
+   ],
+   "expected": "ab"
+  },
+  {
+   "name": "three words one order",
+   "args": [
+    [
+     "ca",
+     "cb",
+     "ab"
+    ]
+   ],
+   "expected": "cab"
+  },
+  {
+   "name": "empty list",
+   "args": [
+    []
+   ],
+   "expected": ""
+  },
+  {
+   "name": "repeated words",
+   "args": [
+    [
+     "mn",
+     "mn",
+     "no",
+     "oo"
+    ]
+   ],
+   "expected": "mno"
+  },
+  {
+   "name": "one letter",
+   "args": [
+    [
+     "z",
+     "z"
+    ]
+   ],
+   "expected": "z"
+  }
+ ]
+}

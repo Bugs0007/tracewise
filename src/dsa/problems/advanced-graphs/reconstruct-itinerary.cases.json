@@ -1,0 +1,205 @@
+{
+ "fn": "find_itinerary",
+ "cases": [
+  {
+   "name": "simple route",
+   "args": [
+    [
+     [
+      "SFO",
+      "AAA"
+     ],
+     [
+      "AAA",
+      "BBB"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "AAA",
+    "BBB"
+   ]
+  },
+  {
+   "name": "smaller name first",
+   "args": [
+    [
+     [
+      "SFO",
+      "BBB"
+     ],
+     [
+      "SFO",
+      "AAA"
+     ],
+     [
+      "AAA",
+      "SFO"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "AAA",
+    "SFO",
+    "BBB"
+   ]
+  },
+  {
+   "name": "must come back through the hub",
+   "args": [
+    [
+     [
+      "SFO",
+      "AAA"
+     ],
+     [
+      "AAA",
+      "SFO"
+     ],
+     [
+      "SFO",
+      "CCC"
+     ],
+     [
+      "CCC",
+      "SFO"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "AAA",
+    "SFO",
+    "CCC",
+    "SFO"
+   ]
+  },
+  {
+   "name": "single ticket",
+   "args": [
+    [
+     [
+      "SFO",
+      "ZZZ"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "ZZZ"
+   ]
+  },
+  {
+   "name": "dead end is visited last",
+   "args": [
+    [
+     [
+      "SFO",
+      "AAA"
+     ],
+     [
+      "SFO",
+      "BBB"
+     ],
+     [
+      "BBB",
+      "SFO"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "BBB",
+    "SFO",
+    "AAA"
+   ]
+  },
+  {
+   "name": "loop of three",
+   "args": [
+    [
+     [
+      "SFO",
+      "AAA"
+     ],
+     [
+      "AAA",
+      "BBB"
+     ],
+     [
+      "BBB",
+      "SFO"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "AAA",
+    "BBB",
+    "SFO"
+   ]
+  },
+  {
+   "name": "duplicate tickets",
+   "args": [
+    [
+     [
+      "SFO",
+      "AAA"
+     ],
+     [
+      "AAA",
+      "SFO"
+     ],
+     [
+      "SFO",
+      "AAA"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "AAA",
+    "SFO",
+    "AAA"
+   ]
+  },
+  {
+   "name": "longer chain",
+   "args": [
+    [
+     [
+      "SFO",
+      "CCC"
+     ],
+     [
+      "CCC",
+      "BBB"
+     ],
+     [
+      "BBB",
+      "AAA"
+     ],
+     [
+      "AAA",
+      "CCC"
+     ],
+     [
+      "CCC",
+      "SFO"
+     ]
+    ]
+   ],
+   "expected": [
+    "SFO",
+    "CCC",
+    "BBB",
+    "AAA",
+    "CCC",
+    "SFO"
+   ]
+  }
+ ]
+}

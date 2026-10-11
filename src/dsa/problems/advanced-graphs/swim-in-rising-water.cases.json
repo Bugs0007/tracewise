@@ -1,0 +1,165 @@
+{
+ "fn": "swim_in_water",
+ "cases": [
+  {
+   "name": "go round the tall cell",
+   "args": [
+    [
+     [
+      0,
+      4,
+      5
+     ],
+     [
+      1,
+      7,
+      6
+     ],
+     [
+      2,
+      3,
+      8
+     ]
+    ]
+   ],
+   "expected": 8
+  },
+  {
+   "name": "single cell",
+   "args": [
+    [
+     [
+      0
+     ]
+    ]
+   ],
+   "expected": 0
+  },
+  {
+   "name": "start is the highest on the way",
+   "args": [
+    [
+     [
+      3,
+      1
+     ],
+     [
+      0,
+      2
+     ]
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "two by two",
+   "args": [
+    [
+     [
+      0,
+      1
+     ],
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   "expected": 3
+  },
+  {
+   "name": "end is the highest",
+   "args": [
+    [
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      3,
+      4,
+      5
+     ],
+     [
+      6,
+      7,
+      8
+     ]
+    ]
+   ],
+   "expected": 8
+  },
+  {
+   "name": "tall wall in the middle",
+   "args": [
+    [
+     [
+      0,
+      2,
+      1
+     ],
+     [
+      8,
+      7,
+      3
+     ],
+     [
+      4,
+      5,
+      6
+     ]
+    ]
+   ],
+   "expected": 6
+  },
+  {
+   "name": "snake is cheaper",
+   "args": [
+    [
+     [
+      0,
+      1,
+      2,
+      3
+     ],
+     [
+      11,
+      10,
+      9,
+      4
+     ],
+     [
+      12,
+      13,
+      8,
+      5
+     ],
+     [
+      15,
+      14,
+      7,
+      6
+     ]
+    ]
+   ],
+   "expected": 6
+  },
+  {
+   "name": "start higher than the rest",
+   "args": [
+    [
+     [
+      8,
+      1
+     ],
+     [
+      2,
+      0
+     ]
+    ]
+   ],
+   "expected": 8
+  }
+ ]
+}

@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **92 of 150** problems done.
+Progress: **98 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -144,15 +144,15 @@ Progress: **92 of 150** problems done.
 - [x] 91. Redundant Connection (`redundant-connection`, Medium)
 - [x] 92. Word Ladder (`word-ladder`, Hard)
 
-## Advanced Graphs (0/6)
+## Advanced Graphs (6/6)
 
-- [ ] Topic page content (`topics/advanced-graphs.ts`) and `tests/dsa/test_advanced_graphs.py`
-- [ ] 93. Network Delay Time (`network-delay-time`, Medium)
-- [ ] 94. Reconstruct Itinerary (`reconstruct-itinerary`, Hard)
-- [ ] 95. Min Cost to Connect All Points (`min-cost-to-connect-all-points`, Medium)
-- [ ] 96. Swim in Rising Water (`swim-in-rising-water`, Hard)
-- [ ] 97. Alien Dictionary (`alien-dictionary`, Hard)
-- [ ] 98. Cheapest Flights Within K Stops (`cheapest-flights-within-k-stops`, Medium)
+- [x] Topic page content (`topics/advanced-graphs.ts`) and `tests/dsa/test_advanced_graphs.py`
+- [x] 93. Network Delay Time (`network-delay-time`, Medium)
+- [x] 94. Reconstruct Itinerary (`reconstruct-itinerary`, Hard)
+- [x] 95. Min Cost to Connect All Points (`min-cost-to-connect-all-points`, Medium)
+- [x] 96. Swim in Rising Water (`swim-in-rising-water`, Hard)
+- [x] 97. Alien Dictionary (`alien-dictionary`, Hard)
+- [x] 98. Cheapest Flights Within K Stops (`cheapest-flights-within-k-stops`, Medium)
 
 ## 1-D Dynamic Programming (0/12)
 
