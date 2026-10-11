@@ -1,0 +1,178 @@
+{
+ "fn": "copy_random_list",
+ "cases": [
+  {
+   "name": "random pointers everywhere",
+   "args": [
+    [
+     [
+      7,
+      null
+     ],
+     [
+      13,
+      0
+     ],
+     [
+      11,
+      4
+     ],
+     [
+      10,
+      2
+     ],
+     [
+      1,
+      0
+     ]
+    ]
+   ],
+   "expected": [
+    [
+     7,
+     null
+    ],
+    [
+     13,
+     0
+    ],
+    [
+     11,
+     4
+    ],
+    [
+     10,
+     2
+    ],
+    [
+     1,
+     0
+    ]
+   ]
+  },
+  {
+   "name": "no random pointers",
+   "args": [
+    [
+     [
+      3,
+      null
+     ],
+     [
+      4,
+      null
+     ]
+    ]
+   ],
+   "expected": [
+    [
+     3,
+     null
+    ],
+    [
+     4,
+     null
+    ]
+   ]
+  },
+  {
+   "name": "points at itself",
+   "args": [
+    [
+     [
+      5,
+      0
+     ]
+    ]
+   ],
+   "expected": [
+    [
+     5,
+     0
+    ]
+   ]
+  },
+  {
+   "name": "single node, no random",
+   "args": [
+    [
+     [
+      9,
+      null
+     ]
+    ]
+   ],
+   "expected": [
+    [
+     9,
+     null
+    ]
+   ]
+  },
+  {
+   "name": "empty",
+   "args": [
+    []
+   ],
+   "expected": []
+  },
+  {
+   "name": "random points forward",
+   "args": [
+    [
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      0
+     ]
+    ]
+   ],
+   "expected": [
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     3,
+     0
+    ]
+   ]
+  },
+  {
+   "name": "two nodes pointing at each other",
+   "args": [
+    [
+     [
+      4,
+      1
+     ],
+     [
+      8,
+      0
+     ]
+    ]
+   ],
+   "expected": [
+    [
+     4,
+     1
+    ],
+    [
+     8,
+     0
+    ]
+   ]
+  }
+ ]
+}

@@ -6,7 +6,7 @@ A problem is ticked only when all of these hold: its `.py` solution passes `pyth
 
 Per topic: also write `src/dsa/topics/<topic>.ts` (intro, template, checklist, boss fight), `tests/dsa/spec_<topic>.py` + `test_<topic>.py`, run the full suite, then commit once.
 
-Progress: **34 of 150** problems done.
+Progress: **45 of 150** problems done.
 
 ## Arrays & Hashing (9/9)
 
@@ -62,20 +62,20 @@ Progress: **34 of 150** problems done.
 - [x] 33. Time Based Key-Value Store (`time-based-key-value-store`, Medium)
 - [x] 34. Median of Two Sorted Arrays (`median-of-two-sorted-arrays`, Hard)
 
-## Linked List (0/11)
+## Linked List (11/11)
 
-- [ ] Topic page content (`topics/linked-list.ts`) and `tests/dsa/test_linked_list.py`
-- [ ] 35. Reverse Linked List (`reverse-linked-list`, Easy)
-- [ ] 36. Merge Two Sorted Lists (`merge-two-sorted-lists`, Easy)
-- [ ] 37. Reorder List (`reorder-list`, Medium)
-- [ ] 38. Remove Nth Node From End of List (`remove-nth-node-from-end-of-list`, Medium)
-- [ ] 39. Copy List with Random Pointer (`copy-list-with-random-pointer`, Medium)
-- [ ] 40. Add Two Numbers (`add-two-numbers`, Medium)
-- [ ] 41. Linked List Cycle (`linked-list-cycle`, Easy)
-- [ ] 42. Find the Duplicate Number (`find-the-duplicate-number`, Medium)
-- [ ] 43. LRU Cache (`lru-cache`, Medium)
-- [ ] 44. Merge K Sorted Lists (`merge-k-sorted-lists`, Hard)
-- [ ] 45. Reverse Nodes in K-Group (`reverse-nodes-in-k-group`, Hard)
+- [x] Topic page content (`topics/linked-list.ts`) and `tests/dsa/test_linked_list.py`
+- [x] 35. Reverse Linked List (`reverse-linked-list`, Easy)
+- [x] 36. Merge Two Sorted Lists (`merge-two-sorted-lists`, Easy)
+- [x] 37. Reorder List (`reorder-list`, Medium)
+- [x] 38. Remove Nth Node From End of List (`remove-nth-node-from-end-of-list`, Medium)
+- [x] 39. Copy List with Random Pointer (`copy-list-with-random-pointer`, Medium)
+- [x] 40. Add Two Numbers (`add-two-numbers`, Medium)
+- [x] 41. Linked List Cycle (`linked-list-cycle`, Easy)
+- [x] 42. Find the Duplicate Number (`find-the-duplicate-number`, Medium)
+- [x] 43. LRU Cache (`lru-cache`, Medium)
+- [x] 44. Merge K Sorted Lists (`merge-k-sorted-lists`, Hard)
+- [x] 45. Reverse Nodes in K-Group (`reverse-nodes-in-k-group`, Hard)
 
 ## Trees (0/15)
 
