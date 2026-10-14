@@ -117,6 +117,12 @@ export function HomePage() {
         </section>
       )}
 
+      <a className="ai-guide-entry" href={href('/ai-stories')} data-testid="ai-guide-link">
+        <span className="ai-guide-entry-mark" aria-hidden>AI /</span>
+        <div><span className="mono">A separate, concept-first learning path</span><h2>AI Field Guide</h2><p>44 visual stories. Explore the theory, experiment with the mechanisms, then explain GenAI, RAG and agents in your own words.</p></div>
+        <span aria-hidden>↗</span>
+      </a>
+
       <section aria-labelledby="ledger-h">
         <h2 id="ledger-h" className="ledger-title">
           Six modules, {CATALOG.length} concepts

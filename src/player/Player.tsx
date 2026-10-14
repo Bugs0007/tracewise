@@ -36,6 +36,7 @@ interface QuizState {
   chosen: number | null;
   question?: string;
   explain?: string;
+  wrongNotes?: (string | undefined)[];
 }
 
 /** Deterministic pseudo-random so quiz options don't reshuffle between renders. */
@@ -137,7 +138,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
     }
     const cp = predictMode === 'authored' ? frames[idx]?.predict : undefined;
     if (quizOn && !asked.has(idx) && (predictMode === 'authored' ? !!cp : cps.has(idx))) {
-      const q: QuizState | null = cp ? { at: idx, options: cp.options, answer: cp.answer, chosen: null, question: cp.question, explain: cp.explain } : buildQuiz(frames, idx);
+      const q: QuizState | null = cp ? { at: idx, options: cp.options, answer: cp.answer, chosen: null, question: cp.question, explain: cp.explain, wrongNotes: cp.wrongNotes } : buildQuiz(frames, idx);
       if (q) {
         setQuiz(q);
         setPlaying(false);
@@ -229,6 +230,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
   };
 
   const hasOps = frames.some((f) => (f.ops ?? 0) > 0);
+  const usesRoles = useMemo(() => frames.some((f) => f.panels.some((p) => p.type === 'array' && Object.values(p.tones ?? {}).some((t) => t === 'ruler' || t === 'keep' || t === 'discard'))), [frames]);
   const kinds = useMemo(() => tickKinds(frames), [frames]);
 
   return (
@@ -302,7 +304,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
               ))}
             </div>
           ) : null}
-          <Legend />
+          <Legend roles={usesRoles} />
           {quiz && !quiz.question && (
             <div className="predict" role="dialog" aria-label="Predict the next step">
               <div className="predict-box pop">
@@ -346,7 +348,7 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
                 {quiz.chosen !== null && (
                   <div className="row" style={{ marginTop: 10 }}>
                     <span className={`chip ${quiz.chosen === quiz.answer ? 'good' : 'bad'}`}>{quiz.chosen === quiz.answer ? 'Correct' : 'Not quite. Watch what happens.'}</span>
-                    {quiz.explain && <span className="predict-why">{quiz.explain}</span>}
+                    {quiz.chosen !== quiz.answer && quiz.wrongNotes?.[quiz.chosen] ? <span className="predict-why bad-note">{quiz.wrongNotes[quiz.chosen]}</span> : quiz.explain && <span className="predict-why">{quiz.explain}</span>}
                     <span className="spacer" />
                     <button className="btn primary" onClick={continueQuiz} autoFocus>
                       Continue
@@ -416,6 +418,14 @@ export function Player({ viz, initialInput, frames: given, onComplete, quizDefau
             Predict mode
           </label>
         </div>
+        {viz.why && viz.why.length > 0 && (
+          <details className="viz-why">
+            <summary>Why this works</summary>
+            {viz.why.map((t, i) => (
+              <p key={i}>{t}</p>
+            ))}
+          </details>
+        )}
       </div>
 
       {!compact && (

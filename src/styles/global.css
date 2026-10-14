@@ -159,7 +159,8 @@
 [data-tone='done'],
 [data-tone='found'],
 [data-tone='path'],
-[data-tone='new'] {
+[data-tone='new'],
+[data-tone='keep'] {
   --tc: var(--mint);
   --ti: var(--on-mint);
   --tb: var(--mint);
@@ -168,6 +169,17 @@
   --tc: color-mix(in srgb, var(--ink) 14%, var(--surface));
   --ti: var(--ink);
   --tb: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+/* decision roles: a ruler is only a yardstick (dashed outline, light tint), never a solid choice */
+[data-tone='ruler'] {
+  --tc: color-mix(in srgb, var(--cobalt) 10%, var(--surface));
+  --ti: var(--ink);
+  --tb: var(--cobalt);
+}
+[data-tone='discard'] {
+  --tc: transparent;
+  --ti: var(--ink-muted);
+  --tb: color-mix(in srgb, var(--ink) 25%, transparent);
 }
 [data-tone='muted'] {
   --tc: transparent;

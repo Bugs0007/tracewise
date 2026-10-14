@@ -1,6 +1,7 @@
 import type { Tone } from '@/engine/types';
 import { arrayView, hashMapView } from '@/dsa/viz/prims';
 import { TraceRecorder } from '@/dsa/viz/trace';
+import { decisionView, roleArray, spanText, type Span } from '@/dsa/viz/decision';
 import { problem, vizOf } from '../helpers';
 import solution from './container-with-most-water.py?raw';
 import cases from './container-with-most-water.cases.json';
@@ -39,14 +40,32 @@ const viz = vizOf<{ height: number[] }>({
       best = Math.max(best, area);
       r.step('update', `best = max(best, ${area}) = ${best}.`, view({ [lo]: 'compare', [hi]: 'compare' }, area), { best });
       const moveLo = h[lo] < h[hi];
-      r.predict('move', `Walls are ${h[lo]} (left) and ${h[hi]} (right). Which pointer should move?`, ['The left one: it is the shorter wall', 'The right one: it is the taller wall'], moveLo ? 0 : 1, 'The shorter wall is the limit. Moving the taller one inward can only shrink the width without raising the limit, so move the shorter one.');
-      if (moveLo) {
-        lo++;
-        r.step('moveLo', `Left wall ${h[lo - 1]} is shorter: move lo right to look for a taller one.`, view(), { lo, hi, best });
-      } else {
-        hi--;
-        r.step('moveHi', `Right wall ${h[hi + 1]} is not taller: move hi left.`, view(), { lo, hi, best });
-      }
+      const [shortSide, shortName, tallName] = moveLo ? [lo, 'left', 'right'] : [hi, 'right', 'left'];
+      r.predict('move', `Walls are ${h[lo]} (left) and ${h[hi]} (right). Which pointer should move?`, ['The left one: it is the shorter wall', 'The right one: it is the taller wall'], moveLo ? 0 : 1, 'The shorter wall is the limit. Moving the taller one inward can only shrink the width without raising the limit.', moveLo ? [undefined, `The ${tallName} wall is the taller one. The water is capped by the shorter (${shortName}) wall, so moving the taller wall inward only shrinks the width and cannot raise the cap.`] : ['The left wall is not the shorter one. The water is capped by the shorter (right) wall, so only replacing the right wall can ever help.', undefined]);
+
+      // ── test: which wall is shorter? ─────────────────────────
+      const test = {
+        title: 'Which wall is shorter?',
+        condition: 'height[lo] < height[hi]',
+        expr: `${h[lo]} < ${h[hi]}`,
+        values: [
+          { label: 'height[lo]', value: h[lo] },
+          { label: 'height[hi]', value: h[hi] },
+        ],
+        result: moveLo,
+        answer: moveLo ? 'the left wall is shorter' : h[lo] === h[hi] ? 'equal walls: the code moves hi' : 'the right wall is shorter',
+      };
+      const testVerdict = moveLo ? `${h[lo]} < ${h[hi]}: the left wall is the shorter one, so it is the one capping the water.` : h[lo] === h[hi] ? `${h[lo]} = ${h[hi]}: the walls are equal, so either one caps the water. The code moves hi.` : `${h[lo]} > ${h[hi]}: the right wall is the shorter one, so it is the one capping the water.`;
+      r.step('cmp', `Which wall is shorter? ${testVerdict}`, [roleArray(h, { title: 'wall heights', bars: true, window: [lo, hi], compared: [lo, hi], pointers: { lo, hi }, bracket: { span: [lo, hi], label: 'container', tone: 'active' } }), decisionView({ ...test, verdict: testVerdict }), hashMapView({ area, best }, { title: 'water held' })], { lo, hi, best, leftShorter: moveLo });
+
+      // ── apply: drop the shorter wall, keep the rest ──────────
+      const keep: Span = moveLo ? [lo + 1, hi] : [lo, hi - 1];
+      const drop: Span = [shortSide, shortSide];
+      const decided: Span = [lo, hi];
+      const verdict = `The ${shortName} wall (${h[shortSide]}) caps the water at ${h[shortSide]}, and moving the ${tallName} wall inward only shrinks the width. No container that keeps this wall can beat the ${area} just measured, so discard it and keep the rest.`;
+      if (moveLo) lo++;
+      else hi--;
+      r.step(moveLo ? 'moveLo' : 'moveHi', `${moveLo ? 'Left' : 'Right'} wall ${h[shortSide]} is the cap: discard it and move ${moveLo ? 'lo right' : 'hi left'}.`, [roleArray(h, { title: 'wall heights  ·  solid = keep, faded = discard', bars: true, window: decided, keep, discard: drop, pointers: { lo, hi }, bracket: { span: keep, label: 'container', tone: 'done' } }), decisionView({ ...test, keep: `${tallName} wall and everything inside, ${spanText(keep, h)}`, discard: `the ${shortName} wall, ${spanText(drop, h)}`, verdict }), hashMapView({ best }, { title: 'water held' })], { lo, hi, best });
     }
     r.step('done', `The pointers met. The largest container holds ${best}.`, view(), { best });
     return { frames: r.frames, result: best };

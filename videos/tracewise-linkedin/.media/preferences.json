@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "linkedin-feed",
+      "confirmed_in": [
+        "tracewise-linkedin"
+      ],
+      "updated_at": "2026-10-13T13:41:28.427Z"
+    }
+  },
+  "sightings": {}
+}

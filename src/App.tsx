@@ -21,12 +21,14 @@ const CapstonePage = lazy(() => import('./pages/CapstonePage'));
 const CertificatePage = lazy(() => import('./pages/CertificatePage'));
 const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
 const DsaPage = lazy(() => import('./dsa/pages/DsaPage'));
+const FieldGuidePage = lazy(() => import('./field-guide/FieldGuidePage'));
 
 const NAV = [
   { to: '/', label: 'Home', icon: 'home', tab: true, top: false, match: (p: string[]) => p.length === 0 },
   { to: '/map', label: 'Learn', icon: 'map', tab: true, top: true, match: (p: string[]) => p[0] === 'map' || p[0] === 'unit' || p[0] === 'dsa' },
   { to: '/practice', label: 'Practice', icon: 'lab', tab: true, top: true, match: (p: string[]) => ['practice', 'review', 'gym', 'lab'].includes(p[0]) },
   { to: '/interview', label: 'Interview', icon: 'timer', tab: true, top: true, match: (p: string[]) => p[0] === 'interview' },
+  { to: '/ai-stories', label: 'AI Guide', icon: 'map', tab: false, top: true, match: (p: string[]) => p[0] === 'ai-stories' },
   { to: '/capstone', label: 'Capstone', icon: 'trophy', tab: true, top: true, match: (p: string[]) => p[0] === 'capstone' || p[0] === 'certificate' },
   // only offered where accounts exist: the board needs them
   ...(accountsConfigured ? [{ to: '/leaderboard', label: 'Leaderboard', icon: 'trophy', tab: false, top: true, match: (p: string[]) => p[0] === 'leaderboard' }] : []),
@@ -141,7 +143,7 @@ function TabBar() {
 }
 
 function Routes() {
-  const { parts } = useRoute();
+  const { parts, query } = useRoute();
   const [a, b, c] = parts;
   switch (a) {
     case undefined:
@@ -152,6 +154,8 @@ function Routes() {
       return <UnitPage id={b} step={c} />;
     case 'dsa':
       return <DsaPage topic={b} slug={c} />;
+    case 'ai-stories':
+      return <FieldGuidePage section={b} activity={query.get('activity') ?? undefined} />;
     case 'practice':
       return <PracticePage />;
     case 'lab':

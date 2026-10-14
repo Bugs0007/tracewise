@@ -1,0 +1,257 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 10,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"01-hook-layer-0\" starts with a digit, so the common selector `#01-hook-layer-0` throws a SyntaxError in querySelector().",
+        "selector": "#01-hook-layer-0",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\01-hook.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"01-hook-layer-1\" starts with a digit, so the common selector `#01-hook-layer-1` throws a SyntaxError in querySelector().",
+        "selector": "#01-hook-layer-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\01-hook.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"02-visualize-layer-0\" starts with a digit, so the common selector `#02-visualize-layer-0` throws a SyntaxError in querySelector().",
+        "selector": "#02-visualize-layer-0",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\02-visualize.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"02-visualize-layer-1\" starts with a digit, so the common selector `#02-visualize-layer-1` throws a SyntaxError in querySelector().",
+        "selector": "#02-visualize-layer-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\02-visualize.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-practice-layer-0\" starts with a digit, so the common selector `#03-practice-layer-0` throws a SyntaxError in querySelector().",
+        "selector": "#03-practice-layer-0",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\03-practice.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"03-practice-layer-1\" starts with a digit, so the common selector `#03-practice-layer-1` throws a SyntaxError in querySelector().",
+        "selector": "#03-practice-layer-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\03-practice.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"04-breadth-layer-0\" starts with a digit, so the common selector `#04-breadth-layer-0` throws a SyntaxError in querySelector().",
+        "selector": "#04-breadth-layer-0",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\04-breadth.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"04-breadth-layer-1\" starts with a digit, so the common selector `#04-breadth-layer-1` throws a SyntaxError in querySelector().",
+        "selector": "#04-breadth-layer-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\04-breadth.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"05-cta-layer-0\" starts with a digit, so the common selector `#05-cta-layer-0` throws a SyntaxError in querySelector().",
+        "selector": "#05-cta-layer-0",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\05-cta.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      },
+      {
+        "code": "id_requires_css_escape",
+        "severity": "warning",
+        "message": "id=\"05-cta-layer-1\" starts with a digit, so the common selector `#05-cta-layer-1` throws a SyntaxError in querySelector().",
+        "selector": "#05-cta-layer-1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\compositions\\frames\\05-cta.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Rename the id to start with a letter (recommended), or build selectors with `#${CSS.escape(id)}` at runtime."
+      }
+    ],
+    "filesScanned": 6
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 30,
+    "samples": [
+      1,
+      3.3,
+      5,
+      7.3,
+      8.7,
+      11.8,
+      14.4,
+      16,
+      18.5,
+      22.5,
+      24.8,
+      28.5
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "specPath": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\index.motion.json",
+    "samples": 300
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      1,
+      5,
+      11.8,
+      18.5,
+      28.5
+    ],
+    "checked": 69,
+    "passed": 69
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": true,
+    "files": [
+      ".hyperframes\\artifacts\\snapshots\\a76feddd-266f-41fc-8d75-e353fbe5d1f4\\frame-00-at-1.0s.png",
+      ".hyperframes\\artifacts\\snapshots\\a76feddd-266f-41fc-8d75-e353fbe5d1f4\\frame-01-at-5.0s.png",
+      ".hyperframes\\artifacts\\snapshots\\a76feddd-266f-41fc-8d75-e353fbe5d1f4\\frame-02-at-11.8s.png",
+      ".hyperframes\\artifacts\\snapshots\\a76feddd-266f-41fc-8d75-e353fbe5d1f4\\frame-03-at-18.5s.png",
+      ".hyperframes\\artifacts\\snapshots\\a76feddd-266f-41fc-8d75-e353fbe5d1f4\\frame-04-at-28.5s.png"
+    ],
+    "times": [
+      1,
+      5,
+      11.8,
+      18.5,
+      28.5
+    ],
+    "findingFiles": []
+  }
+}

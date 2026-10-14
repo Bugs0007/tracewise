@@ -24,11 +24,11 @@ export class TraceRecorder extends Recorder {
     return this.kinds.size;
   }
 
-  predict(kind: string, question: string, options: string[], answer: number, explain?: string): void {
+  predict(kind: string, question: string, options: string[], answer: number, explain?: string, wrongNotes?: (string | undefined)[]): void {
     if (!this.frames.length || this.kinds.has(kind) || this.kinds.size >= MAX_CHECKPOINTS) return;
     if (answer < 0 || answer >= options.length) throw new Error(`predict "${kind}": answer ${answer} is not an option`);
     this.kinds.add(kind);
-    this.attachPredict({ question, options, answer, explain });
+    this.attachPredict({ question, options, answer, explain, ...(wrongNotes?.some(Boolean) ? { wrongNotes } : {}) });
   }
 
   /** like predict(), but builds the options from one correct and some wrong values, moving the correct one around with `seed` */

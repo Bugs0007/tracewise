@@ -18,7 +18,12 @@ export type Tone =
   | 'error' // failure / conflict / bug
   | 'muted' // out of range / pruned
   | 'path' // part of an answer path
-  | 'new'; // just created
+  | 'new' // just created
+  // Decision roles. They answer "what is this cell FOR in the choice being made?", and each has its own look
+  // so a helper that is only used as a test is never confused with the side that is kept:
+  | 'ruler' // a reference used only to run a test (dashed outline, no solid fill)
+  | 'keep' // stays in the search space (solid fill)
+  | 'discard'; // ruled out by this decision (faded, struck through)
 
 export type Scalar = string | number | boolean | null;
 
@@ -195,6 +200,32 @@ export interface IntervalsPanel {
   marks?: { at: number; label?: string; tone?: Tone }[];
 }
 
+/**
+ * One if/else evaluated by the algorithm, shown as its own step: the test, the values
+ * it compares, whether it held, what the branch keeps and discards, and a verdict in words.
+ * Build it with `decisionView()` from '@/dsa/viz/decision'.
+ */
+export interface DecisionPanel {
+  type: 'decision';
+  /** the question being asked, e.g. "Is the target inside the sorted half's range?" */
+  title: string;
+  /** the test as written in the code, e.g. "nums[mid] < target <= nums[hi]" */
+  condition: string;
+  /** the same test with the values filled in, e.g. "3 < 18 ≤ 12" */
+  expr: string;
+  /** the values it compares, labelled by the variable they came from */
+  values: { label: string; value: Scalar }[];
+  /** whether the test held; null while it is only being set up */
+  result: boolean | null;
+  /** what the result means, e.g. "the right half is the sorted one" */
+  answer?: string;
+  /** what the branch keeps / discards (shown once the choice is made) */
+  keep?: string;
+  discard?: string;
+  /** one plain-language sentence for the whole decision */
+  verdict?: string;
+}
+
 export interface NotePanel {
   type: 'note';
   text: string;
@@ -213,6 +244,7 @@ export type Panel =
   | LogPanel
   | KVPanel
   | IntervalsPanel
+  | DecisionPanel
   | NotePanel;
 
 /** An authored "predict the next step" checkpoint. Asked before the following frame is shown. */
@@ -223,6 +255,8 @@ export interface PredictCheckpoint {
   answer: number;
   /** shown after answering */
   explain?: string;
+  /** feedback for a specific wrong pick, indexed like `options`; replaces `explain` when that option is chosen */
+  wrongNotes?: (string | undefined)[];
 }
 
 export interface Frame {
@@ -268,4 +302,6 @@ export interface VizDef<I = any> {
   run: (input: I) => VizResult;
   /** optional reference implementation, used by tests to verify `result` */
   reference?: (input: I) => unknown;
+  /** paragraphs for a collapsed "Why this works" toggle under the player (the invariant that makes the branching correct) */
+  why?: string[];
 }

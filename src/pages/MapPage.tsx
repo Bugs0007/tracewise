@@ -45,6 +45,8 @@ export default function MapPage({ module }: { module?: string }) {
         </a>
       )}
 
+      {mod.id === 'ai' && <a className="ai-guide-entry" href={href('/ai-stories')} data-testid="ai-guide-map-link"><span className="ai-guide-entry-mark" aria-hidden>AI /</span><div><span className="mono">Learn through concepts and stories</span><h2>AI Field Guide</h2><p>A separate theory-first path: 44 lessons, interactive experiments, a two-day interview route and spoken recall practice.</p></div><span aria-hidden>↗</span></a>}
+
       <div className="index">
         {topics.map((t) => (
           <section key={t.topic} className="index-topic">

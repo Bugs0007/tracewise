@@ -1,5 +1,6 @@
 import { Recorder } from '@/engine/recorder';
-import type { ArrayPanel, Tone, VizDef } from '@/engine/types';
+import type { Panel, VizDef } from '@/engine/types';
+import { chain, decisionView, isEmpty, roleArray, spanText, valueRangeView, type Span } from '@/dsa/viz/decision';
 import type { Unit } from '@/content/types';
 
 const code = `
@@ -51,59 +52,120 @@ const viz: VizDef<In> = {
     { label: 'Not rotated', input: { nums: [1, 3, 5, 7, 9], target: 9 } },
     { label: 'Two items', input: { nums: [3, 1], target: 1 } },
   ],
+  why: [
+    'Rotating a sorted list creates exactly one drop. Around any mid that drop sits in at most one half, so at least one half is always in perfect order.',
+    'A sorted half is a ruler: its two end values bound everything inside it, so two comparisons say for certain whether the target could be in it. The other half cannot be tested that way.',
+    'So the sorted half is a test, not a choice. If the target fits inside it, keep that half. If not, keep the other half, even though it is the messy one.',
+  ],
   run({ nums, target }) {
     validateRotated(nums);
     const r = new Recorder(code);
-    const view = (lo: number, hi: number, mid?: number, sorted?: [number, number], hot: Record<number, Tone> = {}): ArrayPanel => {
-      const tones: Record<number, Tone> = {};
-      nums.forEach((_, i) => {
-        if (i < lo || i > hi) tones[i] = 'muted';
-      });
-      if (sorted) for (let i = sorted[0]; i <= sorted[1]; i++) tones[i] = 'frontier';
-      if (mid !== undefined) tones[mid] = 'compare';
-      Object.assign(tones, hot);
-      const pointers: Record<string, number> = { lo, hi };
-      if (mid !== undefined) pointers.mid = mid;
-      return { type: 'array', title: `Rotated array — looking for ${target}${sorted ? '  (blue = the sorted half)' : ''}`, values: nums, tones, pointers, range: lo <= hi ? { from: lo, to: hi, label: 'search space' } : undefined };
-    };
     let lo = 0;
     let hi = nums.length - 1;
-    r.step('init', `Search space is the whole array: ${lo}..${hi}`, [view(lo, hi)], { lo, hi, target });
+    const title = (extra = '') => `Rotated array — looking for ${target}${extra}`;
+    /** the plain search-space view used between decisions */
+    const plain = (mid?: number, found = false): Panel[] => {
+      const arr = roleArray(nums, { title: title(), window: [lo, hi], pointers: { lo, hi, ...(mid !== undefined ? { mid } : {}) }, bracket: { span: [lo, hi], label: 'search space', tone: 'active' } });
+      if (mid !== undefined) arr.tones = { ...arr.tones, [mid]: found ? 'found' : 'compare' };
+      return [arr];
+    };
+    r.step('init', `Search space is the whole array: ${lo}..${hi}`, plain(), { lo, hi, target });
     while (lo <= hi) {
       const mid = Math.floor((lo + hi) / 2);
       r.op();
-      r.step('mid', `mid = (${lo} + ${hi}) // 2 = ${mid}, nums[${mid}] = ${nums[mid]}`, [view(lo, hi, mid)], { lo, hi, mid, target });
+      r.step('mid', `mid = (${lo} + ${hi}) // 2 = ${mid}, nums[${mid}] = ${nums[mid]}`, plain(mid), { lo, hi, mid, target });
       if (nums[mid] === target) {
-        r.step('check', `nums[${mid}] equals ${target}`, [view(lo, hi, mid, undefined, { [mid]: 'found' })], { lo, hi, mid, target });
-        r.step('found', `Found ${target} at index ${mid}`, [view(lo, hi, mid, undefined, { [mid]: 'found' })], { mid, result: mid });
+        r.step('check', `nums[${mid}] equals ${target}`, plain(mid, true), { lo, hi, mid, target });
+        r.step('found', `Found ${target} at index ${mid}`, plain(mid, true), { mid, result: mid });
         return { frames: r.frames, result: mid };
       }
       r.op();
-      if (nums[lo] <= nums[mid]) {
-        r.step('sortedLeft', `nums[${lo}]=${nums[lo]} ≤ nums[${mid}]=${nums[mid]} → the left half ${lo}..${mid} is sorted`, [view(lo, hi, mid, [lo, mid])], { lo, hi, mid, target });
-        const inside = nums[lo] <= target && target < nums[mid];
-        r.step('inLeft', `Is ${nums[lo]} ≤ ${target} < ${nums[mid]}? ${inside ? 'Yes → target must be in the left half' : 'No → target is not in the left half'}`, [view(lo, hi, mid, [lo, mid])], { lo, hi, mid, target });
-        if (inside) {
-          hi = mid - 1;
-          r.step('goLeft', `Search the sorted left half → hi = ${hi}`, [view(lo, hi)], { lo, hi, target });
-        } else {
-          lo = mid + 1;
-          r.step('goRight', `Search the other half → lo = ${lo}`, [view(lo, hi)], { lo, hi, target });
-        }
-      } else {
-        r.step('sortedLeft', `nums[${lo}]=${nums[lo]} > nums[${mid}]=${nums[mid]} → the pivot is on the left, so the right half ${mid}..${hi} is sorted`, [view(lo, hi, mid, [mid, hi])], { lo, hi, mid, target });
-        const inside = nums[mid] < target && target <= nums[hi];
-        r.step('inRight', `Is ${nums[mid]} < ${target} ≤ ${nums[hi]}? ${inside ? 'Yes → target must be in the right half' : 'No → target is not in the right half'}`, [view(lo, hi, mid, [mid, hi])], { lo, hi, mid, target });
-        if (inside) {
-          lo = mid + 1;
-          r.step('goRight2', `Search the sorted right half → lo = ${lo}`, [view(lo, hi)], { lo, hi, target });
-        } else {
-          hi = mid - 1;
-          r.step('goLeft2', `Search the other half → hi = ${hi}`, [view(lo, hi)], { lo, hi, target });
-        }
-      }
+
+      // ── A: which half is sorted? ──────────────────────────────
+      const leftSorted = nums[lo] <= nums[mid];
+      const ruler: Span = leftSorted ? [lo, mid] : [mid, hi];
+      const rulerName = leftSorted ? 'left' : 'right';
+      const [a, b] = [nums[ruler[0]], nums[ruler[1]]];
+      const rangeText = `${a} and ${b}`;
+      const sortedKeep: Span = leftSorted ? [lo, mid - 1] : [mid + 1, hi];
+      const otherKeep: Span = leftSorted ? [mid + 1, hi] : [lo, mid - 1];
+      const pointers = { lo, hi, mid };
+      const bracket = { span: ruler, label: `sorted half = the ruler (${a} … ${b})`, tone: 'ruler' as const };
+      r.step(
+        'sortedLeft',
+        leftSorted ? `Which half is sorted? nums[${lo}]=${nums[lo]} ≤ nums[${mid}]=${nums[mid]}, so the left half ${lo}..${mid} is sorted. It is only the ruler for the next test.` : `Which half is sorted? nums[${lo}]=${nums[lo]} > nums[${mid}]=${nums[mid]}: the pivot is on the left, so the right half ${mid}..${hi} is sorted. It is only the ruler for the next test.`,
+        [
+          roleArray(nums, { title: title('  ·  dashed = the sorted half, used as a ruler'), window: [lo, hi], ruler, compared: [lo, mid], pointers, bracket }),
+          decisionView({
+            title: 'Step 1 · Which half is sorted?',
+            condition: 'nums[lo] <= nums[mid]',
+            expr: chain([nums[lo], nums[mid]], ['≤']),
+            values: [
+              { label: 'nums[lo]', value: nums[lo] },
+              { label: 'nums[mid]', value: nums[mid] },
+            ],
+            result: leftSorted,
+            answer: leftSorted ? `the left half (indices ${lo}..${mid}) is sorted` : `the pivot is on the left, so the right half (indices ${mid}..${hi}) is sorted`,
+            verdict: `${nums[lo]} ${leftSorted ? '≤' : '>'} ${nums[mid]}: ${leftSorted ? 'nothing drops between lo and mid, so the left half is in order' : 'the drop is somewhere in lo..mid, so the right half is the one in order'}. That makes it a usable ruler. It is not chosen yet.`,
+          }),
+        ],
+        { lo, hi, mid, target, leftSorted },
+      );
+
+      // ── B: is the target inside the sorted half's range? ──────
+      const inside = leftSorted ? nums[lo] <= target && target < nums[mid] : nums[mid] < target && target <= nums[hi];
+      const test = {
+        title: "Step 2 · Is the target inside the sorted half's range?",
+        condition: leftSorted ? 'nums[lo] <= target < nums[mid]' : 'nums[mid] < target <= nums[hi]',
+        expr: leftSorted ? chain([a, target, b], ['≤', '<']) : chain([a, target, b], ['<', '≤']),
+        values: [
+          { label: leftSorted ? 'nums[lo]' : 'nums[mid]', value: a },
+          { label: 'target', value: target },
+          { label: leftSorted ? 'nums[mid]' : 'nums[hi]', value: b },
+        ],
+        result: inside,
+        answer: inside ? `yes: ${target} fits in ${a}..${b}` : `no: ${target} is outside ${a}..${b}`,
+      };
+      const verdictTest = inside ? `${target} is between ${rangeText}, so if it is in the array at all it is in the sorted ${rulerName} half.` : `${target} is not between ${rangeText}, so it cannot be in the sorted ${rulerName} half.`;
+      r.step(
+        leftSorted ? 'inLeft' : 'inRight',
+        `Is ${target} inside the sorted half's range ${a}..${b}? ${inside ? 'Yes' : 'No'}. ${verdictTest}`,
+        [
+          roleArray(nums, { title: title('  ·  the ruler is being used as a test'), window: [lo, hi], ruler, compared: [ruler[0], ruler[1]], pointers, bracket }),
+          valueRangeView({ range: [a, b], target, inside, also: nums.slice(lo, hi + 1) }),
+          decisionView({ ...test, verdict: verdictTest }),
+        ],
+        { lo, hi, mid, target, leftSorted, targetInSortedRange: inside },
+      );
+
+      // ── C: keep one side, discard the other ───────────────────
+      const keepLeft = leftSorted === inside;
+      const keep: Span = inside ? sortedKeep : otherKeep;
+      const drop: Span = keepLeft ? [mid, hi] : [lo, mid];
+      const keepName = keepLeft ? 'left' : 'right';
+      const dropName = keepLeft ? 'right' : 'left';
+      const verdict = inside ? `${target} is between ${rangeText}, so it can only be in the sorted ${rulerName} half. Keep it, discard the ${dropName}.` : `${target} is not between ${rangeText}, so it can't be in the sorted half. Discard it, keep the ${keepName} (the unsorted side, kept by default).`;
+      const anchor = leftSorted ? (inside ? 'goLeft' : 'goRight') : inside ? 'goRight2' : 'goLeft2';
+      const moved = keepLeft ? `hi = ${mid - 1}` : `lo = ${mid + 1}`;
+      const decided: Span = [lo, hi];
+      lo = keep[0];
+      hi = keep[1];
+      r.step(
+        anchor,
+        `Keep the ${inside ? 'sorted' : 'unsorted'} half (${keepName}), discard the ${dropName}: ${moved}.${isEmpty(keep) ? ' Nothing is left on that side.' : ''}`,
+        [
+          roleArray(nums, { title: title('  ·  solid = keep, faded = discard'), window: decided, keep, discard: drop, pointers: { lo, hi }, bracket: { span: keep, label: 'next search space', tone: 'done' } }),
+          decisionView({
+            ...test,
+            keep: `${keepName} side, ${spanText(keep, nums)}${inside ? ' · sorted, and it passed the test' : ' · unsorted, kept by default'}`,
+            discard: `${dropName} side, ${spanText(drop, nums)}, mid included`,
+            verdict,
+          }),
+        ],
+        { lo, hi, target, leftSorted, targetInSortedRange: inside },
+      );
     }
-    r.step('missing', `Search space empty → ${target} is not in the array, return -1`, [view(lo, hi)], { lo, hi, result: -1 });
+    r.step('missing', `Search space empty → ${target} is not in the array, return -1`, plain(), { lo, hi, result: -1 });
     return { frames: r.frames, result: -1 };
   },
   reference({ nums, target }) {

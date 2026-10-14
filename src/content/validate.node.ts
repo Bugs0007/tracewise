@@ -38,7 +38,7 @@ export interface Job {
   expect: 'pass' | 'fail';
 }
 
-const PANEL_TYPES = new Set(['array', 'grid', 'graph', 'list', 'buckets', 'sequence', 'timeline', 'chart', 'log', 'kv', 'intervals', 'note']);
+const PANEL_TYPES = new Set(['array', 'grid', 'graph', 'list', 'buckets', 'sequence', 'timeline', 'chart', 'log', 'kv', 'intervals', 'decision', 'note']);
 
 function checkViz(u: Unit, rep: UnitReport) {
   const v = u.viz;

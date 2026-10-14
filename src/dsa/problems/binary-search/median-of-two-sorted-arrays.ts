@@ -1,6 +1,7 @@
 import type { Tone } from '@/engine/types';
 import { arrayView, hashMapView } from '@/dsa/viz/prims';
 import { TraceRecorder } from '@/dsa/viz/trace';
+import { decisionView } from '@/dsa/viz/decision';
 import { problem, vizOf } from '../helpers';
 import solution from './median-of-two-sorted-arrays.py?raw';
 import cases from './median-of-two-sorted-arrays.cases.json';
@@ -62,20 +63,62 @@ const viz = vizOf<{ a: number[]; b: number[] }>({
       r.step('cutA', `Try cutting a after ${i} element${i === 1 ? '' : 's'} (i = ${i}). Then b is cut after j = ${half} − ${i} = ${j}, so the left halves hold ${half} numbers together.`, view(i, j), { i, j });
       r.step('bRight', `The numbers next to the cuts: a left = ${fmt(aL)}, a right = ${fmt(aR)}, b left = ${fmt(bL)}, b right = ${fmt(bR)}.`, view(i, j, [aL, aR, bL, bR]), { aL: fmt(aL), aR: fmt(aR), bL: fmt(bL), bR: fmt(bR) });
       const ok = aL <= bR && bL <= aR;
+      const crossChecks = [
+        decisionView({
+          title: 'Cross-check 1 · does the left of a stay below the right of b?',
+          condition: 'a_left <= b_right',
+          expr: `${fmt(aL)} ≤ ${fmt(bR)}`,
+          values: [
+            { label: 'a_left', value: fmt(aL) },
+            { label: 'b_right', value: fmt(bR) },
+          ],
+          result: aL <= bR,
+          answer: aL <= bR ? 'yes: a does not reach past b' : 'no: a_left is bigger than b_right, so a is cut too far right',
+        }),
+        decisionView({
+          title: 'Cross-check 2 · does the left of b stay below the right of a?',
+          condition: 'b_left <= a_right',
+          expr: `${fmt(bL)} ≤ ${fmt(aR)}`,
+          values: [
+            { label: 'b_left', value: fmt(bL) },
+            { label: 'a_right', value: fmt(aR) },
+          ],
+          result: bL <= aR,
+          answer: bL <= aR ? 'yes: b does not reach past a' : 'no: b_left is bigger than a_right, so a is cut too far left',
+        }),
+      ];
       r.predict(ok ? 'good' : 'bad', 'Is this a correct split: every number on the left ≤ every number on the right?', ['Yes: a left ≤ b right and b left ≤ a right', 'No: the halves overlap'], ok ? 0 : 1, ok ? 'Both cross-checks hold, so the left half is all ≤ the right half.' : 'One left number is bigger than a right number, so the cut is in the wrong place.');
-      r.step('ok', ok ? `${fmt(aL)} ≤ ${fmt(bR)} and ${fmt(bL)} ≤ ${fmt(aR)}: a valid split.` : `The split is not valid (${aL > bR ? `${fmt(aL)} > ${fmt(bR)}` : `${fmt(bL)} > ${fmt(aR)}`}).`, view(i, j, [aL, aR, bL, bR], ok), { ok });
+      r.step('ok', ok ? `${fmt(aL)} ≤ ${fmt(bR)} and ${fmt(bL)} ≤ ${fmt(aR)}: a valid split.` : `The split is not valid (${aL > bR ? `${fmt(aL)} > ${fmt(bR)}` : `${fmt(bL)} > ${fmt(aR)}`}).`, [...view(i, j, [aL, aR, bL, bR], ok), ...crossChecks], { ok });
       if (ok) {
         const med = total % 2 ? Math.max(aL, bL) : (Math.max(aL, bL) + Math.min(aR, bR)) / 2;
         r.predictChoice('median', total % 2 ? `The total is odd: the median is the largest number of the left half, max(${fmt(aL)}, ${fmt(bL)}). What is it?` : `The total is even: the median is the mean of max(${fmt(aL)}, ${fmt(bL)}) and min(${fmt(aR)}, ${fmt(bR)}). What is it?`, String(med), [String(med + 1), String(med - 0.5), String(Math.max(aR === Infinity ? 0 : aR, bR === Infinity ? 0 : bR))], total, 'The median sits at the boundary between the two halves.');
         r.step(total % 2 ? 'retOdd' : 'retEven', `The median is ${med}.`, view(i, j, [aL, aR, bL, bR], true), { result: med });
         return { frames: r.frames, result: med };
       }
-      if (aL > bR) {
+      // ── test: which cross-check failed? it decides the direction ──
+      const tooRight = aL > bR;
+      const dirTest = {
+        title: 'Which way is the cut wrong?',
+        condition: 'a_left > b_right',
+        expr: `${fmt(aL)} > ${fmt(bR)}`,
+        values: [
+          { label: 'a_left', value: fmt(aL) },
+          { label: 'b_right', value: fmt(bR) },
+        ],
+        result: tooRight,
+        answer: tooRight ? 'yes: a is cut too far right' : 'no: so the other check failed (b_left > a_right) and a is cut too far left',
+      };
+      const dirVerdict = tooRight ? `${fmt(aL)} > ${fmt(bR)}: a gives too many numbers to the left half. Move the cut in a to the left.` : `${fmt(aL)} is not above ${fmt(bR)}, so the failing check must be b_left (${fmt(bL)}) > a_right (${fmt(aR)}): a gives too few numbers to the left half. Move the cut in a to the right.`;
+      r.step('tooBig', `Which way is the cut wrong? ${dirVerdict}`, [...view(i, j, [aL, aR, bL, bR], false), decisionView({ ...dirTest, verdict: dirVerdict })], { i, lo, hi });
+      const keepSpan = tooRight ? `cut positions ${lo}..${i - 1}` : `cut positions ${i + 1}..${hi}`;
+      const dropSpan = tooRight ? `cut positions ${i}..${hi}` : `cut positions ${lo}..${i}`;
+      const moveVerdict = tooRight ? `a's cut at ${i} is too far right, and so is every cut after it. Discard those, keep the cuts to the left.` : `a's cut at ${i} is too far left, and so is every cut before it. Discard those, keep the cuts to the right.`;
+      if (tooRight) {
         hi = i - 1;
-        r.step('goLeft', `a left ${fmt(aL)} is too big: cut earlier in a. hi = ${hi}.`, view(null, null), { lo, hi });
+        r.step('goLeft', `a left ${fmt(aL)} is too big: cut earlier in a. hi = ${hi}.`, [...view(null, null), decisionView({ ...dirTest, keep: keepSpan, discard: dropSpan, verdict: moveVerdict })], { lo, hi });
       } else {
         lo = i + 1;
-        r.step('goRight', `b left ${fmt(bL)} is too big: cut later in a. lo = ${lo}.`, view(null, null), { lo, hi });
+        r.step('goRight', `b left ${fmt(bL)} is too big: cut later in a. lo = ${lo}.`, [...view(null, null), decisionView({ ...dirTest, keep: keepSpan, discard: dropSpan, verdict: moveVerdict })], { lo, hi });
       }
     }
   },

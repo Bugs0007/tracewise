@@ -5,6 +5,7 @@ import type {
   ArrayPanel,
   BucketsPanel,
   ChartPanel,
+  DecisionPanel,
   GraphNode,
   GraphPanel,
   GridPanel,
@@ -20,11 +21,12 @@ import type {
 } from '@/engine/types';
 import { useReducedMotion } from '@/lib/motion';
 
-const TONES: Tone[] = ['default', 'active', 'compare', 'swap', 'visited', 'frontier', 'done', 'found', 'error', 'muted', 'path', 'new'];
+const TONES: Tone[] = ['default', 'active', 'compare', 'swap', 'visited', 'frontier', 'done', 'found', 'error', 'muted', 'path', 'new', 'ruler', 'keep', 'discard'];
 /** engine tone → ink colour (the same four-ink semantics as the CSS tone rules) */
 const toneVar = (t: Tone | undefined): string => {
   switch (t) {
     case 'active':
+    case 'ruler':
       return 'var(--cobalt)';
     case 'compare':
     case 'swap':
@@ -36,17 +38,19 @@ const toneVar = (t: Tone | undefined): string => {
     case 'found':
     case 'path':
     case 'new':
+    case 'keep':
       return 'var(--mint)';
     case 'visited':
       return 'color-mix(in srgb, var(--ink) 55%, transparent)';
     case 'muted':
+    case 'discard':
       return 'color-mix(in srgb, var(--ink) 25%, transparent)';
     default:
       return 'color-mix(in srgb, var(--ink) 40%, transparent)';
   }
 };
 /** text colour that stays readable on a tone fill */
-const toneInk = (t: Tone | undefined): string => (t === 'active' ? 'var(--on-cobalt)' : t === 'compare' || t === 'swap' || t === 'error' ? 'var(--on-tomato)' : t === 'frontier' ? 'var(--on-mustard)' : t === 'done' || t === 'found' || t === 'path' || t === 'new' ? 'var(--on-mint)' : 'var(--ink)');
+const toneInk = (t: Tone | undefined): string => (t === 'active' ? 'var(--on-cobalt)' : t === 'compare' || t === 'swap' || t === 'error' ? 'var(--on-tomato)' : t === 'frontier' ? 'var(--on-mustard)' : t === 'done' || t === 'found' || t === 'path' || t === 'new' || t === 'keep' ? 'var(--on-mint)' : 'var(--ink)');
 
 export function PanelView({ panel }: { panel: Panel }) {
   switch (panel.type) {
@@ -72,13 +76,15 @@ export function PanelView({ panel }: { panel: Panel }) {
       return <KVView p={panel} />;
     case 'intervals':
       return <IntervalsView p={panel} />;
+    case 'decision':
+      return <DecisionView p={panel} />;
     case 'note':
       return <NoteView p={panel} />;
   }
 }
 
 export function isWide(p: Panel): boolean {
-  return p.type === 'graph' || p.type === 'sequence' || p.type === 'timeline' || p.type === 'chart' || p.type === 'intervals' || (p.type === 'array' && (p.values.length > 8 || !!p.bars)) || p.type === 'note';
+  return p.type === 'graph' || p.type === 'sequence' || p.type === 'timeline' || p.type === 'chart' || p.type === 'intervals' || p.type === 'decision' || (p.type === 'array' && (p.values.length > 8 || !!p.bars)) || p.type === 'note';
 }
 
 function Title({ t }: { t?: string }) {
@@ -904,6 +910,50 @@ function IntervalsView({ p }: { p: IntervalsPanel }) {
           ))}
         </svg>
       </div>
+    </div>
+  );
+}
+
+// ─── Decision: one if/else, evaluated in the open ───────
+
+function DecisionView({ p }: { p: DecisionPanel }) {
+  const state = p.result === null ? 'pending' : p.result ? 'yes' : 'no';
+  return (
+    <div className="decision" data-state={state} role="group" aria-label={p.title}>
+      <Title t={p.title} />
+      <div className="dec-test">
+        <code className="dec-code">{p.condition}</code>
+        <div className="dec-vals">
+          {p.values.map((v, i) => (
+            <span key={i} className="dec-val">
+              <small>{v.label}</small>
+              <b>{v.value === null ? 'None' : String(v.value)}</b>
+            </span>
+          ))}
+        </div>
+        <div className="dec-eval">
+          <span className="dec-expr mono">{p.expr}</span>
+          <span className="dec-badge" data-state={state}>
+            {state === 'pending' ? '?' : state === 'yes' ? '✓ true' : '✗ false'}
+          </span>
+          {p.answer && <span className="dec-answer">{p.answer}</span>}
+        </div>
+      </div>
+      {(p.keep || p.discard) && (
+        <div className="dec-roles">
+          {p.keep && (
+            <span className="dec-role keep">
+              <b>Keep</b> {p.keep}
+            </span>
+          )}
+          {p.discard && (
+            <span className="dec-role discard">
+              <b>Discard</b> <s>{p.discard}</s>
+            </span>
+          )}
+        </div>
+      )}
+      {p.verdict && <p className="dec-verdict">{p.verdict}</p>}
     </div>
   );
 }

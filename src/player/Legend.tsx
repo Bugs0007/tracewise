@@ -6,7 +6,15 @@ const KEY: { cls: string; label: string; text: string }[] = [
   { cls: 'mint', label: 'Mint', text: 'done, found, correct' },
 ];
 
-export function Legend() {
+// Shown only for visualizers that draw a decision (a test, then a keep/discard choice).
+// Three different looks on purpose: the thing used as a yardstick is never the thing chosen.
+const ROLES: { cls: string; label: string; text: string }[] = [
+  { cls: 'ruler', label: 'Dashed outline', text: 'the ruler: a reference used only to run a test, not a choice' },
+  { cls: 'keep', label: 'Solid fill', text: 'keep: still in the search space' },
+  { cls: 'discard', label: 'Faded, struck through', text: 'discard: ruled out by this decision' },
+];
+
+export function Legend({ roles }: { roles?: boolean }) {
   return (
     <details className="legend">
       <summary>Colour key</summary>
@@ -21,6 +29,13 @@ export function Legend() {
           <i className="sw idle" aria-hidden />
           <b>Outline</b> not touched yet
         </li>
+        {roles &&
+          ROLES.map((k) => (
+            <li key={k.cls}>
+              <i className={`sw ${k.cls}`} aria-hidden />
+              <b>{k.label}</b> {k.text}
+            </li>
+          ))}
       </ul>
     </details>
   );

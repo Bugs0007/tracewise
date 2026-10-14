@@ -1,6 +1,7 @@
 // Sample panels for every visualizer primitive (shared by the gallery page and the primitive tests).
 import { buildTree } from '@/engine/layout';
 import type { Panel } from '@/engine/types';
+import { chain, decisionView, roleArray, valueRangeView } from './decision';
 import {
   arrayView,
   bitsView,
@@ -48,6 +49,15 @@ export function galleryItems(): { name: string; panels: Panel[] }[] {
     { name: 'dp table 1-D · dependencies', panels: [dpTable1D([1, 1, 2, 3, 5, null], { title: 'ways[i]', filling: 5, deps: [3, 4], tones: { 0: 'done', 1: 'done', 2: 'done' } })] },
     { name: 'dp table 2-D · dependency arrows', panels: [dpTable2D([[0, 0, 0, 0], [0, 1, 1, 1], [0, 1, 2, null]], { title: 'lcs[i][j]', rowLabels: ['', 'a', 'c'], colLabels: ['', 'a', 'b', 'c'], filling: [2, 3], deps: [[1, 2], [2, 2], [1, 3]] })] },
     { name: 'intervals on a number line', panels: [intervalsView([{ start: 1, end: 3, tone: 'done' }, { start: 2, end: 6, tone: 'active' }, { start: 8, end: 10 }, { start: 9, end: 12, tone: 'frontier' }], { title: 'merge', marks: [{ at: 6, label: 'end', tone: 'compare' }] })] },
+    {
+      name: 'decision step · a test, its values, what is kept and discarded',
+      panels: [
+        roleArray([15, 18, 22, 3, 6, 9, 12], { title: 'ruler (dashed) · keep (solid) · discard (faded)', window: [0, 6], ruler: [3, 6], compared: [3, 6], pointers: { lo: 0, mid: 3, hi: 6 }, bracket: { span: [3, 6], label: 'sorted half = the ruler', tone: 'ruler' } }),
+        roleArray([15, 18, 22, 3, 6, 9, 12], { window: [0, 6], keep: [0, 2], discard: [3, 6] }),
+        valueRangeView({ range: [3, 12], target: 18, inside: false }),
+        decisionView({ title: "Is the target inside the sorted half's range?", condition: 'nums[mid] < target <= nums[hi]', expr: chain([3, 18, 12], ['<', '≤']), values: [{ label: 'nums[mid]', value: 3 }, { label: 'target', value: 18 }, { label: 'nums[hi]', value: 12 }], result: false, answer: 'no: 18 is outside 3..12', keep: 'left side, indices 0..2', discard: 'right side, indices 3..6', verdict: "18 is not between 3 and 12, so it can't be in the sorted half. Discard it, keep the left." }),
+      ],
+    },
     {
       name: 'recursion tree',
       panels: [

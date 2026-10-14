@@ -2,8 +2,8 @@
 // returns human-readable problems (empty array = well formed).
 import type { Frame, Panel, Tone } from '@/engine/types';
 
-const TONES = new Set<Tone>(['default', 'active', 'compare', 'swap', 'visited', 'frontier', 'done', 'found', 'error', 'muted', 'path', 'new']);
-const PANEL_TYPES = new Set(['array', 'grid', 'graph', 'list', 'buckets', 'sequence', 'timeline', 'chart', 'log', 'kv', 'intervals', 'note']);
+const TONES = new Set<Tone>(['default', 'active', 'compare', 'swap', 'visited', 'frontier', 'done', 'found', 'error', 'muted', 'path', 'new', 'ruler', 'keep', 'discard']);
+const PANEL_TYPES = new Set(['array', 'grid', 'graph', 'list', 'buckets', 'sequence', 'timeline', 'chart', 'log', 'kv', 'intervals', 'decision', 'note']);
 
 export function checkPanel(p: Panel): string[] {
   const bad: string[] = [];
@@ -58,6 +58,13 @@ export function checkPanel(p: Panel): string[] {
         tone(it.tone, 'interval');
         if (!(it.end >= it.start)) bad.push(`intervals: ${it.start}..${it.end} ends before it starts`);
       }
+      break;
+    case 'decision':
+      if (!p.title) bad.push('decision: no title');
+      if (!p.condition || !p.expr) bad.push('decision: needs the condition and the values filled in');
+      if (!p.values.length) bad.push('decision: no values being compared');
+      if (p.result !== null && !p.verdict && !p.answer) bad.push('decision: a decided step needs a verdict or an answer');
+      if (p.result === null && (p.keep || p.discard)) bad.push('decision: keep/discard before the test has a result');
       break;
     default:
       break;

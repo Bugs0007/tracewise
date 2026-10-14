@@ -15,6 +15,8 @@ const KIND_OF: Partial<Record<Tone, TickKind>> = {
   found: 'done',
   path: 'done',
   new: 'done',
+  ruler: 'queue',
+  keep: 'done',
 };
 
 /** most salient first when several things change in one frame */
@@ -53,6 +55,10 @@ function toneMap(panels: Panel[]): Map<string, Tone> {
         break;
       case 'log':
         p.lines.forEach((l, i) => l.tone && m.set(k(`${i}:${l.text}`), l.tone));
+        break;
+      case 'decision':
+        // an evaluated test is a comparison; it re-ticks only when the test changes, wherever its panel sits in the frame
+        if (p.result !== null) m.set(`decision:${p.condition}|${p.expr}`, 'compare');
         break;
       case 'note':
         if (p.tone) m.set(k('note'), p.tone);

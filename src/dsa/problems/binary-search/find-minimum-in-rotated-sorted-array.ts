@@ -1,6 +1,6 @@
-import type { Tone } from '@/engine/types';
-import { arrayView, hashMapView } from '@/dsa/viz/prims';
+import type { Panel } from '@/engine/types';
 import { TraceRecorder } from '@/dsa/viz/trace';
+import { chain, decisionView, roleArray, spanText, type Span } from '@/dsa/viz/decision';
 import { problem, vizOf } from '../helpers';
 import solution from './find-minimum-in-rotated-sorted-array.py?raw';
 import cases from './find-minimum-in-rotated-sorted-array.cases.json';
@@ -17,34 +17,88 @@ const viz = vizOf<{ nums: number[] }>({
     { label: 'Two elements', input: { nums: [8, 3] } },
   ],
   validate: ({ nums }) => (nums.length < 1 ? 'Enter at least one number' : new Set(nums).size !== nums.length ? 'Numbers must be different from each other' : null),
+  why: [
+    'Rotating a sorted list leaves one drop. The minimum sits right after it, so the question each turn is only: is the drop to the right of mid, or not?',
+    'Comparing nums[mid] with the right end answers that. If nums[mid] > nums[hi] the values cannot be in order between them, so the drop (and the minimum) is to the right of mid. If nums[mid] < nums[hi], mid..hi is in order and nothing to the right of mid can beat mid.',
+    'So the side that gets thrown away is the one that is in order, and the side that gets kept is the one that holds the drop. In the second case mid itself stays (hi = mid) because mid might be the minimum.',
+  ],
   run({ nums }) {
     const r = new TraceRecorder(solution);
     let lo = 0;
     let hi = nums.length - 1;
-    const view = (mid: number | null, hot: Tone | null = null) => {
-      const tones: Record<number, Tone> = {};
-      nums.forEach((_, i) => {
-        if (i < lo || i > hi) tones[i] = 'muted';
-      });
-      if (mid !== null && hot) tones[mid] = hot;
-      return [arrayView(nums, { title: 'rotated array', tones, pointers: { lo, hi, ...(mid !== null ? { mid } : {}) }, window: { from: lo, to: hi, label: 'minimum is in here', tone: 'active' } }), hashMapView({ lo, hi, ...(mid !== null ? { mid } : {}) }, {})];
+    const title = (extra = '') => `rotated array${extra}`;
+    /** the plain search-space view used between decisions */
+    const plain = (mid: number | null, found = false): Panel[] => {
+      const arr = roleArray(nums, { title: title(), window: [lo, hi], pointers: { lo, hi, ...(mid !== null ? { mid } : {}) }, bracket: { span: [lo, hi], label: 'minimum is in here', tone: 'active' } });
+      if (mid !== null) arr.tones = { ...arr.tones, [mid]: 'active' };
+      if (found) arr.tones = { ...arr.tones, [lo]: 'found' };
+      return [arr];
     };
-    r.step('init', 'The array is a sorted list that was rotated. The minimum is where the "drop" is. Search for it.', view(null), { lo, hi });
+    r.step('init', 'The array is a sorted list that was rotated. The minimum is where the "drop" is. Search for it.', plain(null), { lo, hi });
     while (lo < hi) {
       r.op();
       const mid = Math.floor((lo + hi) / 2);
-      r.step('mid', `mid = ${mid}. Compare nums[mid] = ${nums[mid]} with the right end nums[hi] = ${nums[hi]}.`, view(mid, 'active'), { lo, hi, mid });
+      r.step('mid', `mid = ${mid}. Compare nums[mid] = ${nums[mid]} with the right end nums[hi] = ${nums[hi]}.`, plain(mid), { lo, hi, mid });
+
+      // ── test: is nums[mid] > nums[hi]? ───────────────────────
       const bigger = nums[mid] > nums[hi];
-      r.predict(bigger ? 'drop' : 'sorted', `nums[mid] = ${nums[mid]}, nums[hi] = ${nums[hi]}. Where is the minimum?`, ['To the right of mid: the drop is in (mid, hi]', 'At mid or to its left: mid..hi is already in order'], bigger ? 0 : 1, bigger ? 'The middle is bigger than the right end, so the sorted order breaks somewhere after mid: the minimum is there.' : 'The right part is in order, so the minimum is mid itself or something to its left.');
-      if (bigger) {
-        lo = mid + 1;
-        r.step('goRight', `${nums[mid]} > ${nums[hi]}: the minimum is right of mid. lo = ${lo}.`, view(null), { lo, hi });
-      } else {
-        hi = mid;
-        r.step('goLeft', `${nums[mid]} < ${nums[hi]}: mid..hi is sorted, so the minimum is at mid or left. hi = ${hi}.`, view(null), { lo, hi });
-      }
+      const m = nums[mid];
+      const h = nums[hi];
+      const ruler: Span = [mid, hi];
+      const pointers = { lo, hi, mid };
+      const test = {
+        title: 'Is the stretch mid..hi still in order?',
+        condition: 'nums[mid] > nums[hi]',
+        expr: chain([m, h], ['>']),
+        values: [
+          { label: 'nums[mid]', value: m },
+          { label: 'nums[hi]', value: h },
+        ],
+        result: bigger,
+      };
+      const testVerdict = bigger ? `${m} > ${h}: the order breaks somewhere after mid, so the drop (and the minimum) is to the right of mid.` : `${m} < ${h}: mid..hi is in order, so nothing to the right of mid can beat mid. The minimum is at mid or to its left.`;
+      r.predict('gt', `nums[mid] = ${m}, nums[hi] = ${h}. Is nums[mid] > nums[hi]?`, ['Yes: the order breaks between mid and hi', 'No: mid..hi is in order'], bigger ? 0 : 1, bigger ? 'A middle bigger than the right end means the sorted order was broken somewhere between them.' : 'A middle smaller than the right end means mid..hi is in order.', bigger ? [undefined, `${m} is bigger than ${h}, so mid..hi cannot be in order: the drop is in there.`] : [`${m} is not bigger than ${h}: they are in order, so mid..hi has no drop in it.`, undefined]);
+      r.step(
+        'cmp',
+        `Is ${m} > ${h}? ${bigger ? 'Yes' : 'No'}. ${testVerdict}`,
+        [roleArray(nums, { title: title('  ·  dashed = the stretch being tested'), window: [lo, hi], ruler, compared: [mid, hi], pointers, bracket: { span: ruler, label: `mid..hi (${m} … ${h})`, tone: 'ruler' } }), decisionView({ ...test, answer: bigger ? 'yes: mid..hi is NOT in order' : 'no: mid..hi is in order', verdict: testVerdict })],
+        { lo, hi, mid, midGtHi: bigger },
+      );
+
+      // ── apply: keep one side, discard the other ──────────────
+      // mid is dropped only when it cannot be the minimum (mid > hi); otherwise it stays as a candidate
+      const keep: Span = bigger ? [mid + 1, hi] : [lo, mid];
+      const drop: Span = bigger ? [lo, mid] : [mid + 1, hi];
+      r.predict(
+        'keepMin',
+        `${bigger ? 'The order breaks after mid.' : 'mid..hi is in order.'} Which side can still hold the minimum?`,
+        [`Right of mid: ${spanText([mid + 1, hi], nums)}`, `Mid and everything left of it: ${spanText([lo, mid], nums)}`],
+        bigger ? 0 : 1,
+        bigger ? 'mid is bigger than hi, so mid is not the minimum and the drop is to its right.' : 'mid..hi is in order, so everything right of mid is bigger than mid. mid itself might be the minimum, so it stays.',
+        bigger ? [undefined, `${m} is bigger than ${h}, so mid cannot be the minimum, and the drop is to its right. Keep the right side: it is the one holding the drop.`] : [`mid..hi is in order, so the values right of mid are all bigger than mid. They cannot be the minimum. Keep mid and the left.`, undefined],
+      );
+      const verdict = bigger ? `${m} > ${h}, so mid can't be the minimum and the drop is to its right. Discard lo..mid, keep the right: the side that holds the drop.` : `${m} < ${h}, so everything right of mid is bigger than mid. Discard it. Keep mid and the left: mid itself might be the minimum, so it stays.`;
+      const moved = bigger ? `lo = ${mid + 1}` : `hi = ${mid}`;
+      const decided: Span = [lo, hi];
+      lo = keep[0];
+      hi = keep[1];
+      r.step(
+        bigger ? 'goRight' : 'goLeft',
+        `${bigger ? 'Keep the right, which holds the drop' : 'Keep mid and the left'}, discard the rest: ${moved}.`,
+        [
+          roleArray(nums, { title: title('  ·  solid = keep, faded = discard'), window: decided, keep, discard: drop, pointers: { lo, hi }, bracket: { span: keep, label: 'minimum is in here', tone: 'done' } }),
+          decisionView({
+            ...test,
+            answer: bigger ? 'yes: mid..hi is NOT in order' : 'no: mid..hi is in order',
+            keep: bigger ? `right of mid, ${spanText(keep, nums)} · holds the drop` : `mid and the left, ${spanText(keep, nums)} · mid might be the minimum`,
+            discard: bigger ? `${spanText(drop, nums)}, mid included` : `${spanText(drop, nums)} · in order, and all bigger than mid`,
+            verdict,
+          }),
+        ],
+        { lo, hi, midGtHi: bigger },
+      );
     }
-    r.step('done', `lo = hi = ${lo}: the minimum is nums[${lo}] = ${nums[lo]}.`, view(null, null), { result: nums[lo] });
+    r.step('done', `lo = hi = ${lo}: the minimum is nums[${lo}] = ${nums[lo]}.`, plain(null, true), { result: nums[lo] });
     return { frames: r.frames, result: nums[lo] };
   },
   reference({ nums }) {

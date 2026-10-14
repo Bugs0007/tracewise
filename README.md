@@ -20,6 +20,10 @@ Runs entirely in your browser: no backend, no tracking, and accounts are optiona
 | **Gamification** | XP, levels, daily streak and goal, world map per module, badges, focus mode, satisfying-but-short celebrations, optional sound. |
 | **Accessibility** | Keyboard shortcuts everywhere, reduced-motion switch, light/dark themes, screen-reader labels on visualizers. |
 
+## AI Field Guide
+
+A separate theory-first path at `#/ai-stories`: 44 visual stories across 11 chapters, 10 interactive experiment types, a two-day interview route, concept checks, spoken-answer rubrics and eight mock interview scenarios. Covers ML foundations through GenAI, RAG, agents, evaluation, safety and production design. No code exercises or API key required. See [the guide documentation](docs/AI_FIELD_GUIDE.md).
+
 ## Screenshots
 
 | | |

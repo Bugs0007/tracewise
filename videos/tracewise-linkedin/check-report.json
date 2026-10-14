@@ -1,0 +1,99 @@
+
+> check
+> npx --yes hyperframes@0.8.152 check --at 1,3.3,5,7.3,8.7,11.8,14.4,16,18.5,22.5,24.8,28.5 --json
+
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 6
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 30,
+    "samples": [
+      1,
+      3.3,
+      5,
+      7.3,
+      8.7,
+      11.8,
+      14.4,
+      16,
+      18.5,
+      22.5,
+      24.8,
+      28.5
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "specPath": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\index.motion.json",
+    "samples": 300
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      1,
+      5,
+      11.8,
+      18.5,
+      28.5
+    ],
+    "checked": 69,
+    "passed": 69
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "saved": {
+    "id": "e8768a68-e413-4cb1-8cce-47d5308e895f",
+    "revision": "bcaaedf3-d243-49e8-92ad-c5e9dfd949eb",
+    "report": "C:\\Users\\Bhagath\\OneDrive\\Desktop\\PROJECT_IV\\videos\\tracewise-linkedin\\.hyperframes\\artifacts\\checks\\e8768a68-e413-4cb1-8cce-47d5308e895f.json",
+    "attribution": "recorded-revision"
+  },
+  "_meta": {
+    "version": "0.8.152",
+    "latestVersion": "0.8.152",
+    "updateAvailable": false
+  }
+}

@@ -1,6 +1,7 @@
 import type { Tone } from '@/engine/types';
 import { arrayView, hashMapView } from '@/dsa/viz/prims';
 import { TraceRecorder } from '@/dsa/viz/trace';
+import { decisionView, roleArray } from '@/dsa/viz/decision';
 import { problem, vizOf } from '../helpers';
 import solution from './trapping-rain-water.py?raw';
 import cases from './trapping-rain-water.cases.json';
@@ -44,6 +45,29 @@ const viz = vizOf<{ height: number[] }>({
       const leftSide = h[lo] < h[hi];
       r.step('loop', `Compare the two ends: height[lo] = ${h[lo]}, height[hi] = ${h[hi]}.`, view({ [lo]: 'compare', [hi]: 'compare' }), { lo, hi });
       r.predict('side', `${h[lo]} versus ${h[hi]}. Which side is safe to finish first?`, ['The left side: its bar is lower', 'The right side: its bar is lower'], leftSide ? 0 : 1, 'The side with the lower end is bounded by that end on the far side, so its water level is already decided by its own running max.');
+      // ── test: which end is lower? ────────────────────────────
+      const lowName = leftSide ? 'left' : 'right';
+      const highName = leftSide ? 'right' : 'left';
+      const rel = leftSide ? '<' : h[lo] === h[hi] ? '=' : '>';
+      const test = {
+        title: 'Which end is lower?',
+        condition: 'height[lo] < height[hi]',
+        expr: `${h[lo]} < ${h[hi]}`,
+        values: [
+          { label: 'height[lo]', value: h[lo] },
+          { label: 'height[hi]', value: h[hi] },
+        ],
+        result: leftSide,
+        answer: leftSide ? 'the left end is lower: finish the left side' : h[lo] === h[hi] ? 'equal ends: the code finishes the right side' : 'the right end is lower: finish the right side',
+      };
+      const lid = leftSide ? h[hi] : h[lo];
+      const verdict = `${h[lo]} ${rel} ${h[hi]}: the ${lowName} end is ${h[lo] === h[hi] ? 'tied with the other, and the code treats it as the lower one' : 'the lower one'}. The ${highName} end is a lid: it guarantees a wall of at least ${lid} somewhere on the ${highName}, so the water over the ${lowName} bar depends only on the tallest bar seen from the ${lowName} side. Finish the ${lowName} side.`;
+      const [bars, perPanel, totals] = view();
+      if (bars.type === 'array') {
+        bars.title = 'bars  ·  dashed = the lid (taller end), red = the lower end';
+        bars.tones = { ...bars.tones, ...roleArray(h, { ruler: leftSide ? [hi, hi] : [lo, lo], compared: [leftSide ? lo : hi] }).tones };
+      }
+      r.step('cmp', `Which end is lower? ${h[lo]} ${rel} ${h[hi]}: finish the ${lowName} side first. The ${highName} end is a lid.`, [bars, perPanel, totals, decisionView({ ...test, verdict })], { lo, hi, leftLower: leftSide });
       if (leftSide) {
         lmax = Math.max(lmax, h[lo]);
         r.step('lmax', `left_max is now ${lmax} (the tallest bar seen from the left).`, view({ [lo]: 'active' }), { left_max: lmax });

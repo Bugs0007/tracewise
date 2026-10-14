@@ -510,3 +510,11 @@
 .hero-trace .arr-cell {
   width: 30px;
 }
+.topnav a[href='#/ai-stories'] { white-space: nowrap; }
+.ai-guide-entry { display: flex; align-items: center; gap: 25px; border: 1px solid var(--cobalt); border-left-width: 4px; padding: 26px; margin: 34px 0; text-decoration: none; color: var(--ink); background: var(--surface); }
+.ai-guide-entry:hover { background: color-mix(in srgb, var(--cobalt) 5%, var(--surface)); }
+.ai-guide-entry-mark { font: 700 32px var(--font-mono); color: var(--cobalt-t); white-space: nowrap; }
+.ai-guide-entry > div { flex: 1; }.ai-guide-entry > div > span { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted); }
+.ai-guide-entry h2 { margin: 8px 0; font-size: 1.5rem; }.ai-guide-entry p { margin: 0; color: var(--ink-muted); font-size: .9rem; line-height: 1.6; }
+.ai-guide-entry > span:last-child { color: var(--cobalt-t); font-size: 24px; }
+@media (max-width: 600px) { .ai-guide-entry { padding: 20px; gap: 15px; }.ai-guide-entry-mark { display: none; }.ai-guide-entry h2 { font-size: 1.3rem; } }

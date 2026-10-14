@@ -969,3 +969,159 @@
     display: none;
   }
 }
+
+/* decision roles on array cells: ruler = dashed outline, keep = solid fill, discard = faded + struck through */
+.arr-cell[data-tone='ruler'] .arr-box {
+  border-style: dashed;
+  border-width: 2px;
+}
+.arr-cell[data-tone='discard'] .arr-box {
+  opacity: 0.6;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  border-style: dotted;
+}
+.ivl [data-tone='ruler'] .ivl-bar {
+  stroke-dasharray: 6 4;
+  stroke-width: 2;
+}
+
+/* decision card: one if/else, shown as its own step */
+.decision {
+  border: 1.5px solid var(--rule);
+  background: var(--surface);
+  padding: 10px 14px 12px;
+  display: grid;
+  gap: 10px;
+}
+.decision .pnl-title {
+  margin: 0;
+}
+.dec-test {
+  display: grid;
+  gap: 8px;
+}
+.dec-code {
+  font: 600 var(--fs-s) var(--font-mono);
+  color: var(--ink-muted);
+}
+.dec-vals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dec-val {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 64px;
+  padding: 4px 10px;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  border-radius: 3px;
+}
+.dec-val small {
+  font: var(--fs-xs) var(--font-mono);
+  color: var(--ink-muted);
+}
+.dec-val b {
+  font: 700 var(--fs-m) var(--font-mono);
+}
+.dec-eval {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.dec-expr {
+  font-weight: 700;
+  font-size: var(--fs-m);
+}
+.dec-badge {
+  padding: 2px 10px;
+  font: 700 var(--fs-s) var(--font-mono);
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+}
+.dec-badge[data-state='yes'] {
+  background: var(--ink);
+  color: var(--surface);
+}
+.dec-badge[data-state='no'] {
+  background: transparent;
+  color: var(--ink);
+}
+.dec-answer {
+  font-size: var(--fs-s);
+  color: var(--ink-muted);
+}
+.dec-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: var(--fs-s);
+}
+.dec-role {
+  padding: 3px 10px;
+  border: 1.5px solid;
+  border-radius: 3px;
+}
+.dec-role.keep {
+  background: var(--mint);
+  border-color: var(--mint);
+  color: var(--on-mint);
+}
+.dec-role.discard {
+  border-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  border-style: dotted;
+  color: var(--ink-muted);
+}
+.dec-verdict {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.45;
+  padding-left: 10px;
+  border-left: 3px solid var(--cobalt);
+}
+
+/* "Why this works" toggle under the controls */
+.viz-why {
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  font-size: var(--fs-s);
+}
+.viz-why summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.viz-why p {
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+.predict-why.bad-note {
+  color: var(--ink);
+  font-weight: 600;
+}
+.predict.docked .predict-why {
+  flex: 1 1 340px;
+}
+
+/* legend swatches for decision roles */
+.sw.ruler {
+  border: 2px dashed var(--cobalt);
+  background: color-mix(in srgb, var(--cobalt) 10%, var(--surface));
+}
+.sw.keep {
+  background: var(--mint);
+}
+.sw.discard {
+  border: 1.5px dotted color-mix(in srgb, var(--ink) 40%, transparent);
+  opacity: 0.6;
+  position: relative;
+}
+.sw.discard::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  border-top: 2px solid var(--ink);
+}
