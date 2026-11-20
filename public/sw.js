@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
       (hit) =>
         hit ||
         fetch(req).then((res) => {
-          if (res.ok && res.type === 'basic') {
+          if (res.status === 200 && res.type === 'basic') {
             const copy = res.clone();
             caches.open(CACHE).then((c) => c.put(req, copy));
           }

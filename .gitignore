@@ -12,3 +12,4 @@ coverage
 .claude
 __pycache__
 !.env.example
+scripts/.narration.json

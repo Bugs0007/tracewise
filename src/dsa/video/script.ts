@@ -148,6 +148,21 @@ export function speakable(s: string): string {
   return t;
 }
 
+/** File name of the pre-rendered narration for one spoken sentence (public/narration/<key>.webm).
+ *  A 53-bit hash of the spoken text, so the same sentence is rendered once and shared by every video. */
+export function audioKey(spoken: string): string {
+  let h1 = 0xdeadbeef;
+  let h2 = 0x41c6ce57;
+  for (let i = 0; i < spoken.length; i++) {
+    const c = spoken.charCodeAt(i);
+    h1 = Math.imul(h1 ^ c, 2654435761);
+    h2 = Math.imul(h2 ^ c, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+
 /** Seconds a scene takes to narrate, for duration estimates and silent playback. */
 export const sceneSeconds = (s: Scene): number => sentences(s.say).reduce((t, x) => t + 0.8 + x.split(/\s+/).length / 2.6, 0);
 export const videoSeconds = (v: Video): number => v.scenes.reduce((t, s) => t + sceneSeconds(s), 0);

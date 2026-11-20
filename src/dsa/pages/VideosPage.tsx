@@ -140,7 +140,7 @@ function Playlist({ topic }: { topic: TopicId }) {
             </div>
           ) : (
             <>
-              <VideoPlayer video={video} onEnded={onEnded} autoStart={started} />
+              <VideoPlayer key={video.id} video={video} onEnded={onEnded} autoStart={started} />
               <div className="row" style={{ marginTop: 10, gap: 12, flexWrap: 'wrap' }}>
                 <h2 style={{ margin: 0, fontSize: 20 }} className="grow">
                   {video.title}

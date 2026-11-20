@@ -19,6 +19,7 @@
     "test:dsa": "vitest run src/dsa && python -m pytest tests/dsa -q",
     "check:unit": "node scripts/check-unit.mjs",
     "coverage:docs": "vitest run scripts/gen-coverage.test.ts",
+    "narration": "vitest run scripts/gen-narration.test.ts && python scripts/narrate.py",
     "e2e": "playwright test",
     "verify": "npm run lint && npm run typecheck && npm test && npm run build && npm run e2e"
   },

@@ -1,14 +1,18 @@
 // Plays a Video: each scene is drawn with the same panels and code view as the step player, narrated
-// sentence by sentence with the browser's speech engine, with the current sentence as a subtitle.
+// sentence by sentence, with the current sentence as a subtitle. The default voice is pre-rendered
+// neural speech (public/narration, made by `npm run narration`); a sentence without a file, or a
+// system voice picked from the menu, uses the browser's speech engine instead.
 // Without speech (or when muted) it advances on a reading-speed timer, so subtitles still work.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CodeLines } from '@/player/CodeView';
 import { isWide, PanelView } from '@/player/panels';
 import { Icon } from '@/ui/Icon';
-import { sentences, speakable, type Scene, type Video } from './script';
+import { audioKey, sentences, speakable, type Scene, type Video } from './script';
 
 const RATES = [0.9, 1, 1.15, 1.3, 1.5];
 const hasSpeech = typeof window !== 'undefined' && 'speechSynthesis' in window;
+const NATURAL = 'natural';
+const narrationUrl = (spoken: string) => `${import.meta.env.BASE_URL}narration/${audioKey(spoken)}.webm`;
 
 function pref<T>(key: string, fallback: T): T {
   try {
@@ -58,6 +62,7 @@ export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnd
   const [rate, setRate] = useState<number>(() => pref('rate', 1));
   const [voiceName, setVoiceName] = useState<string>(() => pref('voice', ''));
   const voices = useVoices();
+  const natural = !voiceName || voiceName === NATURAL;
   const voice = voices.find((v) => v.name === voiceName) ?? bestVoice(voices);
   const box = useRef<HTMLDivElement>(null);
   const token = useRef(0);
@@ -67,6 +72,7 @@ export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnd
   const lines = useMemo(() => video.scenes.map((s) => sentences(s.say)), [video]);
   const cur = video.scenes[scene];
   const sub = lines[scene]?.[line] ?? '';
+  const upNext = lines[scene]?.[line + 1] ?? lines[scene + 1]?.[0];
 
   // a new video starts from the top
   useEffect(() => {
@@ -91,28 +97,53 @@ export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnd
     const my = ++token.current;
     const done = () => my === token.current && advance();
     const words = sub.split(/\s+/).length;
-    if (muted || !hasSpeech) {
-      const t = setTimeout(done, (900 + (words / 2.8) * 1000) / rate);
-      return () => clearTimeout(t);
-    }
-    const u = new SpeechSynthesisUtterance(speakable(sub));
-    if (voice) u.voice = voice;
-    // a brighter, slightly quicker delivery; a little extra lift on exclamations
-    u.rate = rate * 1.06;
-    u.pitch = /!\s*$/.test(sub) ? 1.22 : 1.1;
-    u.onend = done;
-    u.onerror = done;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
-    // some engines drop the end event; never get stuck on one sentence
-    const guard = setTimeout(done, (4000 + (words / 1.6) * 1000) / rate);
+    const spoken = speakable(sub);
+    let guard: ReturnType<typeof setTimeout> | undefined;
+    let audio: HTMLAudioElement | undefined;
+
+    const timer = () => (guard = setTimeout(done, (900 + (words / 2.8) * 1000) / rate));
+    const system = () => {
+      if (my !== token.current) return;
+      if (!hasSpeech) return timer();
+      const u = new SpeechSynthesisUtterance(spoken);
+      if (voice) u.voice = voice;
+      u.rate = rate * 1.06;
+      u.pitch = /!\s*$/.test(sub) ? 1.22 : 1.1;
+      u.onend = done;
+      // no working voice: keep the subtitles going at reading speed
+      u.onerror = () => {
+        clearTimeout(guard);
+        if (my === token.current) timer();
+      };
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+      // some engines drop the end event; never get stuck on one sentence
+      guard = setTimeout(done, (4000 + (words / 1.6) * 1000) / rate);
+    };
+
+    if (muted) timer();
+    else if (natural) {
+      audio = new Audio(narrationUrl(spoken));
+      audio.playbackRate = rate;
+      // a short breath between sentences sounds more like a person
+      audio.onended = () => (guard = setTimeout(done, 220 / rate));
+      audio.onerror = system;
+      audio.play().catch((e: Error) => (e.name === 'NotAllowedError' ? setPlaying(false) : system()));
+      // warm the next sentence so there is no gap
+      if (upNext) new Audio(narrationUrl(speakable(upNext))).preload = 'auto';
+    } else system();
+
     return () => {
       clearTimeout(guard);
       // eslint-disable-next-line react-hooks/exhaustive-deps -- invalidates the pending sentence on purpose
       token.current++;
-      speechSynthesis.cancel();
+      if (audio) {
+        audio.onended = audio.onerror = null;
+        audio.pause();
+      }
+      if (hasSpeech) speechSynthesis.cancel();
     };
-  }, [playing, sub, muted, rate, voice, advance, scene, line]);
+  }, [playing, sub, upNext, muted, natural, rate, voice, advance, scene, line]);
 
   useEffect(() => () => void (hasSpeech && speechSynthesis.cancel()), []);
 
@@ -199,23 +230,19 @@ export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnd
             </option>
           ))}
         </select>
-        {voices.length > 1 && (
-          <select className="vsel voice" value={voice?.name ?? ''} onChange={(e) => (setVoiceName(e.target.value), setPref('voice', e.target.value))} aria-label="Voice">
-            {voices.map((v) => (
-              <option key={v.name} value={v.name}>
-                {v.name.replace(/^Microsoft |^Google /, '').replace(/ Online \(Natural\)/, ' (natural)')}
-              </option>
-            ))}
-          </select>
-        )}
+        <select className="vsel voice" value={natural ? NATURAL : (voice?.name ?? '')} onChange={(e) => (setVoiceName(e.target.value), setPref('voice', e.target.value))} aria-label="Voice">
+          <option value={NATURAL}>Natural voice</option>
+          {voices.map((v) => (
+            <option key={v.name} value={v.name}>
+              {v.name.replace(/^Microsoft |^Google /, '').replace(/ Online \(Natural\)/, ' (natural)')}
+            </option>
+          ))}
+        </select>
         <button className="btn icon" onClick={fullscreen} aria-label="Full screen" title="Full screen (f)">
           <Icon name="expand" size={16} />
         </button>
       </div>
       {!hasSpeech && <p className="dim">This browser has no speech engine, so the video plays with subtitles only.</p>}
-      {voices.length > 0 && !voices.some((v) => /natural|Google/i.test(v.name)) && (
-        <p className="dim">Tip: for a livelier, more natural voice, open this page in Microsoft Edge (or Chrome) and pick a voice marked natural.</p>
-      )}
 
       <ol className="vchapters">
         {chapters.map((c, i) => {
