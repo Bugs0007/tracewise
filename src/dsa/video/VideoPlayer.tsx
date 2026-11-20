@@ -38,8 +38,16 @@ function useVoices() {
   return voices;
 }
 
+// The most expressive voices first: Edge's neural voices (Ava, Andrew, Emma, Brian are the liveliest),
+// then any other neural voice, then Chrome's Google voices, then whatever the system has.
+const LIVELY = ['Ava', 'Andrew', 'Emma', 'Brian', 'Jenny', 'Aria', 'Guy', 'Neerja', 'Prabhat'];
 const bestVoice = (vs: SpeechSynthesisVoice[]) =>
-  vs.find((v) => /natural/i.test(v.name) && /en-(US|GB|IN)/i.test(v.lang)) ?? vs.find((v) => /Google (US|UK) English/i.test(v.name)) ?? vs.find((v) => /en-IN/i.test(v.lang)) ?? vs.find((v) => v.default) ?? vs[0];
+  LIVELY.map((n) => vs.find((v) => v.name.includes(n) && /natural/i.test(v.name))).find(Boolean) ??
+  vs.find((v) => /natural/i.test(v.name)) ??
+  vs.find((v) => /Google (US|UK) English/i.test(v.name)) ??
+  vs.find((v) => /Zira|Aria|Heera/.test(v.name)) ??
+  vs.find((v) => v.default) ??
+  vs[0];
 
 export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnded?: () => void; autoStart?: boolean }) {
   const [scene, setScene] = useState(0);
@@ -89,7 +97,9 @@ export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnd
     }
     const u = new SpeechSynthesisUtterance(speakable(sub));
     if (voice) u.voice = voice;
-    u.rate = rate;
+    // a brighter, slightly quicker delivery; a little extra lift on exclamations
+    u.rate = rate * 1.06;
+    u.pitch = /!\s*$/.test(sub) ? 1.22 : 1.1;
     u.onend = done;
     u.onerror = done;
     speechSynthesis.cancel();
@@ -203,6 +213,9 @@ export function VideoPlayer({ video, onEnded, autoStart }: { video: Video; onEnd
         </button>
       </div>
       {!hasSpeech && <p className="dim">This browser has no speech engine, so the video plays with subtitles only.</p>}
+      {voices.length > 0 && !voices.some((v) => /natural|Google/i.test(v.name)) && (
+        <p className="dim">Tip: for a livelier, more natural voice, open this page in Microsoft Edge (or Chrome) and pick a voice marked natural.</p>
+      )}
 
       <ol className="vchapters">
         {chapters.map((c, i) => {
