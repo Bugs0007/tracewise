@@ -50,6 +50,9 @@ export default function TopicPage({ topic }: { topic: TopicId }) {
             {meta.blurb}
           </p>
         </div>
+        <a className="btn sm" href={href(`/dsa/videos/${topic}`)} data-testid="topic-videos">
+          <Icon name="play" size={14} /> Watch the videos
+        </a>
         <p className="muted" style={{ margin: 0 }}>
           <b style={{ color: 'var(--ink)' }}>{prog.solved}</b> of {prog.total} solved
         </p>

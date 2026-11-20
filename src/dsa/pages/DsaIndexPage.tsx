@@ -36,6 +36,9 @@ export default function DsaIndexPage() {
           <a className="btn primary" href={href(`/dsa/${next.topic}/${next.id}`)} data-testid="dsa-continue">
             {dsa.problems[next.id] ? 'Continue' : 'Start'}: {next.title}
           </a>
+          <a className="btn" href={href('/dsa/videos')} data-testid="dsa-videos">
+            Watch the videos
+          </a>
           {written < PROBLEMS.length && <span className="dim">{written} of {PROBLEMS.length} problems are written so far.</span>}
         </div>
       )}

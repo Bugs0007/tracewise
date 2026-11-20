@@ -1,4 +1,4 @@
-// Router for the NeetCode 150 track:  #/dsa  ·  #/dsa/<topic>  ·  #/dsa/<topic>/<slug>  ·  #/dsa/gallery
+// Router for the NeetCode 150 track:  #/dsa  ·  #/dsa/<topic>  ·  #/dsa/<topic>/<slug>  ·  #/dsa/gallery  ·  #/dsa/videos[/<topic>]
 import { lazy } from 'react';
 import { PROBLEM_BY_ID, TOPIC_BY_ID } from '../catalog';
 import type { TopicId } from '../types';
@@ -8,10 +8,12 @@ const IndexPage = lazy(() => import('./DsaIndexPage'));
 const TopicPage = lazy(() => import('./TopicPage'));
 const ProblemPage = lazy(() => import('./ProblemPage'));
 const GalleryPage = lazy(() => import('./GalleryPage'));
+const VideosPage = lazy(() => import('./VideosPage'));
 
 export default function DsaPage({ topic, slug }: { topic?: string; slug?: string }) {
   if (!topic) return <IndexPage />;
   if (topic === 'gallery') return <GalleryPage />;
+  if (topic === 'videos') return <VideosPage topic={slug} />;
   if (!(topic in TOPIC_BY_ID)) return <NotFound what="topic" />;
   if (!slug) return <TopicPage topic={topic as TopicId} />;
   const meta = PROBLEM_BY_ID[slug];
